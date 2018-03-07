@@ -21,7 +21,6 @@
     "jsonwebtoken": "^7.4.3",
     "jwt-express": "^1.1.0",
     "lodash": "^4.17.4",
-    "moment": "^2.20.1",
     "mongoose": "^4.11.8",
     "morgan": "~1.8.1",
     "passport": "^0.4.0",
@@ -31,7 +30,6 @@
   },
   "devDependencies": {
     "eslint": "^4.6.1",
-    "eslint-config-google": "^0.9.1",
-    "nodemon": "^1.14.11"
+    "eslint-config-google": "^0.9.1"
   }
 }

@@ -1568,7 +1568,7 @@ if (typeof NProgress != 'undefined') {
 		};
 
 
-
+	  
 
 	   /* SMART WIZARD */
 

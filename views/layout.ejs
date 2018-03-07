@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Index Tracking</title>
+    <title>Egypt Cloud Prospects Management System</title>
 
     <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,13 +20,6 @@
 
     <!-- Custom Theme Style -->
     <link href="/build/css/custom.min.css" rel="stylesheet">
-
-    <!-- jQuery -->
-    <script src="/vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Chart.js -->
-    <script src="/vendors/Chart.js/dist/Chart.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
   </head>
 
   <body class="nav-md">
@@ -35,7 +28,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-cloud"></i> <span>Index Demo</span></a>
+              <a href="index.html" class="site_title"><i class="fa fa-cloud"></i> <span>Egypt Cloud Prospects Management</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -44,7 +37,7 @@
             <div class="profile clearfix">
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>User</h2>
+                <h2><%= current_user.full_name%></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -70,15 +63,18 @@
       </div>
     </div>
 
+    <!-- jQuery -->
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
     <script src="/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="/vendors/nprogress/nprogress.js"></script>
-
+    <!-- Chart.js -->
+    <script src="/vendors/Chart.js/dist/Chart.min.js"></script>
     <!-- jQuery Sparklines -->
     <script src="/vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-    <!-- JQuery Wizard -->
-    <script src="../vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
     <!-- Flot -->
     <script src="/vendors/Flot/jquery.flot.js"></script>
     <script src="/vendors/Flot/jquery.flot.pie.js"></script>
@@ -102,29 +98,7 @@
     <!-- Custom Theme Scripts -->
     <script src="/build/js/custom.min.js"></script>
 
-
-
     <script>
-      $(document).ready(function () {
-        resetForms();
-      });
-
-      function resetForms() {
-        for (i = 0; i < document.forms.length; i++) {
-          document.forms[i].reset();
-        }
-      }
-
-      $('#wizard').smartWizard();
-      $('#wizard_verticle').smartWizard({
-			  transitionEffect: 'slide'
-			});
-
-			$('.buttonNext').addClass('btn btn-success');
-			$('.buttonPrevious').addClass('btn btn-primary');
-			$('.buttonFinish').addClass('btn btn-default');
-
-
       $('.delete_button').on('click',function(){
         info = $(this).data("info").split(',');
         var url = '/'+info[1]+'/delete/'+info[0];

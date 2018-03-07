@@ -14,7 +14,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-var promise = mongoose.connect('mongodb://a7meds3d:Nidalee18@ds117158.mlab.com:17158/indexdemo', {
+var promise = mongoose.connect('mongodb://a7meds3d:Nidalee18@ds157833.mlab.com:57833/cloud-connect', {
   useMongoClient: true
 });
 
@@ -43,10 +43,54 @@ app.use(session({
   }
 }))
 
-//Application Routes
-var projects = require('./routes/projects');
+app.all('/api/v1/*',function(req, res, next){
+  req.msg = req.headers;
+  if(req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT'){
+    jwt.verify(req.headers.authorization.split(' ')[1],'CLOUDMANAGEAPI',function(err,decode){
+      if(err) {
+        req.user = undefined;
+        console.error(err);
+      }
+      req.user = decode;
+      next();
+    })
+  }else{
+    req.user = undefined;
+    next();
+  }
+});
 
-app.use('/', projects);
+// app.all('/*',function(req, res, next){
+//   if (req.session.user) {
+//     next();
+//   } else {
+//     res.render('login', {
+//       'error': ''
+//     });
+//   }
+// });
+
+//Application Routes
+var index = require('./routes/index');
+var users = require('./routes/users');
+var prospects = require('./routes/prospects');
+var products = require('./routes/products');
+
+app.use('/', index);
+app.use('/users', users);
+app.use('/products', products);
+app.use('/prospects', prospects);
+
+//API Routes
+var aauth = require('./routes/api/auth');
+var ausers = require('./routes/api/users');
+var aprospects = require('./routes/api/prospects');
+var aproducts = require('./routes/api/products');
+
+app.use('/api/auth', aauth);
+app.use('/api/v1/users', ausers);
+app.use('/api/v1/product', aproducts);
+app.use('/api/v1/prospect', aprospects);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
