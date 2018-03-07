@@ -1,0 +1,8 @@
+applications:
+- path: .
+  memory: 256M
+  instances: 1
+  domain: mybluemix.net
+  name: cloud-manage
+  host: cloud-manage
+  disk_quota: 1024M

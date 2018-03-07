@@ -1,0 +1,234 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Project <small>Edit</small></h3>
+      </div>
+
+      <div class="title_right">
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_content">
+          <form class="form-horizontal form-label-left" id="project-edit-form" action="/edit/<%= project._id %>" method="post">
+            <div class="form-group" style="display:flex; align-items: center;">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Actual Percentage Completion</label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="actualPerc" id="actualPerc" class="form-control col-md-7 col-xs-12" value="<%= project.actualPerc %>">
+              </div>
+              Planned Percentage is: <%= project.plannedPerc %>%
+            </div>
+            <div class="form-group" style="display:flex; align-items: center;">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Actual Consumed Budget</label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="consumedBudget" class="form-control col-md-7 col-xs-12" value="<%= project.consumedBudget %>">
+              </div>
+              Planned Budget is: <%= project.plannedBudget %> Pounds
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Execution and Delivery Entity</label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="execEntity" class="form-control col-md-7 col-xs-12" value="<%= project.execEntity %>">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Actual Duration</label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input name="actualDuration" id="actualDuration" rows="3" class="form-control col-md-7 col-xs-12" type="text" value="<%= project.actualDuration %>">
+              </div>
+              Planned Duration is: <%= project.plannedDuration %> Months
+            </div>
+            <div class="form-group">
+              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Actual End Date</label>
+              <input type="text" id="start_date_temp_var" value="<%= project.startDate %>" style="display:none">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input rows="3" id="actualEndDate" class="form-control col-md-7 col-xs-12" type="text" value="<%= project.actualEndDate %>" disabled>
+              </div>
+              Planned End Date is: <%= project.endDate %>
+            </div>
+            <div class="form-group">
+              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Justification</label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input name="justification" class="form-control col-md-7 col-xs-12" type="text" value="<%= project.justification %>">
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="text" id="kpi_json" name="kpi_json" style="display:none">
+              <div id="KPI_Update" role="tabpanel" data-example-id="togglable-tabs">
+                <% var EOBDIndex = project.indecies.find(function(item){return item.name === 'EOBD'}); %>
+                <% var GCIIndex = project.indecies.find(function(item){return item.name === 'GCI'}); %>
+                <% var CPIIndex = project.indecies.find(function(item){return item.name === 'CPI'}); %>
+                <% var WGIIndex = project.indecies.find(function(item){return item.name === 'WGI'}); %>
+                <% var firstTab = true; %>
+                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                  <% if(EOBDIndex){%>
+                    <li role="presentation" class="">
+                      <a href="#tab_EOBD" id="EOBD-tab" role="tab" data-toggle="tab" aria-expanded="true">EOBD</a>
+                    </li>
+                  <% } %>
+                  <% if(GCIIndex){%>
+                    <li role="presentation" class="">
+                      <a href="#tab_GCI" role="tab" id="GCI-tab" data-toggle="tab" aria-expanded="false">GCI</a>
+                    </li>
+                  <% } %>
+                  <% if(CPIIndex){%>
+                    <li role="presentation" class="">
+                      <a href="#tab_CPI" role="tab" id="CPI-tab" data-toggle="tab" aria-expanded="false">CPI</a>
+                    </li>
+                  <% } %>
+                  <% if(WGIIndex){%>
+                    <li role="presentation" class="">
+                      <a href="#tab_WGI" role="tab" id="WGI-tab" data-toggle="tab" aria-expanded="false">WGI</a>
+                    </li>
+                  <% } %>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                  <% if(EOBDIndex){%>
+                    <%if(firstTab){%>
+                      <% firstTab = false;%>
+                      <div role="tabpanel" class="tab-pane fade active in" id="tab_GCI" aria-labelledby="GCI-tab">
+                    <% } else { %>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_GCI" aria-labelledby="GCI-tab">
+                    <% } %>
+                    <div>
+                        <div class="form-horizontal form-label-left">
+                          <div id="EOBD-kpis">
+                            <% for(var i=0; i < EOBDIndex.KPIs.length; i++){%>
+                              <div class="col-sm-6 col-md-6 col-xs-12">
+                                <label style="display: flex; justify-content: space-between; align-items: center;">
+                                  <span><%= EOBDIndex.KPIs[i].name %></span>
+                                  <span>Value: <input type="number" id="EOBD-<%= EOBDIndex.KPIs[i].id %>-value"</span>
+                                </label>
+                              </div>
+                            <% } %>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <% } %>
+                  <% if(GCIIndex){%>
+                    <%if(firstTab){%>
+                      <% firstTab = false;%>
+                      <div role="tabpanel" class="tab-pane fade active in" id="tab_GCI" aria-labelledby="GCI-tab">
+                    <% } else { %>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_GCI" aria-labelledby="GCI-tab">
+                    <% } %>
+                    <div>
+                          <div class="form-horizontal form-label-left">
+                            <div id="GCI-kpis">
+                              <% for(var i=0; i < GCIIndex.KPIs.length; i++){%>
+                                <div class="col-sm-6 col-md-6 col-xs-12">
+                                  <label style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span><%= GCIIndex.KPIs[i].name %></span>
+                                    <span>Value: <input type="number" id="GCI-<%= GCIIndex.KPIs[i].id %>-value"</span>
+                                  </label>
+                                </div>
+                              <% } %>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                  <% } %>
+                  <% if(CPIIndex){%>
+                    <%if(firstTab){%>
+                      <% firstTab = false;%>
+                      <div role="tabpanel" class="tab-pane fade active in" id="tab_CPI" aria-labelledby="CPI-tab">
+                    <% } else { %>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_CPI" aria-labelledby="CPI-tab">
+                    <% } %>
+                    <div>
+                        <div class="form-horizontal form-label-left">
+                          <div id="CPI-kpis">
+                            <% for(var i=0; i < CPIIndex.KPIs.length; i++){%>
+                              <div class="col-sm-6 col-md-6 col-xs-12">
+                                <label style="display: flex; justify-content: space-between; align-items: center;">
+                                  <span><%= CPIIndex.KPIs[i].name %></span>
+                                  <span>Value: <input type="number" id="CPI-<%= CPIIndex.KPIs[i].id %>-value"</span>
+                                </label>
+                              </div>
+                            <% } %>
+                          </div>
+                        </div>
+                    </div>
+                    </div>
+                  <% } %>
+                  <% if(WGIIndex){%>
+                    <%if(firstTab){%>
+                      <% firstTab = false;%>
+                      <div role="tabpanel" class="tab-pane fade active in" id="tab_WGI" aria-labelledby="WGI-tab">
+                    <% } else { %>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_WGI" aria-labelledby="WGI-tab">
+                    <% } %><div>
+                        <div class="form-horizontal form-label-left">
+                          <div id="WGI-kpis">
+                            <% for(var i=0; i < WGIIndex.KPIs.length; i++){%>
+                              <div class="col-sm-6 col-md-6 col-xs-12">
+                                <label style="display: flex; justify-content: space-between; align-items: center;">
+                                  <span><%= WGIIndex.KPIs[i].name %></span>
+                                  <span>Value: <input type="number" id="WGI-<%= WGIIndex.KPIs[i].id %>-value"</span>
+                                </label>
+                              </div>
+                            <% } %>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+            <div class="ln_solid"></div>
+            <div class="form-group">
+              <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  if($("#actualPerc").val() === 100){
+    $("#KPI_Update").show();
+  }else{
+    $("#KPI_Update").hide();
+  }
+
+  $("#actualPerc").change(function(){
+    if($("#actualPerc").val() == 100){
+      $("#KPI_Update").show();
+    }else{
+      $("#KPI_Update").hide();
+    }
+  })
+
+  $("#actualDuration").change(function(){
+    $("#actualEndDate").val(moment($("#start_date_temp_var").val()).add($("#actualDuration").val(),"months").format("MMM Y"));
+  })
+
+  $("#project-edit-form").submit(function(e){
+    e.preventDefault();
+    var indecies = ["EOBD","GCI","CPI","WGI"];
+    var actualIndexGoal = [];
+    for(var i=0; i<indecies.length; i++){
+      var indexObj = [];
+      $("#"+indecies[i]+"-kpis").find("input").each(function(){
+        var tempArr = $(this).attr("id").split("-");
+        indexObj.push({
+          id: tempArr[1],
+          value: $(this).val()
+        });
+      });
+      actualIndexGoal.push({name:indecies[i],kpis:indexObj});
+    }
+    $("#kpi_json").val(JSON.stringify(actualIndexGoal));
+    document.getElementById("project-edit-form").submit();
+  })
+</script>
