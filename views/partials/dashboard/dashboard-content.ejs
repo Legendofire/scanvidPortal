@@ -1,0 +1,301 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="x_panel">
+                <div class="x_title">
+                  <h2> Team Performance </h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <form class="form-inline" method="get" action="/">
+                      <div class="form-group">
+                        <label>From Date:</label>
+                        <input type="date" class="form-control has-feedback-left" id="fromDate" name="start_date" placeholder="First Name">
+                      </div>
+                      <div class="form-group">
+                        <label>To Date:</label>
+                        <input type="date" class="form-control has-feedback-left" id="toDate" name="end_date" placeholder="First Name">
+                      </div>
+                      <div class="form-group">
+                        <input type="submit" class="form-control" value="Search">
+                      </div>
+                    </form>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+
+                  <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                      <!-- <li role="presentation" class=""><a href="#tab_content1" id="overview-tab" role="tab" data-toggle="tab" aria-expanded="true">Overview</a>
+                      </li> -->
+                      <li role="presentation" class="active"><a href="#tab_content2" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Prospects</a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Actions</a>
+                      </li>
+                      <li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Converted Prospects</a>
+                      </li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                      <!-- <div role="tabpanel" class="tab-pane fade" id="tab_content1" aria-labelledby="overview-tab">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="col-md-6">
+                              Graph 1
+                            </div>
+                            <div class="col-md-6">
+                              Graph
+                            </div>
+                          </div>
+                        </div>
+                      </div> -->
+                      <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="home-tab">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="x_panel">
+                              <div class="x_content">
+
+                                <!-- start project list -->
+                                <table class="table table-striped projects datatables">
+
+                                      <thead>
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Contact Name</th>
+                                          <th>Contact Info</th>
+                                          <th>Company Name</th>
+                                          <th>Description</th>
+                                          <th>Product</th>
+                                          <th>Creator</th>
+                                          <th>Sales</th>
+                                          <th>Technical Sales</th>
+                                          <th>Progression to SC</th>
+                                          <th>Date</th>
+                                          <th></th>
+                                        </tr>
+                                      </thead>
+                                  <tbody>
+                                    <% for(var i=0; i<dashData.prospects.length; i++){ %>
+                                    <tr>
+                                      <td scope="row">
+                                        <%= i %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.prospects[i].contact_name %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.prospects[i].contact_info %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.prospects[i].company_name %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.prospects[i].description %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.prospects[i].products %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.prospects[i].creator %>
+                                      </td>
+                                      <td>
+                                        <% if (dashData.prospects[i].sales) { %>
+                                          <%= dashData.prospects[i].sales.full_name %>
+                                        <% } else { %>
+                                          N/A
+                                        <% } %>
+                                      </td>
+                                      <td>
+                                        <% if (dashData.prospects[i].technical_sales) { %>
+                                          <%= dashData.prospects[i].technical_sales.full_name %>
+                                        <% } else { %>
+                                          N/A
+                                        <% } %>
+                                      </td>
+                                      <td class="project_progress">
+                                        <% if (dashData.prospects[i].progression) { %>
+                                          <div class="progress progress_sm">
+                                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="<%= dashData.prospects[i].progression %>"></div>
+                                          </div>
+                                          <small><%= dashData.prospects[i].progression %>% Complete</small>
+                                        <% } else { %>
+                                          N/A
+                                        <% } %>
+                                      </td>
+                                      <td>
+                                          <%= dashData.prospects[i].date_created %>
+                                      </td>
+                                      <td>
+                                        <a href="/prospects/view/<%= dashData.prospects[i]._id %>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                                      </td>
+                                    </tr>
+                                    <% } %>
+                                  </tbody>
+                                </table>
+                                <!-- end project list -->
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="x_panel">
+                              <div class="x_content">
+
+                                <!-- start project list -->
+                                <table class="table table-striped projects datatables">
+
+                                      <thead>
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Company Name</th>
+                                          <th>Type</th>
+                                          <th>Date</th>
+                                          <th>Description</th>
+                                          <th>Sales</th>
+                                          <th>Technical Sales</th>
+                                        </tr>
+                                      </thead>
+                                  <tbody>
+                                    <% for(var i=0; i<dashData.actions.length; i++){ %>
+                                    <tr>
+                                      <td scope="row">
+                                        <%= i %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.actions[i].company_name %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.actions[i].actions.type %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.actions[i].actions.date %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.actions[i].actions.description %>
+                                      </td>
+                                      <td>
+                                        <% if ( dashData.actions[i].sales) { %>
+                                          <%=  dashData.actions[i].sales %>
+                                        <% } else { %>
+                                          N/A
+                                        <% } %>
+                                      </td>
+                                      <td>
+                                        <% if ( dashData.actions[i].technical_sales) { %>
+                                          <%=  dashData.actions[i].technical_sales %>
+                                        <% } else { %>
+                                          N/A
+                                        <% } %>
+                                      </td>
+                                      <td>
+                                        <a href="/prospects/view/<%=  dashData.actions[i].pros_id %>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                                      </td>
+                                    </tr>
+                                    <% } %>
+                                  </tbody>
+                                </table>
+                                <!-- end project list -->
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="x_panel">
+                              <div class="x_content">
+
+                                <!-- start project list -->
+                                <table class="table table-striped projects datatables">
+
+                                      <thead>
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Contact Name</th>
+                                          <th>Contact Info</th>
+                                          <th>Company Name</th>
+                                          <th>Description</th>
+                                          <th>Product</th>
+                                          <th>Creator</th>
+                                          <th>Sales</th>
+                                          <th>Technical Sales</th>
+                                          <th>Sales Connect ID</th>
+                                          <th>Date</th>
+                                          <th></th>
+                                        </tr>
+                                      </thead>
+                                  <tbody>
+                                    <% for(var i=0; i<dashData.finishedProspects.length; i++){ %>
+                                    <tr>
+                                      <td scope="row">
+                                        <%= i %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.finishedProspects[i].contact_name %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.finishedProspects[i].contact_info %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.finishedProspects[i].company_name %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.finishedProspects[i].description %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.finishedProspects[i].products %>
+                                      </td>
+                                      <td>
+                                        <%= dashData.finishedProspects[i].creator %>
+                                      </td>
+                                      <td>
+                                        <% if (dashData.finishedProspects[i].sales) { %>
+                                          <%= dashData.finishedProspects[i].sales.full_name %>
+                                        <% } else { %>
+                                          N/A
+                                        <% } %>
+                                      </td>
+                                      <td>
+                                        <% if (dashData.finishedProspects[i].technical_sales) { %>
+                                          <%= dashData.finishedProspects[i].technical_sales.full_name %>
+                                        <% } else { %>
+                                          N/A
+                                        <% } %>
+                                      </td>
+                                      <td>
+                                        <% if (dashData.finishedProspects[i].sales_connect_id) { %>
+                                          <%= dashData.finishedProspects[i].sales_connect_id %>
+                                        <% } else { %>
+                                          N/A
+                                        <% } %>
+                                      </td>
+                                      <td class="project_progress">
+                                        <%= dashData.finishedProspects[i].date_created %>
+                                      </td>
+                                      <td>
+                                        <a href="/prospects/view/<%= dashData.finishedProspects[i]._id %>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                                      </td>
+                                    </tr>
+                                    <% } %>
+                                  </tbody>
+                                </table>
+                                <!-- end project list -->
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+  </div>
+</div>
+<!-- /page content -->

@@ -1,0 +1,252 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Prospects <small>View, Edit and Delete prospects!</small></h3>
+      </div>
+      <% if(current_user.type !== "Spectator"){ %>
+      <div class="title_right">
+        <div class="nav navbar-right panel_toolbox">
+          <button type="button" href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#users-add-modal">Add Prospect</button>
+        </div>
+        <div class="modal fade" id="users-add-modal" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Add Prospect</h4>
+              </div>
+              <div class="modal-body">
+                <form data-parsley-validate class="form-horizontal form-label-left" action="/prospects/add" method="post">
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Contact Name <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="contact_name" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Company Name <span class="required">*</span>
+
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="company_name" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Contact Info <span class="required">*</span>
+
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="contact_info" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Description</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <textarea name="description" rows="3" class="form-control col-md-7 col-xs-12" type="text" name="description"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Progression to SC</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input name="progression" class="form-control col-md-7 col-xs-12" type="number" step="0.1">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Product<span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select name="product" class="form-control">
+                        <option value>Choose a Product</option>
+                        <% for(var i=0; i<products.length; i++){ %>
+                          <option value="<%= products[i]._id %>"><%= products[i].name%></option>
+                        <% } %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Creator<span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select name="creator" class="form-control">
+                        <option value>Choose a Type</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Tech">Tech</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Sales <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <% if(current_user.type === 'Sales'){ %>
+                        <select name="sales" class="form-control">
+                          <option value="<%= current_user._id %>"><%= current_user.full_name %></option>
+                        </select>
+                      <% } else { %>
+                        <select name="sales" class="form-control">
+                          <option value>Choose a Sales</option>
+                          <% for(var i=0; i<sales.length; i++){ %>
+                            <option value="<%= sales[i]._id %>"><%= sales[i].full_name%></option>
+                          <% } %>
+                        </select>
+                      <% } %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Technical Sales <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <% if(current_user.type === 'Tech'){ %>
+                        <select name="technical_sales" class="form-control">
+                          <option value="<%= current_user._id %>"><%= current_user.full_name %></option>
+                        </select>
+                      <% } else { %>
+                        <select name="technical_sales" class="form-control">
+                          <option value>Choose a Tech Sales</option>
+                          <% for(var i=0; i<tech.length; i++){ %>
+                            <option value="<%= tech[i]._id %>"><%=tech[i].full_name%></option>
+                          <% } %>
+                        </select>
+                      <% } %>
+                    </div>
+                  </div>
+                  <div class="ln_solid"></div>
+                  <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                      <button class="btn btn-primary" type="button">Cancel</button>
+                      <button class="btn btn-primary" type="reset">Reset</button>
+                      <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Prospects</h2>
+          <div class="nav navbar-right panel_toolbox">
+
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+          <!-- start project list -->
+          <table class="table table-striped projects">
+            <thead>
+              <tr>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Contact Name</th>
+                    <th>Contact Info</th>
+                    <th>Company Name</th>
+                    <th>Description</th>
+                    <th>Product</th>
+                    <th>Creator</th>
+                    <th>Sales</th>
+                    <th>Technical Sales</th>
+                    <th>Progression to SC</th>
+                    <th>Sales Connect ID</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i=0; i<prospects.length; i++){ %>
+              <tr>
+                <th scope="row">
+                  <%= i %>
+                </th>
+                <td>
+                  <%= prospects[i].contact_name %>
+                </td>
+                <td>
+                  <%= prospects[i].contact_info %>
+                </td>
+                <td>
+                  <%= prospects[i].company_name %>
+                </td>
+                <td>
+                  <%= prospects[i].description %>
+                </td>
+                <td>
+                  <%= prospects[i].products %>
+                </td>
+                <td>
+                  <%= prospects[i].creator %>
+                </td>
+                <td>
+                  <% if (prospects[i].sales) { %>
+                    <%= prospects[i].sales.full_name %>
+                  <% } else { %>
+                    N/A
+                  <% } %>
+                </td>
+                <td>
+                  <% if (prospects[i].technical_sales) { %>
+                    <%= prospects[i].technical_sales.full_name %>
+                  <% } else { %>
+                    N/A
+                  <% } %>
+                </td>
+                <td class="project_progress">
+                  <div class="progress progress_sm">
+                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="<%= prospects[i].progression %>"></div>
+                  </div>
+                  <small><%= prospects[i].progression %>% Complete</small>
+                </td>
+                <td>
+                  <% if (prospects[i].sales_connect_id) { %>
+                    <%= prospects[i].sales_connect_id %>
+                  <% } else { %>
+                    N/A
+                  <% } %>
+                </td>
+                <td>
+                  <a href="/prospects/view/<%= prospects[i]._id %>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                  <% if(current_user.type !== "Spectator"){ %>
+                  <a href="/prospects/edit/<%= prospects[i]._id %>" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                  <% if(current_user.type === "Admin"){ %>
+                  <a href="#" data-info="<%=prospects[i]._id%>,prospects" class="btn btn-danger btn-xs delete_button"><i class="fa fa-trash-o"></i> Delete </a>
+                  <% } %>
+                  <% } %>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          <!-- end project list -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+
+
+</div>
+</div>
+</div>
+<!-- /page content -->

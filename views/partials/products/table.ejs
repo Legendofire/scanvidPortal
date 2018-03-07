@@ -1,0 +1,114 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Products <small>View, Edit and Delete Products!</small></h3>
+      </div>
+
+      <div class="title_right">
+        <% if(current_user.type !== "Spectator" && current_user.type !== "Tech" && current_user.type !== "Sales"){ %>
+        <div class="nav navbar-right panel_toolbox">
+          <button type="button" href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#users-add-modal">Add Product</button>
+        </div>
+        <div class="modal fade" id="users-add-modal" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+              </div>
+              <div class="modal-body">
+                <form data-parsley-validate class="form-horizontal form-label-left" action="/products/add" method="post">
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Name <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="name" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Description <span class="required">*</span>
+
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="description" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="ln_solid"></div>
+                  <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                      <button class="btn btn-primary" type="button">Cancel</button>
+                      <button class="btn btn-primary" type="reset">Reset</button>
+                      <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_content">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Description</th>
+              <% if(current_user.type !== "Tech" && current_user.type !== "Sales"){ %>
+              <th>Actions</th>
+              <% } %>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i=0; i<products.length; i++){ %>
+              <tr>
+                <th scope="row">
+                  <%= i %>
+                </th>
+                <td>
+                  <%= products[i].name %>
+                </td>
+                <td>
+                  <%= products[i].description %>
+                </td>
+                <td>
+                  <% if(current_user.type !== "Tech" && current_user.type !== "Sales"){ %>
+                  <a href="products/view/<%=products[i]._id%>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                  <% if(current_user.type !== "Spectator"){ %>
+                  <a href="products/edit/<%=products[i]._id%>" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                  <a href="#" data-info="<%=products[i]._id%>,products" class="btn btn-danger btn-xs delete_button"><i class="fa fa-trash-o"></i> Delete </a>
+                  <% } %>
+                  <% } %>
+                </td>
+              </tr>
+              <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="clearfix"></div>
+
+
+</div>
+</div>
+</div>
+<!-- /page content -->

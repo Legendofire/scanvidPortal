@@ -1,0 +1,180 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Prospect Detail</h3>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2><%= prospect.company_name %> Prospect</h2>
+            <% if(current_user.type !== "Spectator"){ %>
+            <ul class="nav navbar-right panel_toolbox">
+                <a href="/prospects/edit/<%= prospect._id %>" class="btn btn-sm btn-primary">Edit Prospect</a>
+                <button type="button" href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#actions-add-modal">Add Action</button>
+            </ul>
+            <div class="modal fade" id="actions-add-modal" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Add Action</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form data-parsley-validate class="form-horizontal form-label-left" action="/prospects/<%= prospect._id %>/addAction" method="post">
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Next Action<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select name="action_type" class="form-control">
+                            <option value>Choose a Type</option>
+                            <option value="Meeting">Meeting</option>
+                            <option value="Call">Call</option>
+                            <option value="POC">POC</option>
+                            <option value="Demo">Demo</option>
+                            <option value="Send Documents">Send Documents</option>
+                            <option value="Done">Add to Sales Connect</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Sales Connect ID
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" name="sales_connect_id" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Description<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" name="action_description" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Action Date<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="date" name="action_date" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                          <button class="btn btn-primary" type="button">Cancel</button>
+                          <button class="btn btn-primary" type="reset">Reset</button>
+                          <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% } %>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="col-md-8 col-sm-8 col-xs-12">
+              <ul class="stats-overview">
+                <li>
+                  <span class="name"> Contact Person </span>
+                  <span class="value text-success"> <%= prospect.contact_name %> </span>
+                </li>
+                <li>
+                  <span class="name"> Contact Info </span>
+                  <span class="value text-success">
+                    <%= prospect.contact_info %>
+                  </span>
+                </li>
+                <li>
+                  <% if(prospect.sales_connect_id){ %>
+                    <span class="name"> Sales Connect ID </span>
+                    <span class="value text-success">
+                      <%= prospect.sales_connect_id %>
+                     </span>
+                  <% }else{ %>
+                    <span class="name"> Progression to SC </span>
+                    <span class="value text-success">
+                      <div class="progress progress_sm">
+                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="<%= prospect.progression %>"></div>
+                      </div>
+                      <small><%= prospect.progression %> % Complete</small>
+                     </span>
+                  <% } %>
+                </li>
+              </ul>
+              <br />
+              <div>
+                <h4>Actions log</h4>
+                <!-- end of user messages -->
+                <ul class="messages">
+                  <% for(var i = 0; i < prospect.actions.length; i++){ %>
+                    <li>
+                      <div class="message_wrapper">
+                        <h3 class="heading"><%= prospect.actions[i].type %></h3>
+                        <blockquote class="message" style="font-size: medium;"><%= prospect.actions[i].description %></blockquote>
+                        <br />
+                        <p class="url">
+                          <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                          <p>at <%= prospect.actions[i].date %></p>
+                        </p>
+                      </div>
+                    </li>
+                  <% } %>
+                </ul>
+                <!-- end of user messages -->
+              </div>
+            </div>
+            <!-- start project-detail sidebar -->
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <section class="panel">
+                <div class="x_title">
+                  <h2>Project Description</h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                  <p><%= prospect.description %></p>
+                  <br />
+                  <div class="project_detail">
+                    <p class="title">Product</p>
+                    <p><%= prospect.product.name %> - <%= prospect.product.description %></p>
+                  </div>
+                  <br />
+                  <div class="project_detail">
+                    <p class="title">Team</p>
+                    <p>
+                      <% if(prospect.creator === 'Sales') { %>
+                        <%= prospect.sales.full_name %> (Creator)
+                        </br>
+                        <%= prospect.technical_sales.full_name %>
+                      <% } else if(prospect.creator === 'Tech') { %>
+                        <%= prospect.sales.full_name %>
+                        </br>
+                        <%= prospect.technical_sales.full_name %> (Creator)
+                      <% } else { %>
+                        <%= prospect.sales ? prospect.sales.full_name : 'N/A' %>
+                        </br>
+                        <%= prospect.technical_sales ? prospect.technical_sales.full_name : 'N/A' %>
+                      <% } %>
+                    </p>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <!-- end project-detail sidebar -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->

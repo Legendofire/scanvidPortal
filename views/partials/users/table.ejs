@@ -1,0 +1,145 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Users <small>View, Edit and Delete Users!</small></h3>
+      </div>
+      <% if(current_user.type !== "Spectator"){ %>
+      <div class="title_right">
+        <div class="nav navbar-right panel_toolbox">
+          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#users-add-modal">Add User</button>
+        </div>
+        <div class="modal fade" id="users-add-modal" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Add User</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form-horizontal form-label-left " method="post" action="/users/add">
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Username <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="username" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Password <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Full Name <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input class="form-control col-md-7 col-xs-12" type="text" name="full_name">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Phone <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="phone" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Email <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <input type="text" name="email" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Type <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                          <input type="radio" name="type" value="Admin"> &nbsp; Admin &nbsp;
+                        </label>
+                        <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                          <input type="radio" name="type" value="Spec"> Spectator
+                        </label>
+                        <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                          <input type="radio" name="type" value="Sales"> Sales
+                        </label>
+                        <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                          <input type="radio" name="type" value="Tech"> Tech
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ln_solid"></div>
+                  <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                      <button class="btn btn-primary" data-dismiss="modal" type="button">Cancel</button>
+                      <button class="btn btn-primary" type="reset">Reset</button>
+                      <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_content">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i=0; i<users.length; i++){ %>
+              <tr>
+                <th scope="row">
+                  <%= i %>
+                </th>
+                <td>
+                  <%= users[i].full_name %>
+                </td>
+                <td>
+                  <%= users[i].email %>
+                </td>
+                <td>
+                  <%= users[i].phone %>
+                </td>
+                <td>
+                  <%= users[i].type %>
+                </td>
+                <td>
+                  <a href="users/view/<%=users[i]._id%>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                  <% if(current_user.type !== "Spectator"){ %>
+                    <a href="users/edit/<%=users[i]._id%>" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                    <a href="#" data-info="<%=users[i]._id%>,users" class="btn btn-danger btn-xs delete_button"><i class="fa fa-trash-o"></i> Delete </a>
+                  <% } %>
+                </td>
+              </tr>
+              <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+</div>
+</div>
+<!-- /page content -->
