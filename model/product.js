@@ -4,15 +4,19 @@ var mongoose = require('mongoose'),
 var ProductSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: false
   },
-  description: {
+  barcode: {
     type: String,
-    required: true
+    required: false
   },
-  date_created: {
-    type: Date,
-    default: Date.now
+  brand: {
+    type: String,
+    required: false
+  },
+  title: {
+    type: String,
+    required: false
   }
 });
 

@@ -5,10 +5,16 @@ var _ = require('lodash');
 var User = require('./../model/users');
 var Prospect = require('./../model/prospect');
 var Product = require('./../model/product');
+var Products = require('./../controllers/products');
 
 var ProspectCont = require('./../controllers/prospects');
 
 var auth = require('./../middleware/authentication');
+
+router.get('/testFady',function(req, res, next){
+  //Products.getAllProducts(req,res,next);
+  
+});
 
 router.get('/test',function(req, res, next){
   var start_date = req.query.start_date?new Date(req.query.start_date):new Date(2014, 0, 1);

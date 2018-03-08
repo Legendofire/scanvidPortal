@@ -61,4 +61,4 @@ UserSchema.statics.findPopulated = function(id){
   //TODO Add the populate here to slim the router
 }
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('users', UserSchema);
