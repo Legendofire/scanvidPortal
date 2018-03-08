@@ -1,35 +1,35 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var session = require('express-session');
-var jwt = require('jsonwebtoken');
+let express = require('express');
+let path = require('path');
+let favicon = require('serve-favicon');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
+let mongoose = require('mongoose');
+let session = require('express-session');
+let jwt = require('jsonwebtoken');
 
-var app = express();
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-var promise = mongoose.connect('mongodb://a7meds3d:Nidalee18@ds157833.mlab.com:57833/cloud-connect', {
-  useMongoClient: true
+let promise = mongoose.connect('mongodb://scanvidDb:ZhaWVhTj7CmZPKrx@cluster0-shard-00-00-blfgg.mongodb.net:27017,cluster0-shard-00-01-blfgg.mongodb.net:27017,cluster0-shard-00-02-blfgg.mongodb.net:27017/scanvid?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin', {
+  useMongoClient: true,
 });
 
-promise.then(function(db){
+promise.then(function(db) {
   console.log('DB Connected');
-}).catch(function(e){
+}).catch(function(e) {
   console.log('DB Not Connected');
   console.error(e);
 });
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
@@ -39,22 +39,22 @@ app.use(session({
   rolling: true,
   cookie: {
     secure: false,
-    maxAge: 30*60*1000
-  }
-}))
+    maxAge: 30*60*1000,
+  },
+}));
 
-app.all('/api/v1/*',function(req, res, next){
+app.all('/api/v1/*', function(req, res, next) {
   req.msg = req.headers;
-  if(req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT'){
-    jwt.verify(req.headers.authorization.split(' ')[1],'CLOUDMANAGEAPI',function(err,decode){
-      if(err) {
+  if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
+    jwt.verify(req.headers.authorization.split(' ')[1], 'CLOUDMANAGEAPI', function(err, decode) {
+      if (err) {
         req.user = undefined;
         console.error(err);
       }
       req.user = decode;
       next();
-    })
-  }else{
+    });
+  } else {
     req.user = undefined;
     next();
   }
@@ -70,22 +70,22 @@ app.all('/api/v1/*',function(req, res, next){
 //   }
 // });
 
-//Application Routes
-var index = require('./routes/index');
-var users = require('./routes/users');
-var prospects = require('./routes/prospects');
-var products = require('./routes/products');
+// Application Routes
+let index = require('./routes/index');
+let users = require('./routes/users');
+let prospects = require('./routes/prospects');
+let products = require('./routes/products');
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/products', products);
 app.use('/prospects', prospects);
 
-//API Routes
-var aauth = require('./routes/api/auth');
-var ausers = require('./routes/api/users');
-var aprospects = require('./routes/api/prospects');
-var aproducts = require('./routes/api/products');
+// API Routes
+let aauth = require('./routes/api/auth');
+let ausers = require('./routes/api/users');
+let aprospects = require('./routes/api/prospects');
+let aproducts = require('./routes/api/products');
 
 app.use('/api/auth', aauth);
 app.use('/api/v1/users', ausers);
@@ -94,7 +94,7 @@ app.use('/api/v1/prospect', aprospects);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });

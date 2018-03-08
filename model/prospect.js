@@ -1,54 +1,54 @@
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var ProspectSchema = new Schema({
+let ProspectSchema = new Schema({
   contact_name: {
     type: String,
-    required: true
+    required: true,
   },
   company_name: {
     type: String,
-    required: true
+    required: true,
   },
   contact_info: {
     type: Array,
-    required: true
+    required: true,
   },
-  description:{
+  description: {
     type: String,
-    required: true
+    required: true,
   },
-  product:{
-    type: Schema.Types.ObjectId, ref: 'Product'
+  product: {
+    type: Schema.Types.ObjectId, ref: 'Product',
   },
-  progression:{
-    type: String
+  progression: {
+    type: String,
   },
-  creator:{
-    type: String
+  creator: {
+    type: String,
   },
   sales: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   technical_sales: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   actions: [{
     type: {type: String},
     description: {type: String},
-    date: {type: Date}
+    date: {type: Date},
   }],
   sales_connect_id: {
-    type: String
+    type: String,
   },
   date_created: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-ProspectSchema.index({ "actions.date": 1 });
+ProspectSchema.index({"actions.date": 1});
 
 module.exports = mongoose.model('Prospect', ProspectSchema);
