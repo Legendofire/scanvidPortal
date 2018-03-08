@@ -9,7 +9,11 @@ let auth = require('./../middleware/authentication');
 
 router.get('/testFady',function(req, res, next){
   //Products.getAllProducts(req,res,next);
-
+  res.render('testDT');
+});
+router.get('/dbTest',function(req, res, next){
+  Products.getAllProducts(req,res,next);
+  //res.render('testDT');
 });
 
 /* GET home page. */
