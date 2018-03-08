@@ -7,6 +7,11 @@ let Product = require('./../model/product');
 
 let auth = require('./../middleware/authentication');
 
+router.get('/testFady',function(req, res, next){
+  //Products.getAllProducts(req,res,next);
+
+});
+
 /* GET home page. */
 router.get('/', auth.userLoggedIn, function(req, res, next) {
   console.log(req.session.user);
@@ -37,7 +42,7 @@ router.post('/auth', function(req, res, next) {
       argon2.verify(user.password, req.body.password).
       then(function(match) {
         if (match) {
-          
+
           user.password = undefined;
           req.session.user = user;
           res.redirect('back');

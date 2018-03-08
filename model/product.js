@@ -6,14 +6,18 @@ let ProductSchema = new Schema({
     type: String,
     required: true,
   },
-  description: {
+  barcode: {
     type: String,
-    required: true,
+    required: false
   },
-  date_created: {
-    type: Date,
-    default: Date.now,
+  brand: {
+    type: String,
+    required: false
   },
+  title: {
+    type: String,
+    required: false
+  }
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
