@@ -6,56 +6,17 @@ var auth = require('./../middleware/authentication.js');
 const resource = 'Users';
 
 var User = require('./../model/users.js');
-var Prospect = require('./../model/prospect.js');
 var Product = require('./../model/product.js');
 
-router.get('/', auth.userLoggedWithAccessTo(resource,'ViewAll'), function(req, res, next) {
+router.get('/', function(req, res, next) {
+  console.log(req.session.user);
   User.find({}).
   exec(function(err, value) {
-    res.render('layout', {
-      child: 'partials/users/table.ejs',
-      users: value,
-      current_user: req.session.user
-    })
+    res.json(value);
   });
 });
 
-router.get('/view/:uid', auth.userLoggedWithAccessTo(resource,'View'), function(req, res, next) {
-  var output = {
-    child: 'partials/users/view.ejs',
-    current_user: req.session.user
-  };
-
-  User.findOne({
-    _id: req.params.uid
-  }).
-  populate('prospects').
-  populate('prospects.technical_sales').
-  exec().
-  then(function(user,err) {
-    if(err)console.error(err);
-    output.user = user;
-    return Product.find().exec();
-  }).
-  then(function(products) {
-    output.products = products;
-    return User.find({
-      type: 'Sales'
-    }).exec();
-  }).
-  then(function(sales) {
-    output.sales = sales;
-    return User.find({
-      type: 'Tech'
-    }).exec();
-  }).
-  then(function(techs) {
-    output.tech = techs;
-    res.render('layout', output);
-  })
-});
-
-router.post('/add', auth.userLoggedWithAccessTo(resource,'Add'), function(req, res, next) {
+router.post('/add', auth.userLoggedIn , function(req, res, next) {
   var user = new User({
     username: req.body.username,
     password: req.body.password,
@@ -71,7 +32,7 @@ router.post('/add', auth.userLoggedWithAccessTo(resource,'Add'), function(req, r
   });
 });
 
-router.get('/edit/:uid', auth.userLoggedWithAccessTo(resource,'Edit'), function(req, res, next) {
+router.get('/edit/:uid', auth.userLoggedIn, function(req, res, next) {
   User.findOne({_id:req.params.uid}).exec().then(function(value,err){
     if(err)console.error(err);
     var output = {
@@ -83,7 +44,7 @@ router.get('/edit/:uid', auth.userLoggedWithAccessTo(resource,'Edit'), function(
   });
 });
 
-router.post('/edit/:uid', auth.userLoggedWithAccessTo(resource,'Edit'), function(req, res, next) {
+router.post('/edit/:uid', auth.userLoggedIn, function(req, res, next) {
   User.findOne({_id:req.params.uid}).exec().then(function(user, err){
     if(err) console.error(err);
 
@@ -104,58 +65,26 @@ router.post('/edit/:uid', auth.userLoggedWithAccessTo(resource,'Edit'), function
   });
 });
 
-router.post('/:uid/addProspect', auth.userLoggedWithAccessTo('Prospects','Add'), function(req, res, next) {
-  var prospect = {
-    contact_name: req.body.contact_name,
-    company_name: req.body.company_name,
-    contact_info: [req.body.contact_info],
-    description: req.body.description,
-    progression: req.body.progression,
-    creator: req.body.creator
-  }
-  if (req.body.product) prospect.product = req.body.product;
-  if (req.body.sales) prospect.sales = req.body.sales;
-  if (req.body.technical_sales) prospect.technical_sales = req.body.technical_sales;
-
-  var prospect_id = '';
-
-  Prospect.create(prospect,function(err,value){
-    prospect_id = value._id;
-    if (err) console.error(err);
-    User.findByIdAndUpdate(
-      prospect.sales, {
-        $push: {
-          "prospects": prospect_id
-        }
-      }, {
-        safe: true,
-        upsert: true,
-        new: true
-      }
-    ).then(function(err,value){
-      if(err) console.error(err);
-      User.findByIdAndUpdate(
-        prospect.technical_sales, {
-          $push: {
-            "prospects": prospect_id
-          }
-        }, {
-          safe: true,
-          upsert: true,
-          new: true
-        }
-      ).then(function(err,value){
-        if(err) console.error(err);
-        res.redirect('/users/view/' + req.params.uid);
-      });
-    });
-  });
-});
-
-router.get('/delete/:uid', auth.userLoggedWithAccessTo(resource,'Delete'), function(req, res, next) {
+router.get('/delete/:uid', auth.userLoggedIn, function(req, res, next) {
   User.find({_id:req.params.uid}).remove().exec().then(function(err,value){
       if (err) console.error(err);
       res.redirect('users');
+  });
+});
+
+router.get('/tempadd', function(req, res, next) {
+  var user = new User({
+    username: "Admin",
+    password: "Admin",
+    full_name: "Admin McAdminFace",
+    email: "admin@scanvid.com",
+    phone: "01226222335",
+    isBrand: false
+  });
+
+  user.save(function(err,value) {
+    if (err) console.error(err);
+    res.json(value);
   });
 });
 

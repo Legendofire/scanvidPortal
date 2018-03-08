@@ -1,22 +1,22 @@
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var ActionSchema = new Schema({
+let ActionSchema = new Schema({
   type: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   sales_connect_id: {
-    type: String
+    type: String,
   },
   date: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model('Action', ActionSchema);

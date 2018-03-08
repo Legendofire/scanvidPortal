@@ -1,19 +1,19 @@
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var ProductSchema = new Schema({
+let ProductSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   date_created: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

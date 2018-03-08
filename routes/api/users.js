@@ -3,7 +3,6 @@ var router = express.Router();
 var jwt = require('jwt-express');
 
 var User = require('./../../model/users.js');
-var Prospect = require('./../../model/prospect.js');
 var Product = require('./../../model/product.js');
 
 var auth = require('./../../middleware/api/auth.js');
@@ -15,7 +14,6 @@ router.get('/:id', auth.userLoggedWithAccessTo(resource,'View'), function(req, r
   User.findOne(
     {_id:req.params.id}
   ).
-  populate('prospects').
   exec(function(err,value){
       value['password']=undefined;
       res.status(200).json(value);
@@ -24,7 +22,6 @@ router.get('/:id', auth.userLoggedWithAccessTo(resource,'View'), function(req, r
 // GET all Users
 router.get('/', auth.userLoggedWithAccessTo(resource,'ViewAll'), function(req, res, next){
   User.find({}).
-  populate('prospects').
   exec(function(err,value){
       value['password']=undefined;
       res.status(200).json({
