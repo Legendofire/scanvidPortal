@@ -37,6 +37,7 @@ router.post('/auth', function(req, res, next) {
       argon2.verify(user.password, req.body.password).
       then(function(match) {
         if (match) {
+          
           user.password = undefined;
           req.session.user = user;
           res.redirect('back');
