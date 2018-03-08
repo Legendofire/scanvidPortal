@@ -12,6 +12,7 @@ router.get('/testFady',function(req, res, next){
   res.render('testDT');
 });
 router.get('/dbTest',function(req, res, next){
+  console.log('im here');
   Products.getAllProducts(req,res,next);
   //res.render('testDT');
 });

@@ -6,9 +6,9 @@
 
       <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
       <script
-        src="https://code.jquery.com/jquery-3.3.1.slim.js"
-        integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA="
-        crossorigin="anonymous"></script>
+  src="https://code.jquery.com/jquery-1.10.2.min.js"
+  integrity="sha256-C6CB9UYIS9UJeqinPHWTHVqh/E1uhG5Twh+Y5qFQmYg="
+  crossorigin="anonymous"></script>
   <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" > </script>
   </head>
   <body>
@@ -29,7 +29,11 @@
         $('#myTable').DataTable( {
             "processing": true,
             "serverSide": true,
-            "ajax": "/dbTest"
+            "ajax": {
+                    "url": "/dbTest",
+                    "type": "POST",
+                    "datatype": "json"
+                }
         } );
     } );
 </script>
