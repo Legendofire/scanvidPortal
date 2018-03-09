@@ -28,12 +28,12 @@
                     <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                       <!-- <li role="presentation" class=""><a href="#tab_content1" id="overview-tab" role="tab" data-toggle="tab" aria-expanded="true">Overview</a>
                       </li> -->
-                      <li role="presentation" class="active"><a href="#tab_content2" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Prospects</a>
+                      <li role="presentation" class="active"><a href="#tab_content2" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Known Records</a>
                       </li>
-                      <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Actions</a>
+                      <% if(!current_user.isBrand){%>
+                      <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">unKnown Records</a>
                       </li>
-                      <li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Converted Prospects</a>
-                      </li>
+                      <%}%>
                     </ul>
                     <div id="myTabContent" class="tab-content">
                       <!-- <div role="tabpanel" class="tab-pane fade" id="tab_content1" aria-labelledby="overview-tab">
@@ -53,86 +53,21 @@
                           <div class="col-md-12">
                             <div class="x_panel">
                               <div class="x_content">
-
                                 <!-- start project list -->
-                                <table class="table table-striped projects datatables">
-
-                                      <thead>
-                                        <tr>
-                                          <th>#</th>
-                                          <th>Contact Name</th>
-                                          <th>Contact Info</th>
-                                          <th>Company Name</th>
-                                          <th>Description</th>
-                                          <th>Product</th>
-                                          <th>Creator</th>
-                                          <th>Sales</th>
-                                          <th>Technical Sales</th>
-                                          <th>Progression to SC</th>
-                                          <th>Date</th>
-                                          <th></th>
-                                        </tr>
-                                      </thead>
-                                  <tbody>
-                                    <% for(var i=0; i<dashData.prospects.length; i++){ %>
+                                <table id="knownProducts" class="table table-striped projects" cellspacing="0" width="100%">
+                                  <thead>
                                     <tr>
-                                      <td scope="row">
-                                        <%= i %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.prospects[i].contact_name %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.prospects[i].contact_info %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.prospects[i].company_name %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.prospects[i].description %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.prospects[i].products %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.prospects[i].creator %>
-                                      </td>
-                                      <td>
-                                        <% if (dashData.prospects[i].sales) { %>
-                                          <%= dashData.prospects[i].sales.full_name %>
-                                        <% } else { %>
-                                          N/A
-                                        <% } %>
-                                      </td>
-                                      <td>
-                                        <% if (dashData.prospects[i].technical_sales) { %>
-                                          <%= dashData.prospects[i].technical_sales.full_name %>
-                                        <% } else { %>
-                                          N/A
-                                        <% } %>
-                                      </td>
-                                      <td class="project_progress">
-                                        <% if (dashData.prospects[i].progression) { %>
-                                          <div class="progress progress_sm">
-                                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="<%= dashData.prospects[i].progression %>"></div>
-                                          </div>
-                                          <small><%= dashData.prospects[i].progression %>% Complete</small>
-                                        <% } else { %>
-                                          N/A
-                                        <% } %>
-                                      </td>
-                                      <td>
-                                          <%= dashData.prospects[i].date_created %>
-                                      </td>
-                                      <td>
-                                        <a href="/prospects/view/<%= dashData.prospects[i]._id %>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
-                                      </td>
+                                      <th>_id</th>
+                                      <th>barcode</th>
+                                      <th>title</th>
+                                      <th>brand</th>
+                                      <th>name</th>
+                                      <th>ean</th>
+                                      <th>category1</th>
                                     </tr>
-                                    <% } %>
-                                  </tbody>
+                                  </thead>
                                 </table>
                                 <!-- end project list -->
-
                               </div>
                             </div>
                           </div>
@@ -204,93 +139,6 @@
                           </div>
                         </div>
                       </div>
-                      <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="x_panel">
-                              <div class="x_content">
-
-                                <!-- start project list -->
-                                <table class="table table-striped projects datatables">
-
-                                      <thead>
-                                        <tr>
-                                          <th>#</th>
-                                          <th>Contact Name</th>
-                                          <th>Contact Info</th>
-                                          <th>Company Name</th>
-                                          <th>Description</th>
-                                          <th>Product</th>
-                                          <th>Creator</th>
-                                          <th>Sales</th>
-                                          <th>Technical Sales</th>
-                                          <th>Sales Connect ID</th>
-                                          <th>Date</th>
-                                          <th></th>
-                                        </tr>
-                                      </thead>
-                                  <tbody>
-                                    <% for(var i=0; i<dashData.finishedProspects.length; i++){ %>
-                                    <tr>
-                                      <td scope="row">
-                                        <%= i %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.finishedProspects[i].contact_name %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.finishedProspects[i].contact_info %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.finishedProspects[i].company_name %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.finishedProspects[i].description %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.finishedProspects[i].products %>
-                                      </td>
-                                      <td>
-                                        <%= dashData.finishedProspects[i].creator %>
-                                      </td>
-                                      <td>
-                                        <% if (dashData.finishedProspects[i].sales) { %>
-                                          <%= dashData.finishedProspects[i].sales.full_name %>
-                                        <% } else { %>
-                                          N/A
-                                        <% } %>
-                                      </td>
-                                      <td>
-                                        <% if (dashData.finishedProspects[i].technical_sales) { %>
-                                          <%= dashData.finishedProspects[i].technical_sales.full_name %>
-                                        <% } else { %>
-                                          N/A
-                                        <% } %>
-                                      </td>
-                                      <td>
-                                        <% if (dashData.finishedProspects[i].sales_connect_id) { %>
-                                          <%= dashData.finishedProspects[i].sales_connect_id %>
-                                        <% } else { %>
-                                          N/A
-                                        <% } %>
-                                      </td>
-                                      <td class="project_progress">
-                                        <%= dashData.finishedProspects[i].date_created %>
-                                      </td>
-                                      <td>
-                                        <a href="/prospects/view/<%= dashData.finishedProspects[i]._id %>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
-                                      </td>
-                                    </tr>
-                                    <% } %>
-                                  </tbody>
-                                </table>
-                                <!-- end project list -->
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -298,4 +146,31 @@
               </div>
   </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#knownProducts').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "hideEmptyCols": ['_id'],
+          //  "hideEmptyCols": true,
+            "buttons": [ 'columnsToggle' ],
+            "ajax": {
+                    "url": "/index/api/dbTest",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+          "columns" : [
+                        { "data": "_id", "autoWidth": true,"searchable":false,"visible":false,"hideIfEmpty":true },
+                        { "data": "barcode", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+                        { "data": "title", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+                        { "data": "brand", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
+                        { "data": "name", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+                        { "data": "ean", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
+                        { "data": "category1", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
+                    ]
+
+        } );
+        $.fn.dataTable.ext.errMode = 'none';
+    } );
+</script>
 <!-- /page content -->
