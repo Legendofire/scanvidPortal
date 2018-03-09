@@ -5,6 +5,7 @@ let _ = require('lodash');
 let User = require('./../model/users');
 let Product = require('./../model/product');
 let Products = require('./../controllers/products');
+let Index = require('./../controllers/index');
 
 let auth = require('./../middleware/authentication');
 
@@ -13,28 +14,14 @@ router.get('/testFady',function(req, res, next){
   //Products.tryIndexed(req,res,next);
   res.render('testDT');
 });
+
 router.post('/index/api/dbTest',function(req, res, next){
 
   Products.getAllProducts(req,res,next);
   //res.render('testDT');
 });
 
-/* GET home page. */
-router.get('/', auth.userLoggedIn, function(req, res, next) {
-  console.log(req.session.user);
-  if(req.session.user.isBrand){
-    let brandName = req.session.user.brandName;
-    res.json(`this is ${brandName} and it's a Brand not an Admin`);
-  }else{
-    res.json(`this is an Admin`);
-  }
-  //
-  // res.render('layout', {
-  //   child: 'partials/dashboard/dashboard-content.ejs',
-  //   current_user: req.session.user,
-  // });
-});
-
+router.get('/', auth.userLoggedIn, Index.getDashboard);
 
 router.post('/auth', function(req, res, next) {
   User.findOne({
