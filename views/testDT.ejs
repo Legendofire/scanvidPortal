@@ -15,6 +15,10 @@
     <table id="myTable" class="display" cellspacing="0" width="100%">
             <thead>
                 <tr>
+                    <th>_id</th>
+                    <th>barcode</th>
+                    <th>title</th>
+                    <th>brand</th>
                     <th>name</th>
                     <th>ean</th>
                     <th>category1</th>
@@ -29,13 +33,65 @@
         $('#myTable').DataTable( {
             "processing": true,
             "serverSide": true,
+            "hideEmptyCols": ['_id'],
+          //  "hideEmptyCols": true,
+            "buttons": [ 'columnsToggle' ],
             "ajax": {
-                    "url": "/dbTest",
+                    "url": "/index/api/dbTest",
                     "type": "POST",
                     "datatype": "json"
-                }
+                },
+          "columns" : [
+                        { "data": "_id", "autoWidth": true,"searchable":false,"visible":false,"hideIfEmpty":true },
+                        { "data": "barcode", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+                        { "data": "title", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+                        { "data": "brand", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
+                        { "data": "name", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+                        { "data": "ean", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
+                        { "data": "category1", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
+                    ]
+
         } );
+        $.fn.dataTable.ext.errMode = 'none';
     } );
+
+    (function(window, document, $) {
+    // On DT Initialization
+    $(document).on('init.dt', function(e, dtSettings) {
+        if ( e.namespace !== 'dt' )
+            return;
+
+        var options = dtSettings.oInit.hideEmptyCols;
+
+        if ($.isArray(options) || options === true) {
+            var config     = $.isPlainObject(options) ? options : {},
+                api        = new $.fn.dataTable.Api( dtSettings );
+
+            var emptyCount = 0;
+
+            api.columns().every( function () {
+                // Check if were only hiding specific columns
+                if($.isArray(options) && ($.inArray(this.index(), options) === -1 || $.inArray(api.column(this.index()).dataSrc(), options) === -1))
+                    return;
+
+                var data = this.data();
+
+                for (var i = 0; i < data.toArray().length; i++)
+                    if (data.toArray()[i] === null || data.toArray()[i].length === 0)
+                        emptyCount++;
+
+
+                // If the # of empty is the same as the length, then no values in col were found
+                if(emptyCount === data.toArray().length)
+                    api.column( this.index() ).visible( false );
+
+                emptyCount = 0;
+            } );
+        }
+    });
+})(window, document, jQuery);
+
+
 </script>
   </body>
 </html>

@@ -4,15 +4,17 @@ let argon2 = require('argon2');
 let _ = require('lodash');
 let User = require('./../model/users');
 let Product = require('./../model/product');
+let Products = require('./../controllers/products');
 
 let auth = require('./../middleware/authentication');
 
 router.get('/testFady',function(req, res, next){
   //Products.getAllProducts(req,res,next);
+  //Products.tryIndexed(req,res,next);
   res.render('testDT');
 });
-router.get('/dbTest',function(req, res, next){
-  console.log('im here');
+router.post('/index/api/dbTest',function(req, res, next){
+
   Products.getAllProducts(req,res,next);
   //res.render('testDT');
 });

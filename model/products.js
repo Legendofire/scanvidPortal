@@ -8,5 +8,6 @@ var ProductSchema = new Schema({
   name: String,
   ean: String,
 })
+
 ProductSchema.plugin(dataTables);
 module.exports = mongoose.model('products', ProductSchema);
