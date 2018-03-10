@@ -15,12 +15,12 @@ router.get('/testFady',function(req, res, next){
   res.render('testDT');
 });
 
-router.get('/index/api/dbTest',function(req, res, next){
+router.get('/api/getAll',function(req, res, next){
 
-  Products.getAllNew(req,res,next);
+  Products.getAllProducts(req,res,next);
   //res.render('testDT');
 });
-router.get('/index/api/dbSearch',function(req, res, next){
+router.get('/api/dbSearch',function(req, res, next){
 
   Products.searchDb(req,res,next);
   //res.render('testDT');
