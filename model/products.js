@@ -1,17 +1,15 @@
 let mongoose = require('mongoose'),
   Schema = mongoose.Schema;
-let dataTables = require('datatables-query');
+var dataTables = require('datatables-query');
+var mongoosePaginate = require('mongoose-paginate');
 
 let ProductSchema = new Schema({
   title: String,
   barcode: String,
   name: String,
   ean: String,
-  website: String,
-  youtube: String,
-  image: String,
-  video: String
-});
+  brand:String,
+})
 
-ProductSchema.plugin(dataTables);
+ProductSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('products', ProductSchema);
