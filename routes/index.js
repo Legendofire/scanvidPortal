@@ -3,7 +3,6 @@ let router = express.Router();
 let argon2 = require('argon2');
 let _ = require('lodash');
 let User = require('./../model/users');
-let Product = require('./../model/product');
 let Products = require('./../controllers/products');
 let Index = require('./../controllers/index');
 

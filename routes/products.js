@@ -5,7 +5,7 @@ var auth = require('./../middleware/authentication.js');
 
 const resource = 'Products';
 
-var Product = require('./../model/product.js');
+var Product = require('./../model/products.js');
 
 /* GET users listing. */
 router.post('/add', auth.userLoggedIn, function(req, res, next) {
