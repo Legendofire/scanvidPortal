@@ -5,7 +5,6 @@
       <div class="title_left">
         <h3>Users <small>View, Edit and Delete Users!</small></h3>
       </div>
-      <% if(current_user.type !== "Spectator"){ %>
       <div class="title_right">
         <div class="nav navbar-right panel_toolbox">
           <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#users-add-modal">Add User</button>
@@ -60,18 +59,24 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                          <input type="radio" name="type" value="Admin"> &nbsp; Admin &nbsp;
+                          <input type="radio" name="type" value="false"> &nbsp; Admin &nbsp;
                         </label>
                         <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                          <input type="radio" name="type" value="Spec"> Spectator
-                        </label>
-                        <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                          <input type="radio" name="type" value="Sales"> Sales
-                        </label>
-                        <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                          <input type="radio" name="type" value="Tech"> Tech
+                          <input type="radio" name="type" value="true"> Brand
                         </label>
                       </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Brand Name<span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select name="brandName" class="form-control">
+                        <option value>Choose a Brand</option>
+                        <% for(var i=0; i<brands.length; i++){ %>
+                          <option value="<%= brands[i].brandName %>"><%= brands[i].brandName%></option>
+                        <% } %>
+                      </select>
                     </div>
                   </div>
                   <div class="ln_solid"></div>
@@ -89,29 +94,33 @@
           </div>
         </div>
       </div>
-      <% } %>
     </div>
   </div>
   <div class="clearfix"></div>
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_content">
-        <table class="table table-hover">
+        <table class="table table-hover projects">
           <thead>
             <tr>
               <th>#</th>
-              <th>Full Name</th>
+              <th>Username</th>
+              <th>Full name</th>
               <th>Email</th>
               <th>Phone</th>
-              <th>type</th>
+              <th>User Type</th>
+              <th>Brand Name</th>
             </tr>
           </thead>
           <tbody>
             <% for(var i=0; i<users.length; i++){ %>
               <tr>
                 <th scope="row">
-                  <%= i %>
+                  <%= i+1 %>
                 </th>
+                <td>
+                  <%= users[i].username %>
+                </td>
                 <td>
                   <%= users[i].full_name %>
                 </td>
@@ -122,14 +131,14 @@
                   <%= users[i].phone %>
                 </td>
                 <td>
-                  <%= users[i].type %>
+                  <%= users[i].isBrand ? 'Brand':'Admin' %>
                 </td>
                 <td>
-                  <a href="users/view/<%=users[i]._id%>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
-                  <% if(current_user.type !== "Spectator"){ %>
-                    <a href="users/edit/<%=users[i]._id%>" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                    <a href="#" data-info="<%=users[i]._id%>,users" class="btn btn-danger btn-xs delete_button"><i class="fa fa-trash-o"></i> Delete </a>
-                  <% } %>
+                  <%= users[i].brandName ? users[i].brandName:'N/A' %>
+                </td>
+                <td>
+                  <a href="users/edit/<%=users[i]._id%>" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                  <a href="#" data-info="<%=users[i]._id%>,users" class="btn btn-danger btn-xs delete_button"><i class="fa fa-trash-o"></i> Delete </a>
                 </td>
               </tr>
               <% } %>

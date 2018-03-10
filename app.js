@@ -71,13 +71,10 @@ app.use(session({
 // });
 
 // Application Routes
-let index = require('./routes/index');
-let users = require('./routes/users');
-let products = require('./routes/products');
-
-app.use('/', index);
-app.use('/users', users);
-app.use('/products', products);
+app.use('/', require('./routes/index'));
+app.use('/users', require('./routes/users'));
+app.use('/products', require('./routes/products'));
+app.use('/brands', require('./routes/brands'));
 
 // // API Routes
 // let aauth = require('./routes/api/auth');

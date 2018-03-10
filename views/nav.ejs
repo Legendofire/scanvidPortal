@@ -1,19 +1,18 @@
 <!-- sidebar menu -->
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-  <%if (current_user.type === "Admin" || current_user.type === "Spectator") { %>
+  <% if (!current_user.isBrand) { %>
   <div class="menu_section">
     <h3>General</h3>
       <ul class="nav side-menu">
         <li><a href="/"><i class="fa fa-home"></i> Home </a></li>
-        <li><a href="/users"><i class="fa fa-male"></i> Users </a></li>
-        <li><a href="/prospects"><i class="fa fa-dollar"></i> Prospects </a></li>
         <li><a href="/products"><i class="fa fa-cloud"></i> Products </a></li>
+        <li><a href="/users"><i class="fa fa-male"></i> Users </a></li>
+        <li><a href="/brands"><i class="fa fa-dollar"></i> Brands </a></li>
       </ul>
   </div>
   <% } else { %>
     <ul class="nav side-menu">
       <li><a href="/users/view/<%= current_user._id %>"><i class="fa fa-home"></i> Home </a></li>
-      <li><a href="/prospects/for/<%= current_user._id %>"><i class="fa fa-dollar"></i> Prospects </a></li>
       <li><a href="/products"><i class="fa fa-cloud"></i> Products </a></li>
     <ul>
   <% } %>

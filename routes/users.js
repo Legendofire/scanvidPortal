@@ -8,22 +8,28 @@ const resource = 'Users';
 var User = require('./../model/users.js');
 var Product = require('./../model/products.js');
 
-router.get('/', function(req, res, next) {
-  console.log(req.session.user);
+router.get('/', auth.adminLoggedIn, function(req, res, next) {
   User.find({}).
-  exec(function(err, value) {
-    res.json(value);
+  exec().then(function(users){
+    var output = {
+      child: 'partials/users/table.ejs',
+      current_user: req.session.user,
+      users: users,
+      brands: [{brandName:'Bosch'},{brandName:'Duckies'},{brandName:'MacDonalds'}]
+    };
+    res.render('layout',output);
   });
 });
 
-router.post('/add', auth.userLoggedIn , function(req, res, next) {
+router.post('/add', auth.adminLoggedIn , function(req, res, next) {
   var user = new User({
     username: req.body.username,
     password: req.body.password,
     full_name: req.body.full_name,
     email: req.body.email,
     phone: req.body.phone,
-    type: req.body.type
+    isBrand: req.body.type,
+    brandName: req.body.brandName
   });
 
   user.save(function(err) {
@@ -32,30 +38,33 @@ router.post('/add', auth.userLoggedIn , function(req, res, next) {
   });
 });
 
-router.get('/edit/:uid', auth.userLoggedIn, function(req, res, next) {
+router.get('/edit/:uimeshd', auth.adminLoggedIn, function(req, res, next) {
   User.findOne({_id:req.params.uid}).exec().then(function(value,err){
     if(err)console.error(err);
     var output = {
       child: 'partials/users/edit.ejs',
       current_user: req.session.user,
-      user: value
+      user: value,
+      brands: [{brandName:'Bosch'},{brandName:'Duckies'},{brandName:'MacDonalds'}]
     };
     res.render('layout',output);
   });
 });
 
-router.post('/edit/:uid', auth.userLoggedIn, function(req, res, next) {
+router.post('/edit/:uid', auth.adminLoggedIn, function(req, res, next) {
   User.findOne({_id:req.params.uid}).exec().then(function(user, err){
     if(err) console.error(err);
 
-    if(req.body.username) user.username = req.body.username;
+    //if(req.body.username) user.username = req.body.username;
     if(req.body.password) user.password = req.body.password;
     if(req.body.full_name) user.full_name = req.body.full_name;
-    if(req.body.email) user.email = req.body.email;
     if(req.body.phone) user.phone = req.body.phone;
+    if(req.body.email) user.email = req.body.email;
 
-    if(req.session.user.type === 'Admin'){
-      if(req.body.type) user.type = req.body.type;
+    if(!req.session.user.isBrand){
+      if(req.body.type){
+        user.isBrand = req.body.type;
+      }
     }
 
     user.save(function(value, err){
@@ -65,9 +74,8 @@ router.post('/edit/:uid', auth.userLoggedIn, function(req, res, next) {
   });
 });
 
-router.get('/delete/:uid', auth.userLoggedIn, function(req, res, next) {
-  User.find({_id:req.params.uid}).remove().exec().then(function(err,value){
-      if (err) console.error(err);
+router.get('/delete/:uid', auth.adminLoggedIn, function(req, res, next) {
+  User.find({_id:req.params.uid}).remove().exec().then(function(value){
       res.redirect('users');
   });
 });
