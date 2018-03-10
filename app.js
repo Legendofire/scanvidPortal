@@ -74,10 +74,12 @@ app.use(session({
 let index = require('./routes/index');
 let users = require('./routes/users');
 let products = require('./routes/products');
+let mobileApi = require('./routes/api/mobileapp');
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/products', products);
+app.use('/api',mobileApi);
 
 // // API Routes
 // let aauth = require('./routes/api/auth');
