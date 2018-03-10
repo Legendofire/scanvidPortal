@@ -43,48 +43,12 @@ app.use(session({
   },
 }));
 
-// app.all('/api/v1/*', function(req, res, next) {
-//   req.msg = req.headers;
-//   if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
-//     jwt.verify(req.headers.authorization.split(' ')[1], 'CLOUDMANAGEAPI', function(err, decode) {
-//       if (err) {
-//         req.user = undefined;
-//         console.error(err);
-//       }
-//       req.user = decode;
-//       next();
-//     });
-//   } else {
-//     req.user = undefined;
-//     next();
-//   }
-// });
-
-// app.all('/*',function(req, res, next){
-//   if (req.session.user) {
-//     next();
-//   } else {
-//     res.render('login', {
-//       'error': ''
-//     });
-//   }
-// });
-
 // Application Routes
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/products', require('./routes/products'));
 app.use('/brands', require('./routes/brands'));
 app.use('/api', require('./routes/api/mobileapp'));
-
-// // API Routes
-// let aauth = require('./routes/api/auth');
-// let ausers = require('./routes/api/users');
-// let aproducts = require('./routes/api/products');
-//
-// app.use('/api/auth', aauth);
-// app.use('/api/v1/users', ausers);
-// app.use('/api/v1/product', aproducts);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

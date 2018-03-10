@@ -24,20 +24,21 @@ router.post('/add', auth.userLoggedIn, function(req, res, next) {
 });
 
 router.get('/', auth.userLoggedIn, function(req, res, next) {
-  var output = {
-    child: 'partials/products/table.ejs',
-    current_user: req.session.user
-  };
-
-  Product.find({},function(err,value){
-    if (err) {
-      res.json(err);
-    }else{
-      output.products = value;
-      res.render('layout', output);
-    }
-
-  });
+  res.json({Message: 'Don\'t ever do that'});
+  // var output = {
+  //   child: 'partials/products/table.ejs',
+  //   current_user: req.session.user
+  // };
+  //
+  // Product.find({},function(err,value){
+  //   if (err) {
+  //     res.json(err);
+  //   }else{
+  //     output.products = value;
+  //     res.render('layout', output);
+  //   }
+  //
+  // });
 });
 
 router.get('/view/:pid', auth.userLoggedIn, function(req, res, next) {
