@@ -75,6 +75,7 @@ app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/products', require('./routes/products'));
 app.use('/brands', require('./routes/brands'));
+app.use('/api', require('./routes/api/mobileapp'));
 
 // // API Routes
 // let aauth = require('./routes/api/auth');
