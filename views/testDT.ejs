@@ -148,7 +148,11 @@ $(document).ready(function(){
               $("#myTable").find("tr:gt(0)").remove();
             $.each(data.docs, function (i, item) {
 
+              if(item.title){
                 trHTML += '<tr><td>' + item.id + '</td><td>' + item.barcode + '</td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
+              }else{
+                trHTML += '<tr><td></td><td></td><td></td><td>' + item.brand + '</td><td>' + item.name + '</td><td>' + item.ean + '</td><td>' + item.category1 + '</td></tr>';
+              }
             });
 
             $('#myTable').append(trHTML);
@@ -182,7 +186,11 @@ $(document).ready(function(){
 
             $.each(data.docs, function (i, item) {
 
+              if(item.title){
                 trHTML += '<tr><td>' + item.id + '</td><td>' + item.barcode + '</td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
+              }else{
+                trHTML += '<tr><td></td><td></td><td></td><td>' + item.brand + '</td><td>' + item.name + '</td><td>' + item.ean + '</td><td>' + item.category1 + '</td></tr>';
+              }
             });
 
             $('#myTable').append(trHTML);
@@ -214,8 +222,11 @@ $(document).ready(function(){
           $("#myTable").find("tr:gt(0)").remove();
 
             $.each(data, function (i, item) {
-
-                trHTML += '<tr><td>' + item.id + '</td><td>' + item.barcode + '</td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
+                if(item.title){
+                  trHTML += '<tr><td>' + item.id + '</td><td>' + item.barcode + '</td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
+                }else{
+                  trHTML += '<tr><td></td><td></td><td></td><td>' + item.brand + '</td><td>' + item.name + '</td><td>' + item.ean + '</td><td>' + item.category1 + '</td></tr>';
+                }
             });
 
             $('#myTable').append(trHTML);
