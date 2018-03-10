@@ -12,6 +12,7 @@
   <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" > </script>
   </head>
   <body>
+    <input type="text" placeholder="search" class="searchBar"><button class="searchButton">Search Table</button>
     <table id="myTable" class="display" cellspacing="0" width="100%">
             <thead>
                 <tr>
@@ -37,98 +38,199 @@
 
               </tr>
         </tfoot>
+
         </table>
 
-
+        <button class="nextPage">Next Page</button>
+          <button class="previousPage">Previous Page</button>
+          <h3 id="pages"></h3>
 <script>
-    $(document).ready(function() {
-        $('#myTable').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "hideEmptyCols": ['_id'],
-          //  "hideEmptyCols": true,
-            "buttons": [ 'columnsToggle' ],
-            "ajax": {
-                    "url": "/index/api/dbTest",
-                    "type": "POST",
-                    "datatype": "json"
-                },
-          "columns" : [
-                        { "data": "_id", "autoWidth": true,"searchable":false,"visible":false,"hideIfEmpty":true },
-                        { "data": "barcode", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
-                        { "data": "title", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
-                        { "data": "brand", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
-                        { "data": "name", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
-                        { "data": "ean", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
-                        { "data": "category1", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
-                    ]
+    // $(document).ready(function() {
+    //     $('#myTable').DataTable( {
+    //         "processing": true,
+    //         "serverSide": true,
+    //         "hideEmptyCols": ['_id'],
+    //       //  "hideEmptyCols": true,
+    //         "buttons": [ 'columnsToggle' ],
+    //         "ajax": {
+    //                 "url": "/index/api/dbTest",
+    //                 "type": "POST",
+    //                 "datatype": "json"
+    //             },
+    //       "columns" : [
+    //                     { "data": "_id", "autoWidth": true,"searchable":false,"visible":false,"hideIfEmpty":true },
+    //                     { "data": "barcode", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+    //                     { "data": "title", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+    //                     { "data": "brand", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+    //                     { "data": "name", "autoWidth": true,"searchable":true,"hideIfEmpty":true },
+    //                     { "data": "ean", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
+    //                     { "data": "category1", "autoWidth": true,"searchable":false,"hideIfEmpty":true },
+    //                 ]
+    //
+    //     } );
+    //     $.fn.dataTable.ext.errMode = 'none';
+    //
+    // } );
 
-        } );
-        $.fn.dataTable.ext.errMode = 'none';
+//     $(document).ready(function() {
+//     // Setup - add a text input to each footer cell
+//     $('#myTable tfoot th').each( function () {
+//         var title = $(this).text();
+//         $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+//     } );
+//
+//     // DataTable
+//     var table = $('#myTable').DataTable();
+//
+//     // Apply the search
+//     table.columns().every( function () {
+//         var that = this;
+//
+//         $( 'input', this.footer() ).on( 'keyup change', function () {
+//             if ( that.search() !== this.value ) {
+//                 that
+//                     .search( this.value )
+//                     .draw();
+//             }
+//         } );
+//     } );
+// } );
 
-    } );
 
-    $(document).ready(function() {
-    // Setup - add a text input to each footer cell
-    $('#myTable tfoot th').each( function () {
-        var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-    } );
 
-    // DataTable
-    var table = $('#myTable').DataTable();
+$(document).ready(function(){
+  var pagesCounter=1;
 
-    // Apply the search
-    table.columns().every( function () {
-        var that = this;
+    jQuery.support.cors = true;
 
-        $( 'input', this.footer() ).on( 'keyup change', function () {
-            if ( that.search() !== this.value ) {
-                that
-                    .search( this.value )
-                    .draw();
+    $.ajax(
+    {
+        type: "GET",
+        url:  '/index/api/dbTest',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          pagesCounter++;
+        var trHTML = '';
+        console.log(data.page);
+        $("#pages").html("Page # "+data.page+" out of "+data.pages+" Pages");
+
+
+        $.each(data.docs, function (i, item) {
+
+            trHTML += '<tr><td>' + item.id + '</td><td>' + item.barcode + '</td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
+        });
+
+        $('#myTable').append(trHTML);
+
+        },
+
+        error: function (msg) {
+
+            alert(msg.responseText);
+        }
+    });
+    //next page logic
+    $(".nextPage").on("click",function(){
+        $.ajax(
+        {
+            type: "GET",
+            url:  '/index/api/dbTest',
+            data:'page='+pagesCounter,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+              pagesCounter++;
+            var trHTML = '';
+            console.log(data.page);
+            $("#pages").html("Page # "+data.page+" out of "+data.pages+" Pages");
+
+              $("#myTable").find("tr:gt(0)").remove();
+            $.each(data.docs, function (i, item) {
+
+                trHTML += '<tr><td>' + item.id + '</td><td>' + item.barcode + '</td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
+            });
+
+            $('#myTable').append(trHTML);
+
+            },
+
+            error: function (msg) {
+
+                alert(msg.responseText);
             }
-        } );
-    } );
-} );
+        });
+    })
+
+    //prev pages
+    $(".previousPage").on("click",function(){
+      pagesCounter=pagesCounter-2;
+        $.ajax(
+        {
+            type: "GET",
+            url:  '/index/api/dbTest',
+            data:'page='+pagesCounter,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+              pagesCounter++;
+            var trHTML = '';
+            console.log(data.page);
+            $("#pages").html("Page # "+data.page+" out of "+data.pages+" Pages");
+
+          $("#myTable").find("tr:gt(0)").remove();
+
+            $.each(data.docs, function (i, item) {
+
+                trHTML += '<tr><td>' + item.id + '</td><td>' + item.barcode + '</td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
+            });
+
+            $('#myTable').append(trHTML);
+
+            },
+
+            error: function (msg) {
+
+                alert(msg.responseText);
+            }
+        });
+    })
+    //Search Table
+    $(".searchButton").on("click",function(){
+      var query=$(".searchBar").val();
+        $.ajax(
+        {
+            type: "GET",
+            url:  '/index/api/dbSearch',
+            data:'q='+query,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+              pagesCounter++;
+            var trHTML = '';
+            console.log(data.page);
+            $("#pages").html("search results");
+
+          $("#myTable").find("tr:gt(0)").remove();
+
+            $.each(data, function (i, item) {
+
+                trHTML += '<tr><td>' + item.id + '</td><td>' + item.barcode + '</td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
+            });
+
+            $('#myTable').append(trHTML);
+
+            },
+
+            error: function (msg) {
+
+                alert(msg.responseText);
+            }
+        });
+    })
 
 
-
-//     (function(window, document, $) {
-//     // On DT Initialization
-//     $(document).on('init.dt', function(e, dtSettings) {
-//         if ( e.namespace !== 'dt' )
-//             return;
-//
-//         var options = dtSettings.oInit.hideEmptyCols;
-//
-//         if ($.isArray(options) || options === true) {
-//             var config     = $.isPlainObject(options) ? options : {},
-//                 api        = new $.fn.dataTable.Api( dtSettings );
-//
-//             var emptyCount = 0;
-//
-//             api.columns().every( function () {
-//                 // Check if were only hiding specific columns
-//                 if($.isArray(options) && ($.inArray(this.index(), options) === -1 || $.inArray(api.column(this.index()).dataSrc(), options) === -1))
-//                     return;
-//
-//                 var data = this.data();
-//
-//                 for (var i = 0; i < data.toArray().length; i++)
-//                     if (data.toArray()[i] === null || data.toArray()[i].length === 0)
-//                         emptyCount++;
-//
-//
-//                 // If the # of empty is the same as the length, then no values in col were found
-//                 if(emptyCount === data.toArray().length)
-//                     api.column( this.index() ).visible( false );
-//
-//                 emptyCount = 0;
-//             } );
-//         }
-//     });
-// })(window, document, jQuery);
+})
 
 
 </script>

@@ -31,16 +31,51 @@ exports.getAllUnknown = function(req, res, next) { //not working
           res.json(results);
       });
 };
+exports.getAllNew=function(req,res,next){
+  if(req.session.user){
+     if(req.session.user.isBrand){
+         Product.paginate({brand:req.session.user.brandName}, { page:1,limit: 10 }, function(err, result) {
+         res.json(result);
+       });
+     }
+  }else{
+      if(req.query.page){
+          Product.paginate({}, { page:req.query.page,limit: 10 }, function(err, result) {
+          res.json(result);
+        });
+      }else{
+        Product.paginate({}, { page:1,limit: 10 }, function(err, result) {
+        res.json(result);
+      });
+    }
+  }
+}
 
-exports.tryIndexed=function(req,res,next){
-  Product.find(
-      { $text : { $search : "PBH" } },
-      { score : { $meta: "textScore" } }
-  )
-  .sort({ score : { $meta : 'textScore' } })
-  .exec(function(err, results) {
-      res.json(results);
-  });
+exports.searchDb=function(req,res,next){
+  if(req.session.user){
+     if(req.session.user.isBrand){
+       Product.find(
+           { brand :req.session.user.brandName, $text : { $search : req.query.q } },
+           { score : { $meta: "textScore" } }
+       )
+       .limit(20)
+       .sort({ score : { $meta : 'textScore' } })
+       .exec(function(err, results) {
+           res.json(results);
+       });
+     }
+  }else{
+  
+      Product.find(
+          { brand:"unknown",$text : { $search : req.query.q } },
+          { score : { $meta: "textScore" } }
+      )
+      .limit(20)
+      .sort({ score : { $meta : 'textScore' } })
+      .exec(function(err, results) {
+          res.json(results);
+      });
+  }
 };
 
 
