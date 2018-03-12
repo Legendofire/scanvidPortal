@@ -5,4 +5,4 @@ let BrandsSchema = new Schema({
   brandName: String,
 })
 
-module.exports = mongoose.model('brands', BrandsSchema);
+module.exports = mongoose.model('Brand', BrandsSchema);

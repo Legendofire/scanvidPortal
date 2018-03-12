@@ -105,8 +105,8 @@ router.get("/delete/:uid", auth.adminLoggedIn, function(req, res, next) {
 
 router.get("/tempadd", function(req, res, next) {
   var user = new User({
-    username: "Admin",
-    password: "Admin",
+    username: "Admin2",
+    password: "Admin2",
     full_name: "Admin McAdminFace",
     email: "admin@scanvid.com",
     phone: "01226222335",

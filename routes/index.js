@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-let argon2 = require('argon2');
+let bcrypt = require('bcrypt');
 let _ = require('lodash');
 let User = require('./../model/users');
 let Products = require('./../controllers/products');
@@ -37,10 +37,8 @@ router.post('/auth', function(req, res, next) {
         error: 'Invalid Login Credentials!',
       });
     } else {
-      argon2.verify(user.password, req.body.password).
-      then(function(match) {
+      bcrypt.compare(req.body.password, user.password).then(function(match) {
         if (match) {
-
           user.password = undefined;
           req.session.user = user;
           res.redirect('back');
