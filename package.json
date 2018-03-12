@@ -7,6 +7,7 @@
     "nodemon": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@google-cloud/storage": "^1.6.0",
     "argon2": "^0.16.1",
     "async": "^2.5.0",
     "bcrypt": "^1.0.3",

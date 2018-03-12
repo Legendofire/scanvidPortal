@@ -1,0 +1,240 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Product Profile</h3>
+      </div>
+
+
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Product Report </h2>
+
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+              <div class="profile_img">
+                <div id="crop-avatar">
+                  <!-- Current avatar -->
+                  <img class="img-responsive avatar-view" src="https://images.ffx.co.uk/tools/Bosch_0611905300.jpg?w=1280&h=960&scale=both" alt="Avatar" title="Change the avatar">
+                </div>
+              </div>
+              <h3><%= products[0].title %></h3>
+
+              <ul class="list-unstyled user_data">
+                <li><i class="fa fa-barcode user-profile-icon"></i> <%= products[0].barcode %>
+                </li>
+
+                <li>
+                  <i class="fa fa-user user-profile-icon"></i> <%= products[0].brand %>
+                </li>
+
+              </ul>
+
+              <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Product</a>
+              <br />
+
+
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+
+              <div class="profile_title">
+                <div class="col-md-6">
+                  <h2>Product Activity Report</h2>
+                </div>
+
+              </div></br>
+              <div class="row">
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-caret-square-o-right"></i>
+                    </div>
+                    <div class="count">333</div>
+
+                    <h3># of Scans</h3>
+                    <p>Lorem ipsum psdea itgum rixt.</p>
+                  </div>
+                </div>
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-comments-o"></i>
+                    </div>
+                    <div class="count">17229</div>
+
+                    <h3># of Scans</h3>
+                    <p>Lorem ipsum psdea itgum rixt.</p>
+                  </div>
+                </div>
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-sort-amount-desc"></i>
+                    </div>
+                    <div class="count">123123</div>
+
+                    <h3># of Scans</h3>
+                    <p>Lorem ipsum psdea itgum rixt.</p>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                  <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Product Details</a>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Images</a>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Videos</a>
+                  </li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                  <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                    <!-- start Product details -->
+                    <ul class="messages">
+
+                      <% if(products[0].category1){%>
+                      <li>
+                        <div class="message_wrapper">
+                          <h4 class="heading">Category</h4>
+                          <h6><%= products[0].category1 %></h6>
+                        </div>
+                      </li> <% } %>
+                      <% if(products[0].category2){%>
+                      <li>
+                        <div class="message_wrapper">
+                          <h4 class="heading">Category 2</h4>
+                          <blockquote class="message"><%= products[0].category2 %></blockquote>
+                        </div>
+                      </li> <% } %>
+                      <% if(products[0].manual){%>
+                      <li>
+                        <div class="message_wrapper">
+                          <h4 class="heading">Manual Link</h4>
+                          <blockquote class="message"><%= products[0].manual %></blockquote>
+                        </div>
+                      </li> <% } %>
+                      <% if(products[0].image){%>
+                      <li>
+                        <div class="message_wrapper">
+                          <h4 class="heading">Image Link</h4>
+                          <blockquote class="message"><img src="https://scanvid.mybluemix.net/images/bosch/<%= products[0].image %>" style="width:30%;"/></blockquote>
+                        </div>
+                      </li> <% } %>
+
+
+
+                    </ul>
+                    <!-- end recent activity -->
+
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+
+                    <!-- start user projects -->
+                    <div class="row">
+
+                      <p>Product Images</p><button data-toggle="modal" data-target="#AddImage" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button>
+
+                      <% for(var i=0; i<imageFiles.length; i++){ %>
+                        <div class="col-md-3">
+                            <div class="image view view-first">
+                              <img style="width: 50%; display: block;" src="<%= imageFiles[i]%>" alt="image" />
+                            </div>
+                        </div>
+
+                      <% } %>
+
+
+
+
+
+
+                    </div>
+                    <!-- end user projects -->
+
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                    <div class="row">
+
+                      <p>Product Videos</p><button data-toggle="modal" data-target="#AddVideo" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button>
+
+                      <div class="col-md-55">
+                          <div class="image view view-first">
+                            <img style="width: 100%; display: block;" src="images/media.jpg" alt="image" />
+                          </div>
+                      </div>
+                      <div class="col-md-55">
+                          <div class="image view view-first">
+                            <img style="width: 100%; display: block;" src="images/media.jpg" alt="image" />
+                          </div>
+                      </div>
+                      <div class="col-md-55">
+                          <div class="image view view-first">
+                            <img style="width: 100%; display: block;" src="images/media.jpg" alt="image" />
+                          </div>
+                      </div>
+
+
+
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+<!-- Modal -->
+<div id="AddImage" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Modal -->
+<div id="AddVideo" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

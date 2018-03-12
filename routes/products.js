@@ -7,6 +7,15 @@ const resource = 'Products';
 
 var Product = require('./../model/products.js');
 
+const Storage = require('@google-cloud/storage');
+// Your Google Cloud Platform project ID
+const projectId = 'API Project';
+
+// Creates a client
+const storage = new Storage({
+  keyFilename: 'scanvid.json'
+});
+
 /* GET users listing. */
 router.post('/add', auth.userLoggedIn, function(req, res, next) {
   var prod = new Product({
@@ -24,17 +33,49 @@ router.post('/add', auth.userLoggedIn, function(req, res, next) {
 });
 
 router.get('/', auth.userLoggedIn, function(req, res, next) {
-  res.json({Message: 'Don\'t ever do that'});
-  // var output = {
-  //   child: 'partials/products/table.ejs',
-  //   current_user: req.session.user
-  // };
+  //res.json({Message: 'Don\'t ever do that'});
+  var trialProductBarcode='3165140606585';
+  var output = {
+    child: 'partials/products/singleView.ejs',
+    current_user: req.session.user
+  };
+  //get files
+  // storage.bucket('scanvid--'+trialProductBarcode).getFiles()
+  //   .then(results => {
+  //     const files = results[0];
   //
-  // Product.find({},function(err,value){
+  //
+  //     output.imageFiles = files;
+  //     files.forEach(file => {
+  //       console.log(file.name);
+  //     });
+  //   })
+  //   .catch(err => {
+  //     console.error('ERROR:', err);
+  //   });
+
+    var prom=[];
+    prom.push(storage.bucket('scanvid--'+trialProductBarcode).getFiles());
+    prom.push(Product.find({barcode:trialProductBarcode}));
+
+      Promise.all(prom).then(function(docs) {
+        var images=[];
+          docs[0][0].forEach(file=>{
+            images.push('https://storage.googleapis.com/scanvid--'+trialProductBarcode+'/'+file.name);
+          });
+        output.imageFiles=images;
+        output.products=docs[1];
+      console.log(output);
+      res.render('layout', output);
+    });
+
+  // Product.find({barcode:trialProductBarcode},function(err,value){
   //   if (err) {
   //     res.json(err);
   //   }else{
+  //
   //     output.products = value;
+  //     console.log(output);
   //     res.render('layout', output);
   //   }
   //
