@@ -27,14 +27,14 @@
                   <img class="img-responsive avatar-view" src="https://images.ffx.co.uk/tools/Bosch_0611905300.jpg?w=1280&h=960&scale=both" alt="Avatar" title="Change the avatar">
                 </div>
               </div>
-              <h3><%= products[0].title %></h3>
+              <h3><%= product %></h3>
 
               <ul class="list-unstyled user_data">
-                <li><i class="fa fa-barcode user-profile-icon"></i> <%= products[0].barcode %>
+                <li><i class="fa fa-barcode user-profile-icon"></i> <%= product.barcode %>
                 </li>
 
                 <li>
-                  <i class="fa fa-user user-profile-icon"></i> <%= products[0].brand %>
+                  <i class="fa fa-user user-profile-icon"></i> <%= product.brand %>
                 </li>
 
               </ul>
@@ -100,35 +100,31 @@
 
                     <!-- start Product details -->
                     <ul class="messages">
-
-                      <% if(products[0].category1){%>
+                      <%= console.log(product) %>
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Category</h4>
-                          <h6><%= products[0].category1 %></h6>
+                          <h6><%= product.category1 %></h6>
                         </div>
-                      </li> <% } %>
-                      <% if(products[0].category2){%>
+                      </li>
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Category 2</h4>
-                          <blockquote class="message"><%= products[0].category2 %></blockquote>
+                          <blockquote class="message"><%= product.category2 %></blockquote>
                         </div>
-                      </li> <% } %>
-                      <% if(products[0].manual){%>
+                      </li>
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Manual Link</h4>
-                          <blockquote class="message"><%= products[0].manual %></blockquote>
+                          <blockquote class="message"><%= product.manual %></blockquote>
                         </div>
-                      </li> <% } %>
-                      <% if(products[0].image){%>
+                      </li>
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Image Link</h4>
-                          <blockquote class="message"><img src="https://scanvid.mybluemix.net/images/bosch/<%= products[0].image %>" style="width:30%;"/></blockquote>
+                          <blockquote class="message"><img src="https://scanvid.mybluemix.net/images/bosch/<%= product.image %>" style="width:30%;"/></blockquote>
                         </div>
-                      </li> <% } %>
+                      </li>
 
 
 
