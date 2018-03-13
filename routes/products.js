@@ -33,53 +33,36 @@ router.post('/add', auth.userLoggedIn, function(req, res, next) {
 });
 
 router.get('/', auth.userLoggedIn, function(req, res, next) {
-  //res.json({Message: 'Don\'t ever do that'});
   var trialProductBarcode='3165140606585';
   var output = {
     child: 'partials/products/singleView.ejs',
     current_user: req.session.user
   };
-  //get files
-  // storage.bucket('scanvid--'+trialProductBarcode).getFiles()
-  //   .then(results => {
-  //     const files = results[0];
-  //
-  //
-  //     output.imageFiles = files;
-  //     files.forEach(file => {
-  //       console.log(file.name);
-  //     });
-  //   })
-  //   .catch(err => {
-  //     console.error('ERROR:', err);
-  //   });
 
-    var prom=[];
-    prom.push(storage.bucket('scanvid--'+trialProductBarcode).getFiles());
-    prom.push(Product.find({barcode:trialProductBarcode}));
-
-      Promise.all(prom).then(function(docs) {
-        var images=[];
-          docs[0][0].forEach(file=>{
-            images.push('https://storage.googleapis.com/scanvid--'+trialProductBarcode+'/'+file.name);
-          });
-        output.imageFiles=images;
-        output.products=docs[1];
-      console.log(output);
-      res.render('layout', output);
+  Product.findOne({barcode:trialProductBarcode}).exec().then(function(product){
+    product.me = "ahmed"; //here when i add an attribute to the object it's added but it doesn't go to the frontend.
+    output.product = product; //here product contains basically js code 5 functions to be exact.
+    console.log(Object.keys(output.product)); //however when i print the keys i find the function names and the me attribute but not the product variables.
+    /*
+    Things i tried/did
+    1- changed promise library to bluebird since the mpromise (mongoose default) is deprecated, thought maybe it's a known bug
+    2- tried to manually set variables as in output.category1 = product.category1, didn't work was still empty at the front.
+    Notes:
+    1- there is some hidden console.log() that prints the product variables, where is no idea.
+    */
+    return storage.bucket('scanvid--'+trialProductBarcode).getFiles();
+  })
+  .then(function(media){
+    var images=[];
+    media[0].forEach(file=>{
+      images.push('https://storage.googleapis.com/scanvid--'+trialProductBarcode+'/'+file.name);
     });
-
-  // Product.find({barcode:trialProductBarcode},function(err,value){
-  //   if (err) {
-  //     res.json(err);
-  //   }else{
-  //
-  //     output.products = value;
-  //     console.log(output);
-  //     res.render('layout', output);
-  //   }
-  //
-  // });
+    output.imageFiles=images;
+    res.render('layout', output);
+  })
+  .catch(function(err){
+    console.trace(err);
+  })
 });
 
 router.get('/view/:pid', auth.userLoggedIn, function(req, res, next) {
