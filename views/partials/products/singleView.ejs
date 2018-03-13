@@ -149,7 +149,7 @@
                     <!-- start user projects -->
                     <div class="row">
 
-                      <p>Product Images</p><button data-toggle="modal" data-target="#AddImage" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button>
+                      <!-- <p>Product Images</p><button data-toggle="modal" data-target="#AddImage" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button> -->
                       <% if(typeof imageFiles!= 'undefined'){%>
                       <% for(var i=0; i<imageFiles.length; i++){ %>
                         <div class="col-md-3">
@@ -175,21 +175,21 @@
 
                       <p>Product Videos</p><button data-toggle="modal" data-target="#AddVideo" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button>
 
-                      <div class="col-md-55">
-                          <div class="image view view-first">
-                            <img style="width: 100%; display: block;" src="images/media.jpg" alt="image" />
-                          </div>
-                      </div>
-                      <div class="col-md-55">
-                          <div class="image view view-first">
-                            <img style="width: 100%; display: block;" src="images/media.jpg" alt="image" />
-                          </div>
-                      </div>
-                      <div class="col-md-55">
-                          <div class="image view view-first">
-                            <img style="width: 100%; display: block;" src="images/media.jpg" alt="image" />
-                          </div>
-                      </div>
+                      <% if(typeof videoFiles!= 'undefined'){%>
+                      <% for(var i=0; i<videoFiles.length; i++){ %>
+                        <div class="col-md-3">
+                            <div class="image  view-first">
+                              <video width="150" height="150" controls>
+                                    <source src="<%= videoFiles[i]%>" type="video/mp4">
+
+                                  Your browser does not support the video tag.
+                              </video>
+
+                            </div>
+                        </div>
+
+                      <% } %>
+                          <% } %>
 
 
 
@@ -235,15 +235,53 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
+        <h4 class="modal-title">Video Uploader Tool</h4>
       </div>
       <div class="modal-body">
-        <p>Some text in the modal.</p>
+        <form style="margin-left:5%;" name="videoForm" action="/products/video" method="post" enctype="multipart/form-data">
+
+
+        <div class="input_fields_wrap">
+          <label>Upload Video</label><!-- Input filed so you can add the image url -->
+        </br><input type="text" name="product" placeholder="Product name" value="<%= product.barcode %>"style="display:none;" >
+          </br></br><input type="file" name="video" >
+        </div>
+
+      </form>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-default analyzeVideo">Analyze Video</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 
   </div>
 </div>
+
+
+<div id="myModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">
+		<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+			    <h3 style="margin:0;">
+			        Messages
+			    </h3>
+			</div>
+			<div class="modal-body">
+				<div class="progress progress-striped active" style="margin-bottom:0;">
+				    <div class="progress-bar progress-bar-success" style="width: 100%">
+				    </div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(".analyzeVideo").on("click",function(){
+  $('#myModal').modal("show");
+   $('.modal-header h3').html('Processing...')
+  document.videoForm.submit();
+
+})
+</script>

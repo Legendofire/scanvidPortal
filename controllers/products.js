@@ -3,6 +3,7 @@ let mongoose = require("mongoose");
 
 let Product = require("./../model/products");
 
+
 exports.getAllProducts = function(req, res, next) {
   if (req.session.user) {
     if (req.session.user.isBrand) {
@@ -103,6 +104,42 @@ exports.dbSearchBarcode = function(req, res, next) {
     });
   }
 };
+
+exports.analyzeVideo=function(req,res,next){
+  if (req.session.user) {
+
+    if (!req.file) {
+      return next();
+    }
+
+    const gcsname = 'scanvid--'+req.params.product;
+    const file = storage.file(gcsname);
+
+    const stream = file.createWriteStream({
+      metadata: {
+        contentType: req.file.mimetype
+      }
+    });
+
+    stream.on('error', (err) => {
+      req.file.cloudStorageError = err;
+      next(err);
+    });
+
+    stream.on('finish', () => {
+      req.file.cloudStorageObject = gcsname;
+      file.makePublic().then(() => {
+        req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
+        next();
+      });
+    });
+
+    stream.end(req.file.buffer);
+
+
+  }
+};
+
 
 // if(req.user.isBrand){
 //   var where = {
