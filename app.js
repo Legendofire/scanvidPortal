@@ -14,7 +14,7 @@ let app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-mongoose.Promise = require('bluebird');
+// mongoose.Promise = require('bluebird');
 let promise = mongoose.connect('mongodb://scanvidDb:ZhaWVhTj7CmZPKrx@cluster0-shard-00-00-blfgg.mongodb.net:27017,cluster0-shard-00-01-blfgg.mongodb.net:27017,cluster0-shard-00-02-blfgg.mongodb.net:27017/scanvid?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin', {
   useMongoClient: true,
 });

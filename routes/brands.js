@@ -36,12 +36,20 @@ router.post("/add", auth.adminLoggedIn, function(req, res, next) {
   });
 });
 
-router.get("/view/:uid", auth.adminLoggedIn, function(req, res, next) {
+router.get("/view/:uid", auth.userLoggedIn, function(req, res, next) {
   var output = {
     child: "partials/brands/view.ejs",
     current_user: req.session.user
   };
-  Brand.findOne({ _id: req.params.uid })
+
+  var query = {};
+  if(req.session.user.isBrand){
+    query = {brandName: req.session.user.brandName};
+  }else{
+    query = {_id: req.params.uid};
+  }
+
+  Brand.findOne(query)
     .exec()
     .then(function(brand) {
       output.brand = brand;

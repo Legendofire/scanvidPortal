@@ -10,5 +10,12 @@ let ProductSchema = new Schema({
   tags:Object
 })
 
+//Tags contain {
+//   category1: String,
+//   category2: String,
+//   manual: String,
+//   image: String
+// }
+
 ProductSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('products', ProductSchema);

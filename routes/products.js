@@ -6,6 +6,7 @@ var auth = require('./../middleware/authentication.js');
 const resource = 'Products';
 
 var Product = require('./../model/products.js');
+var Brand = require('./../model/brands.js');
 
 const Storage = require('@google-cloud/storage');
 // Your Google Cloud Platform project ID
@@ -89,22 +90,30 @@ router.get('/view/:pid', auth.userLoggedIn, function(req, res, next) {
 });
 
 router.get('/edit/:pid', auth.userLoggedIn, function(req, res, next) {
-  Product.findOne({_id:req.params.pid}).exec().then(function(value,err){
-    if(err)console.error(err);
-    var output = {
-      child: 'partials/products/edit.ejs',
-      current_user: req.session.user,
-      product: value
-    };
+  var output = {
+    child: 'partials/products/edit.ejs',
+    current_user: req.session.user
+  };
+  Product.findOne({barcode:req.params.pid}).exec().then(function(value){
+    output.product = value;
+    return Brand.find({}).exec();
+  }).then(function(brands){
+    output.brands = brands
     res.render('layout',output);
   });
 });
 
 router.post('/edit/:pid', auth.userLoggedIn, function(req, res, next) {
-  Product.findOne({_id:req.params.pid}).exec().then(function(product, err){
-    if(err) console.error(err);
-    if(req.body.name) product.name = req.body.name;
-    if(req.body.description) product.description = req.body.description;
+  Product.findOne({barcode:req.params.pid}).exec().then(function(product){
+    if(req.body.title) product.title = req.body.title;
+    if(req.body.barcode) product.barcode = req.body.barcode;
+    if(req.body.brand && !req.session.user.isBrand) product.brand = req.body.brand;
+    var tags = {};
+    if(req.body.category1) tags.category1 = req.body.category1;
+    if(req.body.category2) tags.category2 = req.body.category2;
+    if(req.body.manual) tags.manual = req.body.manual;
+    if(req.body.image) tags.image = req.body.image;
+
     product.save(function(value, err){
       if (err) console.error(err);
       res.redirect('/products/view/' + req.params.pid);
