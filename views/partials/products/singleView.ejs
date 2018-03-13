@@ -101,28 +101,28 @@
                     <!-- start Product details -->
                     <ul class="messages">
 
-                      <% if(products[0].category1){%>
+                      <% if(products[0].category1!= 'undefined'){ console.log(products[0].category1);%>
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Category</h4>
                           <h6><%= products[0].category1 %></h6>
                         </div>
                       </li> <% } %>
-                      <% if(products[0].category2){%>
+                      <% if(products[0].category2!= 'undefined'){%>
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Category 2</h4>
                           <blockquote class="message"><%= products[0].category2 %></blockquote>
                         </div>
                       </li> <% } %>
-                      <% if(products[0].manual){%>
+                      <% if(products[0].manual!= 'undefined'){%>
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Manual Link</h4>
                           <blockquote class="message"><%= products[0].manual %></blockquote>
                         </div>
                       </li> <% } %>
-                      <% if(products[0].image){%>
+                      <% if(products[0].image!= 'undefined'){%>
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Image Link</h4>
@@ -145,7 +145,7 @@
 
                       <% for(var i=0; i<imageFiles.length; i++){ %>
                         <div class="col-md-3">
-                            <div class="image view view-first">
+                            <div class="image  view-first">
                               <img style="width: 50%; display: block;" src="<%= imageFiles[i]%>" alt="image" />
                             </div>
                         </div>
