@@ -95,6 +95,14 @@ exports.searchDb = function(req, res, next) {
     }
   }
 };
+exports.dbSearchBarcode = function(req, res, next) {
+  if (req.session.user) {
+    Product.findOne({barcode:req.query.q}).exec(function(err,results){
+      console.log(results);
+      res.json(results);
+    });
+  }
+};
 
 // if(req.user.isBrand){
 //   var where = {

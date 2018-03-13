@@ -24,10 +24,10 @@
               <div class="profile_img">
                 <div id="crop-avatar">
                   <!-- Current avatar -->
-                  <img class="img-responsive avatar-view" src="https://images.ffx.co.uk/tools/Bosch_0611905300.jpg?w=1280&h=960&scale=both" alt="Avatar" title="Change the avatar">
+                  <% if(typeof product.tags.image!= 'undefined'){%>  <img class="img-responsive avatar-view" src="https://scanvid.mybluemix.net/images/bosch/<%= product.tags.image %>" alt="Avatar" title="Change the avatar"><%}%>
                 </div>
               </div>
-              <h3><%= product %></h3>
+              <h3><%= product.title %></h3>
 
               <ul class="list-unstyled user_data">
                 <li><i class="fa fa-barcode user-profile-icon"></i> <%= product.barcode %>
@@ -100,52 +100,44 @@
 
                     <!-- start Product details -->
                     <ul class="messages">
-<<<<<<< HEAD
 
-                      <% if(products[0].category1!= 'undefined'){ console.log(products[0].category1);%>
-=======
-                      <%= console.log(product) %>
->>>>>>> fe1f5ffdeae256f3ebdee45a15d754e321413efe
+
+
+                      <% if(typeof product.tags.category1!= 'undefined'){ %>
+
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Category</h4>
-                          <h6><%= product.category1 %></h6>
+                          <h6><%= product.tags.category1 %></h6>
                         </div>
-<<<<<<< HEAD
                       </li> <% } %>
-                      <% if(products[0].category2!= 'undefined'){%>
-=======
-                      </li>
->>>>>>> fe1f5ffdeae256f3ebdee45a15d754e321413efe
+                      <% if(typeof product.tags.category2!= 'undefined'){%>
+
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Category 2</h4>
-                          <blockquote class="message"><%= product.category2 %></blockquote>
+                          <blockquote class="message"><%= product.tags.category2 %></blockquote>
                         </div>
-<<<<<<< HEAD
                       </li> <% } %>
-                      <% if(products[0].manual!= 'undefined'){%>
-=======
-                      </li>
->>>>>>> fe1f5ffdeae256f3ebdee45a15d754e321413efe
+                      <% if(typeof product.tags.manual!= 'undefined'){%>
+
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Manual Link</h4>
-                          <blockquote class="message"><%= product.manual %></blockquote>
+                          <blockquote class="message"><a href="<%= product.tags.manual %>">Click Here</a></blockquote>
                         </div>
-<<<<<<< HEAD
+
                       </li> <% } %>
-                      <% if(products[0].image!= 'undefined'){%>
-=======
-                      </li>
->>>>>>> fe1f5ffdeae256f3ebdee45a15d754e321413efe
+
+
+                      <% if(typeof product.tags.image!= 'undefined'){%>
                       <li>
                         <div class="message_wrapper">
                           <h4 class="heading">Image Link</h4>
-                          <blockquote class="message"><img src="https://scanvid.mybluemix.net/images/bosch/<%= product.image %>" style="width:30%;"/></blockquote>
+                          <blockquote class="message"><a href="https://scanvid.mybluemix.net/images/bosch/<%= product.tags.image %>" >Click Here</a></blockquote>
                         </div>
                       </li>
-
+                            <% } %>
 
 
                     </ul>
@@ -158,7 +150,7 @@
                     <div class="row">
 
                       <p>Product Images</p><button data-toggle="modal" data-target="#AddImage" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button>
-
+                      <% if(typeof imageFiles!= 'undefined'){%>
                       <% for(var i=0; i<imageFiles.length; i++){ %>
                         <div class="col-md-3">
                             <div class="image  view-first">
@@ -167,6 +159,7 @@
                         </div>
 
                       <% } %>
+                          <% } %>
 
 
 

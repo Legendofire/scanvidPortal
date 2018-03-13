@@ -6,9 +6,8 @@ var mongoosePaginate = require('mongoose-paginate');
 let ProductSchema = new Schema({
   title: String,
   barcode: String,
-  name: String,
-  ean: String,
   brand:String,
+  tags:Object
 })
 
 ProductSchema.plugin(mongoosePaginate);

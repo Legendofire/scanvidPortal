@@ -40,16 +40,8 @@ router.get('/', auth.userLoggedIn, function(req, res, next) {
   };
 
   Product.findOne({barcode:trialProductBarcode}).exec().then(function(product){
-    product.me = "ahmed"; //here when i add an attribute to the object it's added but it doesn't go to the frontend.
-    output.product = product; //here product contains basically js code 5 functions to be exact.
-    console.log(Object.keys(output.product)); //however when i print the keys i find the function names and the me attribute but not the product variables.
-    /*
-    Things i tried/did
-    1- changed promise library to bluebird since the mpromise (mongoose default) is deprecated, thought maybe it's a known bug
-    2- tried to manually set variables as in output.category1 = product.category1, didn't work was still empty at the front.
-    Notes:
-    1- there is some hidden console.log() that prints the product variables, where is no idea.
-    */
+    output.product = product;
+
     return storage.bucket('scanvid--'+trialProductBarcode).getFiles();
   })
   .then(function(media){
@@ -58,6 +50,7 @@ router.get('/', auth.userLoggedIn, function(req, res, next) {
       images.push('https://storage.googleapis.com/scanvid--'+trialProductBarcode+'/'+file.name);
     });
     output.imageFiles=images;
+
     res.render('layout', output);
   })
   .catch(function(err){
@@ -65,16 +58,34 @@ router.get('/', auth.userLoggedIn, function(req, res, next) {
   })
 });
 
+
 router.get('/view/:pid', auth.userLoggedIn, function(req, res, next) {
   var output = {
-    child: 'partials/products/view.ejs',
+    child: 'partials/products/singleView.ejs',
     current_user: req.session.user
   };
-  Product.findOne({_id:req.params.pid},function(err,value){
-    if (err) console.error(err);
-    output.product = value;
+
+  Product.findOne({barcode:req.params.pid}).exec().then(function(product){
+    output.product = product;
+
+    return storage.bucket('scanvid--'+req.params.pid).getFiles();
+  })
+  .then(function(media){
+    if(media[0]){
+        var images=[];
+        media[0].forEach(file=>{
+          images.push('https://storage.googleapis.com/scanvid--'+req.params.pid+'/'+file.name);
+        });
+        output.imageFiles=images;
+      }
+
     res.render('layout', output);
-  });
+  })
+  .catch(function(err){
+    console.trace(err);
+    res.render('layout', output);
+
+  })
 });
 
 router.get('/edit/:pid', auth.userLoggedIn, function(req, res, next) {

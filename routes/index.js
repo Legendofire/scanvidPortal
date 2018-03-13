@@ -24,6 +24,11 @@ router.get('/api/dbSearch',function(req, res, next){
   Products.searchDb(req,res,next);
   //res.render('testDT');
 });
+router.get('/api/dbSearchBarcode',function(req, res, next){
+
+  Products.dbSearchBarcode(req,res,next);
+  //res.render('testDT');
+});
 
 router.get('/', auth.userLoggedIn, Index.getDashboard);
 
