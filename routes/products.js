@@ -36,15 +36,13 @@ router.post('/video',auth.userLoggedIn,function(req,res,next){
     var imgArr=[];
     var picsFolder='./public/tempFolder/';
       var form = new formidable.IncomingForm();
-       form.parse(req, function (err, fields, files) {
-
-         var bool=false;
-         const options = {
-          metadata: {
-            contentType: files.video.type,
-          },
-        }
-
+     form.parse(req, function (err, fields, files) {
+       var bool=false;
+       const options = {
+        metadata: {
+          contentType: files.video.type,
+        },
+      }
        storage.getBuckets().then(results => {
            const buckets = results[0];
            //console.log('Buckets:');
@@ -193,32 +191,6 @@ router.post('/add', auth.userLoggedIn, function(req, res, next) {
       res.redirect('/products')
     }
   });
-});
-
-router.get('/', auth.userLoggedIn, function(req, res, next) {
-  var trialProductBarcode='3165140606585';
-  var output = {
-    child: 'partials/products/singleView.ejs',
-    current_user: req.session.user
-  };
-
-  Product.findOne({barcode:trialProductBarcode}).exec().then(function(product){
-    output.product = product;
-
-    return storage.bucket('scanvid--images--'+trialProductBarcode).getFiles();
-  })
-  .then(function(media){
-    var images=[];
-    media[0].forEach(file=>{
-      images.push('https://storage.googleapis.com/scanvid--'+trialProductBarcode+'/'+file.name);
-    });
-    output.imageFiles=images;
-
-    res.render('layout', output);
-  })
-  .catch(function(err){
-    console.trace(err);
-  })
 });
 
 router.get('/view/:pid', auth.userLoggedIn, function(req, res, next) {

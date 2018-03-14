@@ -8,28 +8,9 @@ let Index = require('./../controllers/index');
 
 let auth = require('./../middleware/authentication');
 
-router.get('/testFady',function(req, res, next){
-  //Products.getAllProducts(req,res,next);
-  //Products.searchDb(req,res,next);
-  res.render('testDT');
-});
-
-router.get('/api/getAll',function(req, res, next){
-
-  Products.getAllProducts(req,res,next);
-  //res.render('testDT');
-});
-router.get('/api/dbSearch',function(req, res, next){
-
-  Products.searchDb(req,res,next);
-  //res.render('testDT');
-});
-router.get('/api/dbSearchBarcode',function(req, res, next){
-
-  Products.dbSearchBarcode(req,res,next);
-  //res.render('testDT');
-});
-
+router.get('/api/getAll',Products.getAllProducts);
+router.get('/api/dbSearch',Products.searchDb);
+router.get('/api/dbSearchBarcode',Products.dbSearchBarcode);
 router.get('/', auth.userLoggedIn, Index.getDashboard);
 
 router.post('/auth', function(req, res, next) {

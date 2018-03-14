@@ -29,7 +29,6 @@ router.post("/add", auth.adminLoggedIn, function(req, res, next) {
   var brand = new Brand({
     brandName: req.body.brandName
   });
-
   brand.save(function(err) {
     if (err) console.error(err);
     res.redirect("/brands");
@@ -41,14 +40,12 @@ router.get("/view/:uid", auth.userLoggedIn, function(req, res, next) {
     child: "partials/brands/view.ejs",
     current_user: req.session.user
   };
-
   var query = {};
   if(req.session.user.isBrand){
     query = {brandName: req.session.user.brandName};
   }else{
     query = {_id: req.params.uid};
   }
-
   Brand.findOne(query)
     .exec()
     .then(function(brand) {
@@ -69,24 +66,8 @@ router.get("/delete/:uid", auth.adminLoggedIn, function(req, res, next) {
     .remove()
     .exec()
     .then(function(value) {
-      res.redirect("users");
+      res.redirect("/brands");
     });
-});
-
-router.get("/tempadd", function(req, res, next) {
-  var user = new User({
-    username: "Admin",
-    password: "Admin",
-    full_name: "Admin McAdminFace",
-    email: "admin@scanvid.com",
-    phone: "01226222335",
-    isBrand: false
-  });
-
-  user.save(function(err, value) {
-    if (err) console.error(err);
-    res.json(value);
-  });
 });
 
 module.exports = router;
