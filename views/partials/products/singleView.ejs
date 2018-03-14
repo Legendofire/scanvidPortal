@@ -100,46 +100,21 @@
 
                     <!-- start Product details -->
                     <ul class="messages">
-
-
-
-                      <% if(typeof product.tags.category1!= 'undefined'){ %>
-
-                      <li>
-                        <div class="message_wrapper">
-                          <h4 class="heading">Category</h4>
-                          <h6><%= product.tags.category1 %></h6>
-                        </div>
-                      </li> <% } %>
-                      <% if(typeof product.tags.category2!= 'undefined'){%>
-
-                      <li>
-                        <div class="message_wrapper">
-                          <h4 class="heading">Category 2</h4>
-                          <blockquote class="message"><%= product.tags.category2 %></blockquote>
-                        </div>
-                      </li> <% } %>
-                      <% if(typeof product.tags.manual!= 'undefined'){%>
-
-                      <li>
-                        <div class="message_wrapper">
-                          <h4 class="heading">Manual Link</h4>
-                          <blockquote class="message"><a href="<%= product.tags.manual %>">Click Here</a></blockquote>
-                        </div>
-
-                      </li> <% } %>
-
-
-                      <% if(typeof product.tags.image!= 'undefined'){%>
-                      <li>
-                        <div class="message_wrapper">
-                          <h4 class="heading">Image Link</h4>
-                          <blockquote class="message"><a href="https://scanvid.mybluemix.net/images/bosch/<%= product.tags.image %>" >Click Here</a></blockquote>
-                        </div>
-                      </li>
-                            <% } %>
-
-
+                      <% for(var i=0; i < product.tags.length; i++){ %>
+                        <li>
+                          <div class="message_wrapper">
+                            <h4 class="heading"><%= product.tags[i].name %></h4>
+                            <blockquote class="message">
+                              <%var patt = new RegExp("^(?:http(s)?:\/\/)?[\w.-]+");%>
+                              <% if (patt.test(product.tags[i].value)) { %>
+                                <a href="<%=product.tags[i].value%>" >Click Here</a>
+                              <% } else { %>
+                                <%= product.tags[i].value %>
+                              <% } %>
+                            </blockquote>
+                          </div>
+                        </li>
+                      <% } %>
                     </ul>
                     <!-- end recent activity -->
 

@@ -221,8 +221,6 @@ router.get('/', auth.userLoggedIn, function(req, res, next) {
   })
 });
 
-
-
 router.get('/view/:pid', auth.userLoggedIn, function(req, res, next) {
   var output = {
     child: 'partials/products/singleView.ejs',
@@ -230,9 +228,23 @@ router.get('/view/:pid', auth.userLoggedIn, function(req, res, next) {
   };
 
   Product.findOne({barcode:req.params.pid}).exec().then(function(product){
-    output.product = product;
-
-    return storage.bucket('scanvid--images--'+req.params.pid).getFiles();
+    if(product){
+      output.product = product;
+      if(req.session.user.isBrand){
+        if(req.session.user.brandName == product.brand){
+          return storage.bucket('scanvid--images--'+req.params.pid).getFiles();
+        }else{
+          res.redirect('brands/view/'+req.session.user.brandName);
+          return;
+        }
+      }else{
+          return storage.bucket('scanvid--images--'+req.params.pid).getFiles();
+      }
+    }else{
+      console.error('barcode '+req.params.pid+' not found');
+      res.redirect('/brands/view/'+req.session.user.brandName);
+      return;
+    }
   })
   .then(function(media){
     if(media[0]){
@@ -267,9 +279,28 @@ router.get('/edit/:pid', auth.userLoggedIn, function(req, res, next) {
     child: 'partials/products/edit.ejs',
     current_user: req.session.user
   };
-  Product.findOne({barcode:req.params.pid}).exec().then(function(value){
-    output.product = value;
-    return Brand.find({}).exec();
+  Product.findOne({barcode:req.params.pid}).exec().then(function(product){
+    if(product){
+      output.product = product;
+      if(req.session.user.isBrand){
+        if(req.session.user.brandName == product.brand){
+          output.product = product;
+          output.tags = product.tags;
+          return Brand.find({}).exec();
+        }else{
+          res.redirect('brands/view/'+req.session.user.brandName);
+          return;
+        }
+      }else{
+        output.product = product;
+        output.tags = product.tags;
+        return Brand.find({}).exec();
+      }
+    }else{
+      console.error('barcode '+req.params.pid+' not found');
+      res.redirect('/brands/view/'+req.session.user.brandName);
+      return;
+    }
   }).then(function(brands){
     output.brands = brands
     res.render('layout',output);
@@ -278,22 +309,19 @@ router.get('/edit/:pid', auth.userLoggedIn, function(req, res, next) {
 
 router.post('/edit/:pid', auth.userLoggedIn, function(req, res, next) {
   Product.findOne({barcode:req.params.pid}).exec().then(function(product){
-    if(req.body.title) product.title = req.body.title;
-    if(req.body.barcode) product.barcode = req.body.barcode;
-    if(req.body.brand && !req.session.user.isBrand) product.brand = req.body.brand;
-    var tags = {};
-    if(req.body.category1) tags.category1 = req.body.category1;
-    if(req.body.category2) tags.category2 = req.body.category2;
-    if(req.body.manual) tags.manual = req.body.manual;
-    if(req.body.image) tags.image = req.body.image;
-    if(tags.length>0){
-      product.tags = tags;
-    }
+    if(!req.session.user.isBrand || req.session.user.brandName == product.brand){
+      if(req.body.title) product.title = req.body.title;
+      if(req.body.barcode) product.barcode = req.body.barcode;
+      if(req.body.brand && !req.session.user.isBrand) product.brand = req.body.brand;
+      if(req.body.tags) product.tags = JSON.parse(req.body.tags);
 
-    product.save(function(value, err){
-      if (err) console.error(err);
-      res.redirect('/products/view/' + req.params.pid);
-    });
+      product.save(function(value, err){
+        if (err) console.error(err);
+        res.redirect('/products/view/' + req.params.pid);
+      });
+    }else{
+      res.redirect('/brands/view/' + req.session.user.brandName);
+    }
   });
 });
 
