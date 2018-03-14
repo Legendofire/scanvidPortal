@@ -1,534 +1,456 @@
-<!-- page content -->
-
-  <div class="nav navbar-right panel_toolbox">
-    <button type="button" href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#brandProduct-add-modal">Add Product</button>
-  </div>
-  <div class="modal fade" id="brandProduct-add-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-          </button>
-          <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+<div class="right_col" role="main">
+  <div class="">
+    <div class="row top_tiles">
+      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+          <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+          <div class="count">179</div>
+          <h3>New Sign ups</h3>
+          <p>Lorem ipsum psdea itgum rixt.</p>
         </div>
-        <div class="modal-body">
-          <form data-parsley-validate class="form-horizontal form-label-left" action="/products/add" method="post">
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Title <span class="required">*</span>
-              </label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="title" required="required" class="form-control col-md-7 col-xs-12">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Barcode <span class="required">*</span>
-
-              </label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="barcode" required="required" class="form-control col-md-7 col-xs-12">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">ean <span class="required">*</span>
-
-              </label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="ean" required="required" class="form-control col-md-7 col-xs-12">
-              </div>
-            </div>
-            <div class="ln_solid"></div>
-            <div class="form-group">
-              <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                <button class="btn btn-primary" type="reset">Reset</button>
-                <button type="submit" class="btn btn-success">Submit</button>
-              </div>
-            </div>
-
-          </form>
+      </div>
+      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+          <div class="icon"><i class="fa fa-comments-o"></i></div>
+          <div class="count">179</div>
+          <h3>New Sign ups</h3>
+          <p>Lorem ipsum psdea itgum rixt.</p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+          <div class="icon"><i class="fa fa-sort-amount-desc"></i></div>
+          <div class="count">179</div>
+          <h3>New Sign ups</h3>
+          <p>Lorem ipsum psdea itgum rixt.</p>
         </div>
+      </div>
+      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+          <div class="icon"><i class="fa fa-check-square-o"></i></div>
+          <div class="count">179</div>
+          <h3>New Sign ups</h3>
+          <p>Lorem ipsum psdea itgum rixt.</p>
+        </div>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Transaction Summary <small>Weekly progress</small></h2>
+            <div class="filter">
+              <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="col-md-9 col-sm-12 col-xs-12">
+              <div class="demo-container" style="height:280px">
+                <div id="chart_plot_02" class="demo-placeholder"></div>
+              </div>
+              <div class="tiles">
+                <div class="col-md-4 tile">
+                  <span>Total Sessions</span>
+                  <h2>231,809</h2>
+                  <span class="sparkline11 graph" style="height: 160px;">
+                       <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                  </span>
+                </div>
+                <div class="col-md-4 tile">
+                  <span>Total Revenue</span>
+                  <h2>$231,809</h2>
+                  <span class="sparkline22 graph" style="height: 160px;">
+                        <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                  </span>
+                </div>
+                <div class="col-md-4 tile">
+                  <span>Total Sessions</span>
+                  <h2>231,809</h2>
+                  <span class="sparkline11 graph" style="height: 160px;">
+                         <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <div>
+                <div class="x_title">
+                  <h2>Top Profiles</h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Settings 1</a>
+                        </li>
+                        <li><a href="#">Settings 2</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <ul class="list-unstyled top_profiles scroll-view">
+                  <li class="media event">
+                    <a class="pull-left border-aero profile_thumb">
+                      <i class="fa fa-user aero"></i>
+                    </a>
+                    <div class="media-body">
+                      <a class="title" href="#">Ms. Mary Jane</a>
+                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
+                      <p> <small>12 Sales Today</small>
+                      </p>
+                    </div>
+                  </li>
+                  <li class="media event">
+                    <a class="pull-left border-green profile_thumb">
+                      <i class="fa fa-user green"></i>
+                    </a>
+                    <div class="media-body">
+                      <a class="title" href="#">Ms. Mary Jane</a>
+                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
+                      <p> <small>12 Sales Today</small>
+                      </p>
+                    </div>
+                  </li>
+                  <li class="media event">
+                    <a class="pull-left border-blue profile_thumb">
+                      <i class="fa fa-user blue"></i>
+                    </a>
+                    <div class="media-body">
+                      <a class="title" href="#">Ms. Mary Jane</a>
+                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
+                      <p> <small>12 Sales Today</small>
+                      </p>
+                    </div>
+                  </li>
+                  <li class="media event">
+                    <a class="pull-left border-aero profile_thumb">
+                      <i class="fa fa-user aero"></i>
+                    </a>
+                    <div class="media-body">
+                      <a class="title" href="#">Ms. Mary Jane</a>
+                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
+                      <p> <small>12 Sales Today</small>
+                      </p>
+                    </div>
+                  </li>
+                  <li class="media event">
+                    <a class="pull-left border-green profile_thumb">
+                      <i class="fa fa-user green"></i>
+                    </a>
+                    <div class="media-body">
+                      <a class="title" href="#">Ms. Mary Jane</a>
+                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
+                      <p> <small>12 Sales Today</small>
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Weekly Summary <small>Activity shares</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Settings 1</a>
+                  </li>
+                  <li><a href="#">Settings 2</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+
+            <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
+              <div class="col-md-7" style="overflow:hidden;">
+                <span class="sparkline_one" style="height: 160px; padding: 10px 25px;">
+                              <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                          </span>
+                <h4 style="margin:18px">Weekly sales progress</h4>
+              </div>
+
+              <div class="col-md-5">
+                <div class="row" style="text-align: center;">
+                  <div class="col-md-4">
+                    <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
+                    <h4 style="margin:0">Bounce Rates</h4>
+                  </div>
+                  <div class="col-md-4">
+                    <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
+                    <h4 style="margin:0">New Traffic</h4>
+                  </div>
+                  <div class="col-md-4">
+                    <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
+                    <h4 style="margin:0">Device Share</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Top Profiles <small>Sessions</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Settings 1</a>
+                  </li>
+                  <li><a href="#">Settings 2</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item One Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Two Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Two Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Two Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Three Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Top Profiles <small>Sessions</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Settings 1</a>
+                  </li>
+                  <li><a href="#">Settings 2</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item One Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Two Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Two Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Two Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Three Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Top Profiles <small>Sessions</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Settings 1</a>
+                  </li>
+                  <li><a href="#">Settings 2</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item One Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Two Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Two Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Two Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+            <article class="media event">
+              <a class="pull-left date">
+                <p class="month">April</p>
+                <p class="day">23</p>
+              </a>
+              <div class="media-body">
+                <a class="title" href="#">Item Three Title</a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </article>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-<div class="right_col" role="main">
-  <div class="">
-    <div class="x_panel">
-                <div class="x_title">
-                  <h2> Scanvid Products </h2>
-
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-
-
-                  <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                      <!-- <li role="presentation" class=""><a href="#tab_content1" id="overview-tab" role="tab" data-toggle="tab" aria-expanded="true">Overview</a>
-                      </li> -->
-                      <li role="presentation" class="active"><a href="#tab_content2" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">All Products</a>
-                      </li>
-                      <% if(!current_user.isBrand){%>
-                      <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">UNKnown Records</a>
-                      </li>
-                      <%}%>
-                    </ul>
-                    <div id="myTabContent" class="tab-content">
-                      <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="home-tab">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="x_panel">
-                              <div class="x_content">
-                                <div class="left"><input type="text" placeholder="Barcode Search" class="searchBarcode"><button class="searchBarcodeButton">BarcodeSearch</button></div>
-                                <!-- start project list --><div class="pull-right"><input type="text" placeholder="Text Search" class="searchBar"><button class="searchButton">Search Table</button></div>
-                                <table id="knownProducts" class="table table-striped projects" cellspacing="0" width="100%" >
-                                  <thead>
-                                    <tr>
-                                      <th>barcode</th>
-                                      <th>title</th>
-                                      <th>brand</th>
-                                    </tr>
-                                  </thead>
-                                </table>
-                                <div class="pull-right">
-                                  <button class="previousPage">Previous Page</button>
-                                  <button class="nextPage">Next Page</button>
-                                  <h5 id="pages"></h5>
-                                </div>
-                                <!-- end project list -->
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="x_panel">
-                              <div class="x_content">
-
-                                <!-- start project list --><div class="pull-right"><input type="text" placeholder="search" class="searchBar2"><button class="searchButton2">Search Table</button></div>
-                                <table id="unknownProducts" class="table table-striped projects" cellspacing="0" width="100%">
-                                  <thead>
-                                    <tr>
-                                      <th>barcode</th>
-                                      <th>title</th>
-                                      <th>brand</th>
-                                    </tr>
-                                  </thead>
-                                </table>
-                                <!-- end project list -->
-                                <div class="pull-right">
-                                    <button class="previousPage2">Previous Page</button>
-                                    <button class="nextPage2">Next Page</button>
-                                    <h5 id="pages2"></h5>
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-  </div>
 </div>
-
-<div id="myModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">
-		<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-			    <h3 style="margin:0;">
-			        Messages
-			    </h3>
-			</div>
-			<div class="modal-body">
-				<div class="progress progress-striped active" style="margin-bottom:0;">
-				    <div class="progress-bar progress-bar-success" style="width: 100%">
-				    </div>
-				</div>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-$(document).ready(function(){
-
-  var pagesCounter=1;
-
-    jQuery.support.cors = true;
-
-    $.ajax(
-    {
-        type: "GET",
-        url:  '/api/getAll',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        beforeSend:function(){
-          $('#myModal').modal("show");
-           $('.modal-header h3').html('Processing...')
-        },
-        success: function (data) {
-
-          pagesCounter++;
-        var trHTML = '';
-        console.log(data.page);
-        $("#pages").html("Page # "+data.page+" out of "+data.pages+" Pages");
-
-
-        $.each(data.docs, function (i, item) {
-
-            trHTML += '<tr><td><a href="/products/view/' + item.barcode + '">' + item.barcode + '</a></td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
-        });
-
-        $('#knownProducts').append(trHTML);
-          $('#myModal').modal("hide");
-
-        },
-
-        error: function (msg) {
-
-            alert(msg.responseText);
-        }
-    });
-    //next page logic
-    $(".nextPage").on("click",function(){
-        $.ajax(
-        {
-            type: "GET",
-            url:  '/api/getAll',
-            data:'page='+pagesCounter,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend:function(){
-              $('#myModal').modal("show");
-               $('.modal-header h3').html('Processing...')
-            },
-            success: function (data) {
-              pagesCounter++;
-            var trHTML = '';
-            console.log(data.page);
-            $("#pages").html("Page # "+data.page+" out of "+data.pages+" Pages");
-
-              $("#knownProducts").find("tr:gt(0)").remove();
-            $.each(data.docs, function (i, item) {
-
-              if(item.title){
-                trHTML += '<tr><td><a href="/products/view/' + item.barcode + '">' + item.barcode + '</a></td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
-              }else{
-                trHTML += '<tr><td></td><td></td><td></td><td>' + item.brand + '</td><td>' + item.name + '</td><td>' + item.ean + '</td><td>' + item.category1 + '</td></tr>';
-              }
-            });
-
-            $('#knownProducts').append(trHTML);
-            $('#myModal').modal("hide");
-
-            },
-
-            error: function (msg) {
-
-                alert(msg.responseText);
-            }
-        });
-    })
-
-    //prev pages
-    $(".previousPage").on("click",function(){
-      pagesCounter=pagesCounter-2;
-        $.ajax(
-        {
-            type: "GET",
-            url:  '/api/getAll',
-            data:'page='+pagesCounter,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend:function(){
-              $('#myModal').modal("show");
-               $('.modal-header h3').html('Processing...')
-            },
-            success: function (data) {
-              pagesCounter++;
-            var trHTML = '';
-            console.log(data.page);
-            $("#pages").html("Page # "+data.page+" out of "+data.pages+" Pages");
-
-          $("#knownProducts").find("tr:gt(0)").remove();
-
-            $.each(data.docs, function (i, item) {
-
-              if(item.title){
-                trHTML += '<tr><td><a href="/products/view/' + item.barcode + '">' + item.barcode + '</a></td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
-              }else{
-                trHTML += '<tr><td></td><td></td><td></td><td>' + item.brand + '</td><td>' + item.name + '</td><td>' + item.ean + '</td><td>' + item.category1 + '</td></tr>';
-              }
-            });
-
-            $('#knownProducts').append(trHTML);
-            $('#myModal').modal("hide");
-
-            },
-
-            error: function (msg) {
-
-                alert(msg.responseText);
-            }
-        });
-    })
-    //Search Table
-    $(".searchButton").on("click",function(){
-      var query=$(".searchBar").val();
-        $.ajax(
-        {
-            type: "GET",
-            url:  '/api/dbSearch',
-            data:'q='+query,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend:function(){
-              $('#myModal').modal("show");
-               $('.modal-header h3').html('Processing...')
-            },
-            success: function (data) {
-              pagesCounter++;
-            var trHTML = '';
-            console.log(data.page);
-            $("#pages").html("search results");
-
-          $("#knownProducts").find("tr:gt(0)").remove();
-
-            $.each(data, function (i, item) {
-                if(item.title){
-                  trHTML += '<tr><td><a href="/products/view/' + item.barcode + '">' + item.barcode + '</a></td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
-                }else{
-                  trHTML += '<tr><td></td><td></td><td></td><td>' + item.brand + '</td><td>' + item.name + '</td><td>' + item.ean + '</td><td>' + item.category1 + '</td></tr>';
-                }
-            });
-
-            $('#knownProducts').append(trHTML);
-            $('#myModal').modal("hide");
-
-            },
-
-            error: function (msg) {
-
-                alert(msg.responseText);
-            }
-        });
-    })
-
-    //Search Table
-    $(".searchBarcodeButton").on("click",function(){
-      var query=$(".searchBarcode").val();
-        $.ajax(
-        {
-            type: "GET",
-            url:  '/api/dbSearchBarcode',
-            data:'q='+query,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend:function(){
-              $('#myModal').modal("show");
-               $('.modal-header h3').html('Processing...')
-            },
-            success: function (item) {
-              pagesCounter++;
-            var trHTML = '';
-            //console.log(data.page);
-            $("#pages").html("search results");
-
-          $("#knownProducts").find("tr:gt(0)").remove();
-
-          trHTML += '<tr><td><a href="/products/view/' + item.barcode + '">' + item.barcode + '</a></td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
-
-            $('#knownProducts').append(trHTML);
-            $('#myModal').modal("hide");
-
-            },
-
-            error: function (msg) {
-
-                alert(msg.responseText);
-            }
-        });
-    })
-
-
-})
-
-</script>
-<script>
-$(document).ready(function(){
-  var pagesCounter2=1;
-
-    jQuery.support.cors = true;
-$("#profile-tab").on("click",function(){
-        $.ajax(
-        {
-            type: "GET",
-            url:  '/api/getAll',
-            data:'type=unknown',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend:function(){
-              $('#myModal').modal("show");
-               $('.modal-header h3').html('Processing...')
-            },
-            success: function (data) {
-              pagesCounter2++;
-            var trHTML = '';
-            console.log(data.page);
-            $("#pages2").html("Page # "+data.page+" out of "+data.pages+" Pages");
-
-
-            $.each(data.docs, function (i, item) {
-
-                trHTML += '<tr><td><a href="/products/view/' + item.barcode + '">' + item.barcode + '</a></td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
-            });
-
-            $('#unknownProducts').append(trHTML);
-            $('#myModal').modal("hide");
-
-            },
-
-            error: function (msg) {
-
-                alert(msg.responseText);
-            }
-        });
-      });
-    //next page logic
-    $(".nextPage2").on("click",function(){
-        $.ajax(
-        {
-            type: "GET",
-            url:  '/api/getAll',
-            data:'type=unknown&page='+pagesCounter2,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend:function(){
-              $('#myModal').modal("show");
-               $('.modal-header h3').html('Processing...')
-            },
-            success: function (data) {
-              pagesCounter2++;
-            var trHTML = '';
-            console.log(data.page);
-            $("#pages2").html("Page # "+data.page+" out of "+data.pages+" Pages");
-
-              $("#unknownProducts").find("tr:gt(0)").remove();
-            $.each(data.docs, function (i, item) {
-
-              if(item.title){
-                trHTML += '<tr><td><a href="/products/view/' + item.barcode + '">' + item.barcode + '</a></td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
-              }else{
-                trHTML += '<tr><td></td><td></td><td></td><td>' + item.brand + '</td><td>' + item.name + '</td><td>' + item.ean + '</td><td>' + item.category1 + '</td></tr>';
-              }
-            });
-
-            $('#unknownProducts').append(trHTML);
-            $('#myModal').modal("hide");
-
-            },
-
-            error: function (msg) {
-
-                alert(msg.responseText);
-            }
-        });
-    })
-
-    //prev pages
-    $(".previousPage2").on("click",function(){
-      pagesCounter2=pagesCounter2-2;
-        $.ajax(
-        {
-            type: "GET",
-            url:  '/api/getAll',
-            data:'type=unknown&page='+pagesCounter2,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend:function(){
-              $('#myModal').modal("show");
-               $('.modal-header h3').html('Processing...')
-            },
-            success: function (data) {
-              pagesCounter2++;
-            var trHTML = '';
-            console.log(data.page);
-            $("#pages2").html("Page # "+data.page+" out of "+data.pages+" Pages");
-
-          $("#unknownProducts").find("tr:gt(0)").remove();
-
-            $.each(data.docs, function (i, item) {
-
-              if(item.title){
-                trHTML += '<tr><td><a href="/products/view/' + item.barcode + '">' + item.barcode + '</a></td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
-              }else{
-                trHTML += '<tr><td></td><td></td><td></td><td>' + item.brand + '</td><td>' + item.name + '</td><td>' + item.ean + '</td><td>' + item.category1 + '</td></tr>';
-              }
-            });
-
-            $('#unknownProducts').append(trHTML);
-            $('#myModal').modal("hide");
-
-            },
-
-            error: function (msg) {
-
-                alert(msg.responseText);
-            }
-        });
-    })
-    //Search Table
-    $(".searchButton2").on("click",function(){
-      var query=$(".searchBar2").val();
-        $.ajax(
-        {
-            type: "GET",
-            url:  '/api/dbSearch',
-            data:'type=unknown&q='+query,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            beforeSend:function(){
-              $('#myModal').modal("show");
-               $('.modal-header h3').html('Processing...')
-            },
-            success: function (data) {
-              pagesCounter2++;
-            var trHTML = '';
-            console.log(data.page);
-            $("#pages2").html("search results");
-
-          $("#unknownProducts").find("tr:gt(0)").remove();
-
-            $.each(data, function (i, item) {
-                if(item.title){
-                  trHTML += '<tr><td><a href="/products/view/' + item.barcode + '">' + item.barcode + '</a></td><td>' + item.title + '</td><td>' + item.brand + '</td></tr>';
-                }else{
-                  trHTML += '<tr><td></td><td></td><td></td><td>' + item.brand + '</td><td>' + item.name + '</td><td>' + item.ean + '</td><td>' + item.category1 + '</td></tr>';
-                }
-            });
-
-            $('#unknownProducts').append(trHTML);
-            $('#myModal').modal("hide");
-
-            },
-
-            error: function (msg) {
-
-                alert(msg.responseText);
-            }
-        });
-    })
-
-
-})
-
-</script>
-<!-- /page content -->

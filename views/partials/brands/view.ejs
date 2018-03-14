@@ -41,49 +41,26 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">ean <span class="required">*</span>
-
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" name="ean" required="required" class="form-control col-md-7 col-xs-12">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">website <span class="required">*</span>
-
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" name="website" required="required" class="form-control col-md-7 col-xs-12">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">youtube <span class="required">*</span>
-
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" name="youtube" required="required" class="form-control col-md-7 col-xs-12">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">image <span class="required">*</span>
-
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" name="image" required="required" class="form-control col-md-7 col-xs-12">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">video <span class="required">*</span>
-
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" name="video" required="required" class="form-control col-md-7 col-xs-12">
-                        </div>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name"> Brand Name <span class="required">*</span>
+                        <% if(current_user.isBrand){ %>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="brand" disabled value="<%= current_user.brandName %>" class="form-control col-md-7 col-xs-12">
+                          </div>
+                        <% } else {%>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select name="brand" class="form-control">
+                              <option value>Choose a Brand</option>
+                              <% for(var i=0; i<brands.length; i++){ %>
+                                <option value="<%= brands[i].brandName %>"><%= brands[i].brandName%></option>
+                              <% } %>
+                            </select>
+                          </div>
+                        <% } %>
                       </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <button class="btn btn-primary" type="button">Cancel</button>
                           <button class="btn btn-primary" type="reset">Reset</button>
                           <button type="submit" class="btn btn-success">Submit</button>
                         </div>

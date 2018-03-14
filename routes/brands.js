@@ -54,6 +54,9 @@ router.get("/view/:uid", auth.userLoggedIn, function(req, res, next) {
     })
     .then(function(users) {
       output.users = users;
+      return Brand.find({});
+    }).then(function(brands){
+      output.brands = brands;
       res.render("layout", output);
     })
     .catch(function(err) {

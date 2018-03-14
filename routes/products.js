@@ -30,6 +30,22 @@ const multer = Multer({
 });
 var fs = require('fs');
 
+router.get('/', auth.adminLoggedIn, function(req, res, next) {
+  if(req.session.user.isBrand){
+    res.redirect('brands/view/'+req.session.user.brandName);
+  }else{
+    let output = {
+      'child': 'partials/products/table.ejs',
+      'current_user': req.session.user
+    }
+    Brand.find({}).exec().then(function(brands){
+      output.brands = brands;
+      res.render('layout',output);
+    });
+
+  }
+});
+
 router.post('/video',auth.userLoggedIn,function(req,res,next){
   if (req.session.user) {
     var output={};
