@@ -113,6 +113,9 @@ router.post('/edit/:pid', auth.userLoggedIn, function(req, res, next) {
     if(req.body.category2) tags.category2 = req.body.category2;
     if(req.body.manual) tags.manual = req.body.manual;
     if(req.body.image) tags.image = req.body.image;
+    if(tags.length>0){
+      product.tags = tags;
+    }
 
     product.save(function(value, err){
       if (err) console.error(err);
