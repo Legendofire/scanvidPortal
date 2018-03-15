@@ -24,7 +24,7 @@
               <div class="profile_img">
                 <div id="crop-avatar">
                   <!-- Current avatar -->
-                  <% if(typeof product.tags.image!= 'undefined'){%>  <img class="img-responsive avatar-view" src="https://scanvid.mybluemix.net/images/bosch/<%= product.tags.image %>" alt="Avatar" title="Change the avatar"><%}%>
+                      <% if(typeof imageFiles!= 'undefined'){%><img class="img-responsive avatar-view" src="<%= imageFiles[0]%>" alt="Avatar" title="Change the avatar">  <% } %>
                 </div>
               </div>
               <h3><%= product.title %></h3>
