@@ -8,6 +8,8 @@ exports.getAllProducts = function(req, res, next) {
   if (req.session.user) {
     if (req.session.user.isBrand) {
       if (req.query.page) {
+        console.log(req.query.page);
+        console.log(req.session.user.brandName);
         Product.paginate(
           { brand: req.session.user.brandName },
           { page: req.query.page, limit: 10 })
@@ -22,8 +24,7 @@ exports.getAllProducts = function(req, res, next) {
               res.json(result);
           });
       }
-    }
-    if (req.query.type) {
+    }else if (req.query.type) {
       if (req.query.page) {
         Product.paginate(
           { brand: req.query.type },
