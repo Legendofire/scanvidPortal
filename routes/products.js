@@ -32,7 +32,7 @@ var fs = require('fs');
 
 router.get('/', auth.adminLoggedIn, function(req, res, next) {
   if(req.session.user.isBrand){
-    res.redirect('brands/view/'+req.session.user.brandName);
+    res.redirect('/brands/view/'+req.session.user.brandName);
   }else{
     let output = {
       'child': 'partials/products/table.ejs',
@@ -222,7 +222,7 @@ router.get('/view/:pid', auth.userLoggedIn, function(req, res, next) {
         if(req.session.user.brandName == product.brand){
           return storage.bucket('scanvid--images--'+req.params.pid).getFiles();
         }else{
-          res.redirect('brands/view/'+req.session.user.brandName);
+          res.redirect('/brands/view/'+req.session.user.brandName);
           return;
         }
       }else{
@@ -276,7 +276,7 @@ router.get('/edit/:pid', auth.userLoggedIn, function(req, res, next) {
           output.tags = product.tags;
           return Brand.find({}).exec();
         }else{
-          res.redirect('brands/view/'+req.session.user.brandName);
+          res.redirect('/brands/view/'+req.session.user.brandName);
           return;
         }
       }else{

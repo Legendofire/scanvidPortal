@@ -93,7 +93,7 @@ router.get("/delete/:uid", auth.adminLoggedIn, function(req, res, next) {
     .remove()
     .exec()
     .then(function(value) {
-      res.redirect("users");
+      res.redirect("/users");
     });
 });
 
