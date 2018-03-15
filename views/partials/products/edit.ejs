@@ -13,28 +13,110 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_content">
-          <form data-parsley-validate class="form-horizontal form-label-left" action="/products/edit/<%= product._id %>" method="post">
+          <form class="form-horizontal form-label-left" id="product-form" action="/products/edit/<%= product.barcode %>" method="post">
             <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Product Name</label>
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Title</label>
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="name" required="required" class="form-control col-md-7 col-xs-12" value="<%= product.name %>">
+                <input type="text" name="title" required="required" class="form-control col-md-7 col-xs-12" value="<%= product.title %>">
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Product Description </label>
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">barcode</label>
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="description" required="required" class="form-control col-md-7 col-xs-12" value="<%= product.description %>">
+                <input type="text" name="barcode" required="required" class="form-control col-md-7 col-xs-12" value="<%= product.barcode %>">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Brand Name</label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="brand" required="required" class="form-control col-md-7 col-xs-12" value="<%= product.brand %>" disabled>
               </div>
             </div>
             <div class="ln_solid"></div>
             <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tags</label>
+            </div>
+
+            <div style="overflow-y:auto; height:300px" id="item-container">
+            </div>
+
+            <input type="text" id="tags" name="tags" style="display:none">
+
+            <div class="ln_solid"></div>
+            <div class="form-group">
               <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                <button class="btn btn-primary" type="button">Cancel</button>
-                <button class="btn btn-primary" type="reset">Reset</button>
+                <button class="btn btn-primary" onclick="window.history.back();" type="button">Cancel</button>
                 <button type="submit" class="btn btn-success">Submit</button>
               </div>
             </div>
           </form>
+          <script type="text/javascript">
+            //form tags state
+            var state = [
+              <% for(var i=0; i < tags.length; i++){%>
+                {name:"<%= tags[i].name %>",value:"<%= tags[i].value %>"}<%= i+1==tags.length?'':',' %>
+              <% } %>
+            ];
+            update();
+            //add new tag item
+            $("#item-container").on('blur','input.tag-value',function(){
+              var tagNum = $(".tag-item").length;
+              var id = this.id;
+              var name = $("#"+id+".tag-name").val();
+              var value = $(this).val();
+
+              if(tagNum == id){
+                if(name != "" && value != ""){
+                  state.push({name:name,value:value});
+                  update();
+                }
+              }else{
+                if(name != "" && value != ""){
+                  state[id] = {name:name,value:value};
+                  update();
+                }
+              }
+
+            });
+            //update tag item
+            function update(){
+              var tagNum = $(".tag-item").length;
+              $("#item-container").html("");
+              state.forEach(function(item, index){
+                $("#item-container").append(tagItem(index,item.name,item.value));
+              });
+              $("#item-container").append(tagItem(tagNum,'',''));
+            }
+            //delete tag item
+            $("#item-container").on('click','button.deleteTag',function(){
+              var id = $(this).data('number');
+              var tagNum = $(".tag-item").length;
+              if(tagNum>1){
+                $("#item-"+id).remove();
+                state.splice(id, 1);
+              }
+              update();
+            });
+            //aggregate tag items
+            $('#product-form').submit(function() {
+              $('#tags').val(JSON.stringify(state));
+              return true;
+            });
+            //template
+            function tagItem(tagNum,tagName,tagValue){
+              var html = [
+                '<div class="form-group tag-item" id="item-'+tagNum+'">',
+                  '<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tag:</label>',
+                  '<div class="col-md-9 col-sm-6 col-xs-12">',
+                      '<input type="text" id="'+tagNum+'" class="col-md-3 col-xs-12 tag-name" value="'+tagName+'">',
+                      '<input type="text" id="'+tagNum+'" class="col-md-5 col-xs-12 tag-value" value="'+tagValue+'">',
+                      '<button type="button" class="deleteTag" data-number="'+tagNum+'"><i class="fa fa-times"></i></button>',
+                  '</div>',
+                '</div>'
+              ];
+              return html.join('');
+            }
+          </script>
         </div>
         </div>
       </div>

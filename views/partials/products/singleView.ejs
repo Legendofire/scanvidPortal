@@ -1,0 +1,262 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Product Profile</h3>
+      </div>
+
+
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Product Report </h2>
+
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+              <div class="profile_img">
+                <div id="crop-avatar">
+                  <!-- Current avatar -->
+                  <% if(typeof product.tags.image!= 'undefined'){%>  <img class="img-responsive avatar-view" src="https://scanvid.mybluemix.net/images/bosch/<%= product.tags.image %>" alt="Avatar" title="Change the avatar"><%}%>
+                </div>
+              </div>
+              <h3><%= product.title %></h3>
+
+              <ul class="list-unstyled user_data">
+                <li><i class="fa fa-barcode user-profile-icon"></i> <%= product.barcode %>
+                </li>
+
+                <li>
+                  <i class="fa fa-user user-profile-icon"></i> <%= product.brand %>
+                </li>
+
+              </ul>
+
+              <a href="/products/edit/<%= product.barcode %>" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Product</a>
+              <br />
+
+
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+
+              <div class="profile_title">
+                <div class="col-md-6">
+                  <h2>Product Activity Report</h2>
+                </div>
+
+              </div></br>
+              <div class="row">
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-caret-square-o-right"></i>
+                    </div>
+                    <div class="count">333</div>
+
+                    <h3># of Scans</h3>
+                    <p>Lorem ipsum psdea itgum rixt.</p>
+                  </div>
+                </div>
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-comments-o"></i>
+                    </div>
+                    <div class="count">17229</div>
+
+                    <h3># of Scans</h3>
+                    <p>Lorem ipsum psdea itgum rixt.</p>
+                  </div>
+                </div>
+                <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-sort-amount-desc"></i>
+                    </div>
+                    <div class="count">123123</div>
+
+                    <h3># of Scans</h3>
+                    <p>Lorem ipsum psdea itgum rixt.</p>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                  <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Product Details</a>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Images</a>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Videos</a>
+                  </li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                  <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                    <!-- start Product details -->
+                    <ul class="messages">
+                      <% for(var i=0; i < product.tags.length; i++){ %>
+                        <li>
+                          <div class="message_wrapper">
+                            <h4 class="heading"><%= product.tags[i].name %></h4>
+                            <blockquote class="message">
+                              <%var patt = new RegExp("^(?:http(s)?:\/\/)?[\w.-]+");%>
+                              <% if (patt.test(product.tags[i].value)) { %>
+                                <a href="<%=product.tags[i].value%>" >Click Here</a>
+                              <% } else { %>
+                                <%= product.tags[i].value %>
+                              <% } %>
+                            </blockquote>
+                          </div>
+                        </li>
+                      <% } %>
+                    </ul>
+                    <!-- end recent activity -->
+
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+
+                    <!-- start user projects -->
+                    <div class="row">
+
+                      <!-- <p>Product Images</p><button data-toggle="modal" data-target="#AddImage" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button> -->
+                      <% if(typeof imageFiles!= 'undefined'){%>
+                      <% for(var i=0; i<imageFiles.length; i++){ %>
+                        <div class="col-md-3">
+                            <div class="image  view-first">
+                              <img style="width: 50%; display: block;" src="<%= imageFiles[i]%>" alt="image" />
+                            </div>
+                        </div>
+
+                      <% } %>
+                          <% } %>
+
+
+
+
+
+
+                    </div>
+                    <!-- end user projects -->
+
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                    <div class="row">
+
+                      <p>Product Videos</p><button data-toggle="modal" data-target="#AddVideo" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button>
+
+                      <% if(typeof videoFiles!= 'undefined'){%>
+                      <% for(var i=0; i<videoFiles.length; i++){ %>
+                        <div class="col-md-3">
+                            <div class="image  view-first">
+                              <video width="150" height="150" controls>
+                                    <source src="<%= videoFiles[i]%>" type="video/mp4">
+
+                                  Your browser does not support the video tag.
+                              </video>
+
+                            </div>
+                        </div>
+
+                      <% } %>
+                          <% } %>
+
+
+
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+<!-- Modal -->
+<div id="AddImage" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Modal -->
+<div id="AddVideo" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Video Uploader Tool</h4>
+      </div>
+      <div class="modal-body">
+        <form style="margin-left:5%;" name="videoForm" action="/products/video" method="post" enctype="multipart/form-data">
+
+
+        <div class="input_fields_wrap">
+          <label>Upload Video</label><!-- Input filed so you can add the image url -->
+        </br><input type="text" name="product" placeholder="Product name" value="<%= product.barcode %>"style="display:none;" >
+          </br></br><input type="file" name="video" >
+        </div>
+
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default analyzeVideo">Analyze Video</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div id="myModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">
+		<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+			    <h3 style="margin:0;">
+			        Messages
+			    </h3>
+			</div>
+			<div class="modal-body">
+				<div class="progress progress-striped active" style="margin-bottom:0;">
+				    <div class="progress-bar progress-bar-success" style="width: 100%">
+				    </div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(".analyzeVideo").on("click",function(){
+  $('#myModal').modal("show");
+   $('.modal-header h3').html('Processing...')
+  document.videoForm.submit();
+
+})
+</script>

@@ -3,25 +3,24 @@ let mongoose = require("mongoose");
 
 let Product = require("./../model/products");
 
+
 exports.getAllProducts = function(req, res, next) {
   if (req.session.user) {
     if (req.session.user.isBrand) {
       if (req.query.page) {
         Product.paginate(
           { brand: req.session.user.brandName },
-          { page: req.query.page, limit: 10 },
-          function(err, result) {
-            res.json(result);
-          }
-        );
+          { page: req.query.page, limit: 10 })
+          .then(function(result) {
+              res.json(result);
+          });
       } else {
         Product.paginate(
           { brand: req.session.user.brandName },
-          { page: 1, limit: 10 },
-          function(err, result) {
-            res.json(result);
-          }
-        );
+          { page: 1, limit: 10 })
+          .then(function(result) {
+              res.json(result);
+          });
       }
     }
     if (req.query.type) {
@@ -95,6 +94,50 @@ exports.searchDb = function(req, res, next) {
     }
   }
 };
+exports.dbSearchBarcode = function(req, res, next) {
+  if (req.session.user) {
+    Product.findOne({barcode:req.query.q}).exec(function(err,results){
+      console.log(results);
+      res.json(results);
+    });
+  }
+};
+
+exports.analyzeVideo=function(req,res,next){
+  if (req.session.user) {
+
+    if (!req.file) {
+      return next();
+    }
+
+    const gcsname = 'scanvid--'+req.params.product;
+    const file = storage.file(gcsname);
+
+    const stream = file.createWriteStream({
+      metadata: {
+        contentType: req.file.mimetype
+      }
+    });
+
+    stream.on('error', (err) => {
+      req.file.cloudStorageError = err;
+      next(err);
+    });
+
+    stream.on('finish', () => {
+      req.file.cloudStorageObject = gcsname;
+      file.makePublic().then(() => {
+        req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
+        next();
+      });
+    });
+
+    stream.end(req.file.buffer);
+
+
+  }
+};
+
 
 // if(req.user.isBrand){
 //   var where = {

@@ -1,15 +1,8 @@
 let mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-let BrandSchema = new Schema({
-  brandName: {
-    type: String,
-    required: true,
-  },
-  date_created: {
-    type: Date,
-    default: Date.now,
-  },
-});
+let BrandsSchema = new Schema({
+  brandName: String,
+})
 
-module.exports = mongoose.model('Brands', BrandSchema);
+module.exports = mongoose.model('Brand', BrandsSchema);

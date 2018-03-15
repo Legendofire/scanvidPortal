@@ -10,7 +10,6 @@ var Brand = require("./../model/brands.js");
 var Product = require("./../model/products.js");
 
 router.get("/", auth.adminLoggedIn, function(req, res, next) {
-  console.log("inside function");
   var output = {
     child: "partials/users/table.ejs",
     current_user: req.session.user
@@ -18,12 +17,10 @@ router.get("/", auth.adminLoggedIn, function(req, res, next) {
   User.find({})
     .exec()
     .then(function(users) {
-      console.log("found users");
       output.users = users;
       return Brand.find({}).exec();
     })
     .then(function(brands) {
-      console.log("found brands");
       output.brands = brands;
       res.render("layout", output);
     })
@@ -74,8 +71,6 @@ router.post("/edit/:uid", auth.adminLoggedIn, function(req, res, next) {
     .exec()
     .then(function(user, err) {
       if (err) console.error(err);
-
-      //if(req.body.username) user.username = req.body.username;
       if (req.body.password) user.password = req.body.password;
       if (req.body.full_name) user.full_name = req.body.full_name;
       if (req.body.phone) user.phone = req.body.phone;
@@ -86,7 +81,6 @@ router.post("/edit/:uid", auth.adminLoggedIn, function(req, res, next) {
           user.isBrand = req.body.type;
         }
       }
-
       user.save(function(value, err) {
         if (err) console.error(err);
         res.redirect("/users");
@@ -101,22 +95,6 @@ router.get("/delete/:uid", auth.adminLoggedIn, function(req, res, next) {
     .then(function(value) {
       res.redirect("users");
     });
-});
-
-router.get("/tempadd", function(req, res, next) {
-  var user = new User({
-    username: "Admin",
-    password: "Admin",
-    full_name: "Admin McAdminFace",
-    email: "admin@scanvid.com",
-    phone: "01226222335",
-    isBrand: false
-  });
-
-  user.save(function(err, value) {
-    if (err) console.error(err);
-    res.json(value);
-  });
 });
 
 module.exports = router;

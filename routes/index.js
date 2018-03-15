@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-let argon2 = require('argon2');
+let bcrypt = require('bcrypt');
 let _ = require('lodash');
 let User = require('./../model/users');
 let Products = require('./../controllers/products');
@@ -8,23 +8,9 @@ let Index = require('./../controllers/index');
 
 let auth = require('./../middleware/authentication');
 
-router.get('/testFady',function(req, res, next){
-  //Products.getAllProducts(req,res,next);
-  //Products.searchDb(req,res,next);
-  res.render('testDT');
-});
-
-router.get('/api/getAll',function(req, res, next){
-
-  Products.getAllProducts(req,res,next);
-  //res.render('testDT');
-});
-router.get('/api/dbSearch',function(req, res, next){
-
-  Products.searchDb(req,res,next);
-  //res.render('testDT');
-});
-
+router.get('/api/getAll',Products.getAllProducts);
+router.get('/api/dbSearch',Products.searchDb);
+router.get('/api/dbSearchBarcode',Products.dbSearchBarcode);
 router.get('/', auth.userLoggedIn, Index.getDashboard);
 
 router.post('/auth', function(req, res, next) {
@@ -37,10 +23,8 @@ router.post('/auth', function(req, res, next) {
         error: 'Invalid Login Credentials!',
       });
     } else {
-      argon2.verify(user.password, req.body.password).
-      then(function(match) {
+      bcrypt.compare(req.body.password, user.password).then(function(match) {
         if (match) {
-
           user.password = undefined;
           req.session.user = user;
           res.redirect('back');
