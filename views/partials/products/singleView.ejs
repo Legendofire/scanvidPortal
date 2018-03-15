@@ -90,8 +90,8 @@
                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                   <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Product Details</a>
                   </li>
-                  <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Images</a>
-                  </li>
+                  <% if(!current_user.isBrand){%>  <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Images</a>
+                  </li>  <% } %>
                   <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Videos</a>
                   </li>
                 </ul>
@@ -100,6 +100,7 @@
 
                     <!-- start Product details -->
                     <ul class="messages">
+                      <% console.log(product.tags); %>
                       <% for(var i=0; i < product.tags.length; i++){ %>
                         <li>
                           <div class="message_wrapper">
@@ -125,6 +126,7 @@
                     <div class="row">
 
                       <!-- <p>Product Images</p><button data-toggle="modal" data-target="#AddImage" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button> -->
+                      <% if(!current_user.isBrand){%>
                       <% if(typeof imageFiles!= 'undefined'){%>
                       <% for(var i=0; i<imageFiles.length; i++){ %>
                         <div class="col-md-3">
@@ -135,6 +137,7 @@
 
                       <% } %>
                           <% } %>
+                            <% } %>
 
 
 
