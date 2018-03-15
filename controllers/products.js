@@ -10,19 +10,17 @@ exports.getAllProducts = function(req, res, next) {
       if (req.query.page) {
         Product.paginate(
           { brand: req.session.user.brandName },
-          { page: req.query.page, limit: 10 },
-          function(err, result) {
-            res.json(result);
-          }
-        );
+          { page: req.query.page, limit: 10 })
+          .then(function(result) {
+              res.json(result);
+          });
       } else {
         Product.paginate(
           { brand: req.session.user.brandName },
-          { page: 1, limit: 10 },
-          function(err, result) {
-            res.json(result);
-          }
-        );
+          { page: 1, limit: 10 })
+          .then(function(result) {
+              res.json(result);
+          });
       }
     }
     if (req.query.type) {
