@@ -11,13 +11,27 @@ router.get('/scanbarcode',function(req, res, next){////Barcode Search
   Product.findOne({ barcode:req.query.q })
             .limit(10).exec(function(err, docs) {
     if(err)console.log(err);
-    res.send(docs);
+    var obj={};
+    var tags=[];
+    obj.title=docs.title;
+    obj.barcode=docs.barcode;
+    obj.brand=docs.brand;
+    var patt = new RegExp("^(?:http(s)?:\/\/)?[\w.-]+");
+    for(var i=0; i < docs.tags.length; i++){
+      if (patt.test(docs.tags[i].value)) {
+        tags.push(docs.tags[i]);
+      }
+    }
+    obj.tags=tags;
+    res.send(obj);
+
 
   });
 
 });
 
-router.get('/scantext',function(req, res, next){ ////Text Search
+router.get('/scantext',function(req, res, next){ ////Text Search   ////Edit only send the object
+
   Brand.find({})
     .exec()
     .then(function(brands) {
@@ -27,7 +41,19 @@ router.get('/scantext',function(req, res, next){ ////Text Search
       });
 
         Promise.all(prom).then(function(docs) {
-        res.send(docs)
+        var obj={};
+        var tags=[];
+        obj.title=docs[0].title;
+        obj.barcode=docs[0].barcode;
+        obj.brand=docs[0].brand;
+        var patt = new RegExp("^(?:http(s)?:\/\/)?[\w.-]+");
+        for(var i=0; i < docs[0].tags.length; i++){
+          if (patt.test(docs[0].tags[i].value)) {
+            tags.push(docs[0].tags[i]);
+          }
+        }
+        obj.tags=tags;
+        res.send(obj);
       });
     })
     .catch(function(err) {
@@ -36,7 +62,10 @@ router.get('/scantext',function(req, res, next){ ////Text Search
 
 });
 
-router.post('/analyzeVideo',ProductController.analyzeVideo);
+router.post('/analyzeVideo',function(req,res,next){
+  req.api=true;
+  ProductController.analyzeVideo(req,res,next);
+});  /// product: barcode + video:video as form data
 
 
 module.exports = router;

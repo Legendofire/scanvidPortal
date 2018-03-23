@@ -176,11 +176,19 @@ exports.analyzeVideo=function(req,res,next){
                                prom.push(storage.bucket('scanvid--videos--'+fields.product).makePublic({includeFiles:true}));
                                Promise.all(prom).then(function(data){
                                  console.log(data);
-                                 res.redirect('products/view/'+fields.product);
+                                 if(req.api){
+                                   res.send({status:'200',comment:'Uploaded successfully'});
+                                 }else{
+                                   res.redirect('products/view/'+fields.product);
+                                 }
 
                                }).catch(function(err){
                                  console.log(err);
-                                 res.redirect('products/view/'+fields.product);
+                                 if(req.api){
+                                   res.send({status:'403',comment:err});
+                                 }else{
+                                   res.redirect('products/view/'+fields.product);
+                                 }
                                })
 
                        })
@@ -192,7 +200,11 @@ exports.analyzeVideo=function(req,res,next){
                  })
                  .catch(err => {
                    console.error('ERROR:', err);
-                   res.redirect('products/view/'+fields.product);
+                   if(req.api){
+                     res.send({status:'403',comment:err});
+                   }else{
+                     res.redirect('products/view/'+fields.product);
+                   }
                  });
              }
            });
@@ -234,11 +246,19 @@ exports.analyzeVideo=function(req,res,next){
                                              prom.push(storage.bucket('scanvid--videos--'+fields.product).makePublic({includeFiles:true}));
                                              Promise.all(prom).then(function(data){
                                                console.log(data);
-                                              res.redirect('products/view/'+fields.product);
+                                               if(req.api){
+                                                 res.send({status:'200',comment:'Uploaded successfully'});
+                                               }else{
+                                                 res.redirect('products/view/'+fields.product);
+                                               }
 
                                              }).catch(function(err){
                                                console.log(err);
-                                               res.redirect('products/view/'+fields.product);
+                                               if(req.api){
+                                                 res.send({status:'200',comment:'Uploaded successfully'});
+                                               }else{
+                                                 res.redirect('products/view/'+fields.product);
+                                               }
                                              })
                                          })
 
@@ -252,13 +272,21 @@ exports.analyzeVideo=function(req,res,next){
                              })
                              .catch(err => {
                                console.error('ERROR:', err);
-                               res.redirect('products/view/'+fields.product);
+                               if(req.api){
+                                 res.send({status:'403',comment:err});
+                               }else{
+                                 res.redirect('products/view/'+fields.product);
+                               }
                              });
 
                  })
                  .catch(err => {
                    console.error('ERROR:', err);
-                   res.redirect('products/view/'+fields.product);
+                   if(req.api){
+                     res.send({status:'403',comment:err});
+                   }else{
+                     res.redirect('products/view/'+fields.product);
+                   }
                  });
                }
            })
