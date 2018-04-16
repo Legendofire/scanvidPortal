@@ -3,6 +3,6 @@ applications:
   memory: 256M
   instances: 1
   domain: mybluemix.net
-  name: cloud-manage
-  host: cloud-manage
+  name: scanvidPortal
+  host: scanvidPortal
   disk_quota: 1024M
