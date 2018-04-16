@@ -7,6 +7,7 @@ let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 let session = require('express-session');
 let jwt = require('jsonwebtoken');
+let cors = require('cors');
 
 let app = express();
 
@@ -43,6 +44,7 @@ app.use(session({
     maxAge: 30*60*1000,
   },
 }));
+app.use(cors());
 
 // Application Routes
 app.use('/', require('./routes/index'));
