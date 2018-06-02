@@ -126,11 +126,19 @@ exports.dbSearchBarcode = function(req, res, next) {
 
 exports.analyzeVideo=function(req,res,next){
 
+
     var output={};
     var imgArr=[];
     var picsFolder='./public/tempFolder/';
       var form = new formidable.IncomingForm();
      form.parse(req, function (err, fields, files) {
+       if(req.api){
+         console.log(req);
+          console.log("/////////////////////");
+         console.log(fields);
+         console.log("/////////////////////");
+         console.log(files);
+       }
        var bool=false;
        const options = {
         metadata: {

@@ -216,14 +216,16 @@
         <h4 class="modal-title">Video Uploader Tool</h4>
       </div>
       <div class="modal-body">
-        <!-- <form style="margin-left:5%;" name="videoForm" action="/products/video" method="post" enctype="multipart/form-data"> -->
-        <form style="margin-left:5%;" name="videoForm" action="http://localhost:3000/api/analyzeVideo" method="post" enctype="multipart/form-data">
+        <form style="margin-left:5%;" name="videoForm" action="/products/video" method="post" enctype="multipart/form-data">
+            <!-- <form style="margin-left:5%;" name="videoForm" action="http://localhost:3000/api/analyzeVideoTest" method="post" > -->
+        <!-- <form style="margin-left:5%;" name="videoForm" action="http://localhost:3000/api/analyzeVideo" method="post" enctype="multipart/form-data"> -->
 
 
         <div class="input_fields_wrap">
           <label>Upload Video</label><!-- Input filed so you can add the image url -->
         </br><input type="text" name="product" placeholder="Product name" value="<%= product.barcode %>"style="display:none;" >
           </br></br><input type="file" name="video" >
+        <!-- </br></br><input type="text" name="video" > -->
         </div>
 
       </form>
