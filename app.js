@@ -9,6 +9,8 @@ let session = require('express-session');
 let jwt = require('jsonwebtoken');
 let cors = require('cors');
 
+var config = require('./config/key.js');
+
 let app = express();
 
 // view engine setup
@@ -51,7 +53,10 @@ app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/products', require('./routes/products'));
 app.use('/brands', require('./routes/brands'));
+app.use('/apikeys', require('./routes/apiKeys'));
 app.use('/api', require('./routes/api/mobileapp'));
+app.use('/api/v1.1', require('./routes/api/mobileapp'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

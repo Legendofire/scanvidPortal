@@ -88,6 +88,23 @@ router.post("/edit/:uid", auth.adminLoggedIn, function(req, res, next) {
     });
 });
 
+router.get('/view/:pid', auth.adminLoggedIn, function(req, res, next) {
+  var output = {
+    child: 'partials/users/singleView.ejs',
+    current_user: req.session.user
+  };
+
+  User.findOne({_id:req.params.pid}).exec().then(function(user){
+    if(user){
+      output.user = user;
+    }else{
+
+    }
+
+    res.render("layout", output);
+  });
+});
+
 router.get("/delete/:uid", auth.adminLoggedIn, function(req, res, next) {
   User.find({ _id: req.params.uid })
     .remove()
