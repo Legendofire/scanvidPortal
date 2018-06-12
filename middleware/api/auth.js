@@ -87,8 +87,8 @@ exports.shallPass = function(req, res, next) {
                         "Internal Server Error, Please contact the Admin."
                     });
                   }
-                  res.json({ msg: "passed to function" });
-                  //next();
+                  //res.json({ msg: "passed to function" });
+                  next();
                 }
               );
             }
