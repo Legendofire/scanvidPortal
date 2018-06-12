@@ -55,7 +55,7 @@ app.use('/products', require('./routes/products'));
 app.use('/brands', require('./routes/brands'));
 app.use('/apikeys', require('./routes/apiKeys'));
 app.use('/api', require('./routes/api/mobileapp'));
-app.use('/api/v1.1', require('./routes/api/mobileapp'));
+app.use('/api/v1.1', require('./routes/api/mobileapp-v1.1'));
 
 
 // catch 404 and forward to error handler
