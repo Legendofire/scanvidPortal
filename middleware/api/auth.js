@@ -4,49 +4,57 @@ exports.shallPass = function(req, res, next) {
   if (req.body.apiKey) {
     apiKeys
       .find({ _id: req.body.apiKey })
-      .populate('user')
+      .populate("user")
       .exec()
       .then(key => {
         console.log(key);
         if (key.length > 0) {
           let currentTimeStamp = new Date().getTime();
           let timeStampDifference = key[0].expiry - currentTimeStamp;
-          if(key[0].revoked){
+          if (key[0].revoked) {
             res.json({
               code: 400,
               message: "API Key is revoked, Please Contact the Admin."
             });
-          } else if(timeStampDifference < 0) {
+          } else if (timeStampDifference < 0) {
             res.json({
               code: 400,
               message:
                 "API Key is expired, Please Contact the Admin to Generate a new one."
             });
           } else {
-              let numberOfCalls = key[0].log.length;
-              if (!(numberOfCalls > key[0].limit && key[0].allowOverage)) {
-                  if(key[0].user.isBrand) {
-                    req.brandName = key[0].user.brandName;
-                  } else {
-                    req.brandName = 'Admin';
-                  }
-                  let functionName = req.url.substr(1);
-                  functionName = functionName.split('?')[0] || functionName;
+            let numberOfCalls = key[0].log.length;
+            console.log("length: ", key[0].log.length);
+            if (numberOfCalls > key[0].limit) {
+              if (key[0].allowOverage) {
+                if (key[0].user.isBrand) {
+                  req.brandName = key[0].user.brandName;
+                } else {
+                  req.brandName = "Admin";
+                }
+                let functionName = req.url.substr(1);
+                functionName = functionName.split("?")[0] || functionName;
 
-                  apiKeys.update({
-                    _id: key[0]._id,
-                  },{
-                    $push: { log: {function: functionName}}
-                  }, (err, response) => {
-                    if(err){
+                apiKeys.update(
+                  {
+                    _id: key[0]._id
+                  },
+                  {
+                    $push: { log: { function: functionName } }
+                  },
+                  (err, response) => {
+                    if (err) {
                       console.error(error);
                       res.json({
                         code: 500,
-                        message: "Internal Server Error, Please contact the Admin."
+                        message:
+                          "Internal Server Error, Please contact the Admin."
                       });
                     }
+                    //res.json({ msg: "passed to function" });
                     next();
-                  })
+                  }
+                );
               } else {
                 res.json({
                   code: 400,
@@ -54,6 +62,36 @@ exports.shallPass = function(req, res, next) {
                     "API Key Limit reached, Please Contact the Admin to Extend limit or Allow Overage."
                 });
               }
+            } else {
+              if (key[0].user.isBrand) {
+                req.brandName = key[0].user.brandName;
+              } else {
+                req.brandName = "Admin";
+              }
+              let functionName = req.url.substr(1);
+              functionName = functionName.split("?")[0] || functionName;
+
+              apiKeys.update(
+                {
+                  _id: key[0]._id
+                },
+                {
+                  $push: { log: { function: functionName } }
+                },
+                (err, response) => {
+                  if (err) {
+                    console.error(error);
+                    res.json({
+                      code: 500,
+                      message:
+                        "Internal Server Error, Please contact the Admin."
+                    });
+                  }
+                  res.json({ msg: "passed to function" });
+                  //next();
+                }
+              );
+            }
           }
         } else {
           res.json({

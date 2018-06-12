@@ -15,31 +15,27 @@ router.post("/add", auth.adminLoggedIn, function(req, res, next) {
     let timestamp = new Date(dateArr[0],dateArr[1],dateArr[2]).getTime();
     var key = new apiKey({
       user : req.body.user,
-      limit : 10000,
+      limit : req.body.limit,
       expiry : timestamp,
       revoked: false,
-      allowOverage: true
+      allowOverage: req.body.allowOverage
     });
 
     key.save(function(err, response) {
       if (err) console.error(err);
-      res.json({apiKey: response._id});
+      res.redirect("/users/view/"+req.body.user);
     });
 });
 
-router.get("/edit/:uid", auth.adminLoggedIn, function(req, res, next) {
+router.get("/edit/:aid", auth.adminLoggedIn, function(req, res, next) {
   var output = {
-    child: "partials/users/edit.ejs",
+    child: "partials/users/key_edit.ejs",
     current_user: req.session.user
   };
-  User.findOne({ _id: req.params.uid })
+  apiKey.findOne({ _id: req.params.aid })
     .exec()
     .then(function(value) {
-      output.user = value;
-      return Brand.find({}).exec();
-    })
-    .then(function(brands) {
-      output.brands = brands;
+      output.key = value;
       res.render("layout", output);
     })
     .catch(function(err) {
@@ -47,26 +43,21 @@ router.get("/edit/:uid", auth.adminLoggedIn, function(req, res, next) {
     });
 });
 
-router.post("/edit/:uid", auth.adminLoggedIn, function(req, res, next) {
-  User.findOne({ _id: req.params.uid })
-    .exec()
-    .then(function(user, err) {
-      if (err) console.error(err);
-      if (req.body.password) user.password = req.body.password;
-      if (req.body.full_name) user.full_name = req.body.full_name;
-      if (req.body.phone) user.phone = req.body.phone;
-      if (req.body.email) user.email = req.body.email;
-      if (req.body.brandName) user.brandName = req.body.brandName;
-      if (!req.session.user.isBrand) {
-        if (req.body.type) {
-          user.isBrand = req.body.type;
-        }
+router.post("/edit/:aid", auth.adminLoggedIn, function(req, res, next) {
+      let query = {};
+      if (req.body.limit){
+        query.limit = req.body.limit;
       }
-      user.save(function(value, err) {
-        if (err) console.error(err);
-        res.redirect("/users");
+      if (req.body.revoked){
+        query.revoked = req.body.revoked;
+      }
+      if (req.body.allowOverage){
+        query.allowOverage = req.body.allowOverage;
+      }
+      apiKey.findOneAndUpdate({_id: req.params.aid}, query ,(err, doc)=>{
+          if (err) console.error(err);
+          res.redirect("/users/view/"+doc.user);
       });
-    });
 });
 
 router.get('/view/:pid', auth.adminLoggedIn, function(req, res, next) {

@@ -8,6 +8,7 @@ const resource = "Users";
 var User = require("./../model/users.js");
 var Brand = require("./../model/brands.js");
 var Product = require("./../model/products.js");
+var apiKeys = require("./../model/apiKeys.js");
 
 router.get("/", auth.adminLoggedIn, function(req, res, next) {
   var output = {
@@ -97,10 +98,19 @@ router.get('/view/:pid', auth.adminLoggedIn, function(req, res, next) {
   User.findOne({_id:req.params.pid}).exec().then(function(user){
     if(user){
       output.user = user;
-    }else{
-
     }
-
+      return apiKeys.find({user:req.params.pid}).populate('user').exec();
+  }).then(function(keys) {
+    output.keys = keys;
+      return apiKeys.find({
+        user:req.params.pid,
+        revoked:false,
+        expiry: {
+          "$gte":new Date().getTime()
+        }
+      }).populate('user').exec();
+  }).then(function(currentKey) {
+    output.currentKey = currentKey[currentKey.length-1];
     res.render("layout", output);
   });
 });

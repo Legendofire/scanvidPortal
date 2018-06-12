@@ -72,7 +72,7 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-caret-square-o-right"></i>
                     </div>
-                    <div class="count">333</div>
+                    <div class="count"><%= currentKey.log ? currentKey.log.length : 0 %></div>
 
                     <h3> API Calls</h3>
                     <p>Current API Key Calls</p>
@@ -82,7 +82,7 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-comments-o"></i>
                     </div>
-                    <div class="count">17229</div>
+                    <div class="count"><%= currentKey.limit %></div>
 
                     <h3> API Calls</h3>
                     <p>Current API Key Limit</p>
@@ -92,7 +92,7 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-sort-amount-desc"></i>
                     </div>
-                    <div class="count">123123</div>
+                    <div class="count"> <%=  currentKey.log ? currentKey.limit < currentKey.log.length ? currentKey.log.length - currentKey.limit : 0 : 0 %> </div>
 
                     <h3> API Calls</h3>
                     <p>Current API Key Overage</p>
@@ -102,10 +102,10 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-caret-square-o-right"></i>
                     </div>
-                    <div class="count">333</div>
+                    <div class="count"> <%= new Date(currentKey.expiry).toDateString() %> </div>
 
-                    <h3> Days Left</h3>
-                    <p>Days left in the current Key</p>
+                    <h3> Expiry</h3>
+                    <p>Expiry Date for the current Key</p>
                   </div>
                 </div>
               </div>
@@ -133,34 +133,36 @@
                         </tr>
                       </thead>
                       <tbody>
-                          <tr>
-                            <th scope="row">
-                               1
-                            </th>
-                            <td>
-                               Lorem ipsum dolor.
-                            </td>
-                            <td>
-                               Bosch Dep 1
-                            </td>
-                            <td>
-                               Bosch
-                            </td>
-                            <td>
-                               10000
-                            </td>
-                            <td>
-                               12-3-2019
-                            </td>
-                            <td>
-                               233
-                            </td>
-                            <td>
-                              <a href="users/view/1" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
-                              <a href="users/edit/1" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                              <a href="#" data-info="1,users" class="btn btn-danger btn-xs delete_button"><i class="fa fa-trash-o"></i> Delete </a>
-                            </td>
-                          </tr>
+                          <% keys.forEach(function(key, index){ %>
+                              <tr>
+                                <th scope="row">
+                                   <%= index+1 %>
+                                </th>
+                                <td>
+                                   <%= key._id %>
+                                </td>
+                                <td>
+                                   <%= key.user.full_name %>
+                                </td>
+                                <td>
+                                   <%= key.user.brandName || 'Admin' %>
+                                </td>
+                                <td>
+                                  <%= key.limit %>
+                                </td>
+                                <td>
+                                   <%= new Date(key.expiry).toDateString() || undefined %>
+                                </td>
+                                <td>
+                                   <%= key.limit - key.log.length < 0 ? key.log.length - key.limit : 0 %>
+                                </td>
+                                <td>
+                                  <a href="/apiKeys/view/<%= key._id %>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                                  <a href="/apiKeys/edit/<%= key._id %>" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                                  <a href="#" data-info="<%= key._id %>,apiKeys" class="btn btn-danger btn-xs delete_button"><i class="fa fa-trash-o"></i> Delete </a>
+                                </td>
+                              </tr>
+                          <% }) %>
                       </tbody>
                     </table>
                   </div>
@@ -216,6 +218,19 @@
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="date" name="expiry" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Allow Overage <span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                  <input type="radio" name="allowOverage" value="false"> &nbsp; No &nbsp;
+                </label>
+                <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                  <input type="radio" name="allowOverage" value="true" checked="checked"> &nbsp; Yes &nbsp;
+                </label>
+              </div>
             </div>
           </div>
           <input type="text" name="user" value="<%= user._id %>" style="display:none;">

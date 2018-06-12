@@ -47,7 +47,6 @@ router.post('/scanbarcode', authentication.shallPass ,function(req, res, next){/
 });
 
 router.post("/scantext", authentication.shallPass ,function(req, res, next) {
-  //Text Search   ////Edit only send the object
   Brand.find({})
     .exec()
     .then(function(brands) {
