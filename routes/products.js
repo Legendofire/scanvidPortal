@@ -44,8 +44,9 @@ router.post('/video',ProductController.analyzeVideo);
 /* GET users listing. */
 router.post('/add', auth.userLoggedIn, function(req, res, next) {
   var prod = new Product({
-    name: req.body.name,
-    description: req.body.description
+    title: req.body.title,
+    barcode: req.body.barcode,
+    brand: req.body.brand
   });
 
   prod.save(function(err){
