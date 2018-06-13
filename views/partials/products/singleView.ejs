@@ -100,7 +100,7 @@
 
                     <!-- start Product details -->
                     <ul class="messages">
-                      <% if(product.tags){ %>
+                      <% if(product.tags[0]) {%>
                       <% product.tags.forEach(function(tag){ %>
                         <li>
                           <div class="message_wrapper">
@@ -108,7 +108,7 @@
                             <blockquote class="message">
                               <%var patt = new RegExp("^(?:http(s)?:\/\/)?[\w.-]+");%>
                               <% if (patt.test(tag.value)) { %>
-                                <a href="<%=product.tags[i].value%>" >Click Here</a>
+                                <a href="<%=tag.value%>" >Click Here</a>
                               <% } else { %>
                                 <%= tag.value %>
                               <% } %>

@@ -105,6 +105,57 @@ router.post("/scantext", function(req, res, next) {
     });
 });
 
+router.get("/scantext", function(req, res, next) {
+  //Text Search   ////Edit only send the object
+  console.log('hiii');
+  Brand.find({})
+    .exec()
+    .then(function(brands) {
+      var prom = [];
+      brands.forEach(function(value) {
+        prom.push(
+          Product.findOne(
+            { brand: value.brandName, $text: { $search: req.query.q } },
+            { score: { $meta: "textScore" } }
+          )
+            .limit(10)
+            .sort({ score: { $meta: "textScore" } })
+        );
+      });
+      Promise.all(prom).then(function(docs) {
+
+        var arr=[];
+        var tags = [];
+        docs.forEach(function(value){
+          var obj = {};
+          if(value){
+            obj.title = value.title;
+            obj.barcode = value.barcode;
+            obj.brand = value.brand;
+            var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
+            for (var i = 0; i < value.tags.length; i++) {
+              if (patt.test(value.tags[i].value)) {
+                tags.push(value.tags[i]);
+              }
+            }
+            obj.tags = tags;
+          //  arr.push(obj);
+            res.send(obj);
+          }
+        })
+
+
+      }).catch(function(err) {
+
+        console.error(err);
+      });
+    })
+    .catch(function(err) {
+      next(err);
+      console.error(err);
+    });
+});
+
 router.post('/analyzeVideo',function(req,res,next){
   req.api=true;
   ProductController.analyzeVideo(req,res,next);

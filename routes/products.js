@@ -153,7 +153,7 @@ router.post('/edit/:pid', auth.userLoggedIn, function(req, res, next) {
       if(req.body.barcode) product.barcode = req.body.barcode;
       if(req.body.brand && !req.session.user.isBrand) product.brand = req.body.brand;
       if(req.body.tags) product.tags = JSON.parse(req.body.tags);
-
+      
       product.save(function(value, err){
         if (err) console.error(err);
         res.redirect('/products/view/' + req.params.pid);
