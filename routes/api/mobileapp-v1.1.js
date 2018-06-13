@@ -45,7 +45,7 @@ router.post("/scanbarcode", authentication.shallPass, function(req, res, next) {
         }
       }
       obj.tags = tags;
-      logAction('scanbarcode',req.body.q);
+      logAction(req.key, "scanbarcode", req.body.q);
       res.send(obj);
     });
 });
@@ -71,34 +71,36 @@ router.post("/scantext", authentication.shallPass, function(req, res, next) {
             }
           )
             .limit(10)
-            .sort(
-              {
-                score: {
-                  $meta: "textScore"
-                }
-              })
+            .sort({
+              score: {
+                $meta: "textScore"
+              }
+            })
             .exec()
         );
       });
-      Promise.all(prom).then(function(docs) {
-        var obj = {};
-        var tags = [];
-        console.log(docs);
-        obj.title = docs[0].title;
-        obj.barcode = docs[0].barcode;
-        obj.brand = docs[0].brand;
-        var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
-        for (var i = 0; i < docs[0].tags.length; i++) {
-          if (patt.test(docs[0].tags[i].value)) {
-            tags.push(docs[0].tags[i]);
+
+      Promise.all(prom)
+        .then(function(docs) {
+          var obj = {};
+          var tags = [];
+          console.log(docs);
+          obj.title = docs[0].title;
+          obj.barcode = docs[0].barcode;
+          obj.brand = docs[0].brand;
+          var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
+          for (var i = 0; i < docs[0].tags.length; i++) {
+            if (patt.test(docs[0].tags[i].value)) {
+              tags.push(docs[0].tags[i]);
+            }
           }
-        }
-        obj.tags = tags;
-        logAction('scantext',req.body.q);
-        res.send(obj);
-      }).catch((error)=>{
-        console.log(error);
-      });
+          obj.tags = tags;
+          logAction(req.key, "scantext", req.body.q);
+          res.send(obj);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     })
     .catch(function(err) {
       next(err);
@@ -196,10 +198,11 @@ router.post("/analyzeVideoTest", function(req, res, next) {
   });
 });
 
-function logAction(functionName, productID) {
-  apiKeys.update(
+function logAction(key, functionName, productID) {
+  console.log(key);
+  apiKey.update(
     {
-      _id: key[0]._id
+      _id: key
     },
     {
       $push: {
@@ -211,7 +214,7 @@ function logAction(functionName, productID) {
     },
     (err, response) => {
       if (err) {
-        console.error(error);
+        console.error(err);
         return false;
       }
       return true;

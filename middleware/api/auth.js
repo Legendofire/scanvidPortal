@@ -30,6 +30,7 @@ exports.shallPass = function(req, res, next) {
                 } else {
                   req.brandName = "Admin";
                 }
+                req.key = key[0]._id;
                 next();
               } else {
                 res.json({
@@ -44,6 +45,7 @@ exports.shallPass = function(req, res, next) {
               } else {
                 req.brandName = "Admin";
               }
+              req.key = key[0]._id;
               next();
             }
           }

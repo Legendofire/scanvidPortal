@@ -12,7 +12,7 @@ let apiKeySchema = new Schema({
   log: [{
       date: { type: Date, default: Date.now },
       function: String,
-      productID: { type: Schema.Types.ObjectId, ref: 'Product' }
+      productID: String
   }]
 })
 
