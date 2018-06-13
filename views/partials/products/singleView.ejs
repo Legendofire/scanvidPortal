@@ -100,22 +100,23 @@
 
                     <!-- start Product details -->
                     <ul class="messages">
-                      <% console.log(product.tags); %>
-                      <% for(var i=0; i < product.tags.length; i++){ %>
+                      <% if(product.tags){ %>
+                      <% product.tags.forEach(function(tag){ %>
                         <li>
                           <div class="message_wrapper">
-                            <h4 class="heading"><%= product.tags[i].name %></h4>
+                            <h4 class="heading"><%= tag.name %></h4>
                             <blockquote class="message">
                               <%var patt = new RegExp("^(?:http(s)?:\/\/)?[\w.-]+");%>
-                              <% if (patt.test(product.tags[i].value)) { %>
+                              <% if (patt.test(tag.value)) { %>
                                 <a href="<%=product.tags[i].value%>" >Click Here</a>
                               <% } else { %>
-                                <%= product.tags[i].value %>
+                                <%= tag.value %>
                               <% } %>
                             </blockquote>
                           </div>
                         </li>
-                      <% } %>
+                      <% }); %>
+                    <% }%>
                     </ul>
                     <!-- end recent activity -->
 

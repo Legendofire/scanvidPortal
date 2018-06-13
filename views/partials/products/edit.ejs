@@ -63,11 +63,15 @@
           </form>
           <script type="text/javascript">
             //form tags state
+            <% if (tags) {%>
             var state = [
-              <% for(var i=0; i < tags.length; i++){%>
-                {name:"<%= tags[i].name %>",value:"<%= tags[i].value %>"}<%= i+1==tags.length?'':',' %>
-              <% } %>
+              <% tags.forEach(function(tag, index){%>
+                {name:"<%= tag.name %>",value:"<%= tag.value %>"}<%= index==tags.length?'':',' %>
+              <% }); %>
             ];
+            <% } else { %>
+            var state = []  
+            <% } %>
             update();
             //add new tag item
             $("#item-container").on('blur','input.tag-value',function(){
