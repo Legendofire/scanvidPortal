@@ -159,7 +159,6 @@
                                 <td>
                                   <a href="/apiKeys/view/<%= key._id %>" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
                                   <a href="/apiKeys/edit/<%= key._id %>" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                                  <a href="#" data-info="<%= key._id %>,apiKeys" class="btn btn-danger btn-xs delete_button"><i class="fa fa-trash-o"></i> Delete </a>
                                 </td>
                               </tr>
                           <% }) %>
@@ -171,7 +170,7 @@
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                           <div class="x_title">
-                            <h2>KEYHASH<small>Usage Report</small></h2>
+                            <h2><%=currentKey._id%> <small>Usage Report</small></h2>
                             <div class="clearfix"></div>
                           </div>
                           <div class="x_content">
@@ -182,8 +181,20 @@
                     </div>
                   </div>
                   <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                    <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo
-                      booth letterpress, commodo enim craft beer mlkshk </p>
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                          <div class="x_title">
+                            <h2><%=currentKey._id%> <small>Usage Report</small></h2>
+                            <div class="clearfix"></div>
+                          </div>
+                          <div class="x_content">
+                            <canvas id="keyFunctionUsage"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -249,16 +260,9 @@
 </div>
 <!-- End Add API Key Modal-->
 
-<!-- Start Add API KEY Modal -->
-
-<!-- End Add API Key Modal-->
-
-<!-- Start Add API KEY Modal -->
-
-<!-- End Add API Key Modal-->
 <script>
   window.onload = function(){
-    function showChart(){
+    function showLineChart(){
       var ctx = document.getElementById("keyUsage");
       var lineChart = new Chart(ctx, {
         type: 'line',
@@ -291,7 +295,34 @@
 
         }
       });
-  	};
-  showChart();
+  	}
+
+    function showPieGraph(){
+        var ctx = document.getElementById("keyFunctionUsage");
+        var lineChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            datasets: [{
+              label: "Usage",
+              data: [4, 20, 12],
+              backgroundColor: [
+                '#34495E',
+                '#3498DB',
+                '#26B99A'
+              ]
+            }],
+            labels: [
+              'ScanBarCode',
+              'ScanText',
+              'AnalyzeVideo'
+            ]
+          },
+          options: {
+
+          }
+      });
+    }
+    showLineChart();
+    showPieGraph();
 };
 </script>
