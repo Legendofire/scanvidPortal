@@ -10,8 +10,9 @@ let apiKeySchema = new Schema({
   revoked: Boolean,
   allowOverage: Boolean,
   log: [{
-    date: { type: Date, default: Date.now },
-    function: String
+      date: { type: Date, default: Date.now },
+      function: String,
+      productID: { type: Schema.Types.ObjectId, ref: 'Product' }
   }]
 })
 

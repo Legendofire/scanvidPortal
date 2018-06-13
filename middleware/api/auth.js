@@ -7,7 +7,6 @@ exports.shallPass = function(req, res, next) {
       .populate("user")
       .exec()
       .then(key => {
-        console.log(key);
         if (key.length > 0) {
           let currentTimeStamp = new Date().getTime();
           let timeStampDifference = key[0].expiry - currentTimeStamp;
@@ -24,7 +23,6 @@ exports.shallPass = function(req, res, next) {
             });
           } else {
             let numberOfCalls = key[0].log.length;
-            console.log("length: ", key[0].log.length);
             if (numberOfCalls > key[0].limit) {
               if (key[0].allowOverage) {
                 if (key[0].user.isBrand) {
@@ -32,29 +30,7 @@ exports.shallPass = function(req, res, next) {
                 } else {
                   req.brandName = "Admin";
                 }
-                let functionName = req.url.substr(1);
-                functionName = functionName.split("?")[0] || functionName;
-
-                apiKeys.update(
-                  {
-                    _id: key[0]._id
-                  },
-                  {
-                    $push: { log: { function: functionName } }
-                  },
-                  (err, response) => {
-                    if (err) {
-                      console.error(error);
-                      res.json({
-                        code: 500,
-                        message:
-                          "Internal Server Error, Please contact the Admin."
-                      });
-                    }
-                    //res.json({ msg: "passed to function" });
-                    next();
-                  }
-                );
+                next();
               } else {
                 res.json({
                   code: 400,
@@ -68,29 +44,7 @@ exports.shallPass = function(req, res, next) {
               } else {
                 req.brandName = "Admin";
               }
-              let functionName = req.url.substr(1);
-              functionName = functionName.split("?")[0] || functionName;
-
-              apiKeys.update(
-                {
-                  _id: key[0]._id
-                },
-                {
-                  $push: { log: { function: functionName } }
-                },
-                (err, response) => {
-                  if (err) {
-                    console.error(error);
-                    res.json({
-                      code: 500,
-                      message:
-                        "Internal Server Error, Please contact the Admin."
-                    });
-                  }
-                  //res.json({ msg: "passed to function" });
-                  next();
-                }
-              );
+              next();
             }
           }
         } else {
