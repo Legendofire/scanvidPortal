@@ -100,6 +100,8 @@
 
                     <!-- start Product details -->
                     <ul class="messages">
+                      <% if(product) {%>
+                        <% if(product.tags) {%>
                       <% if(product.tags[0]) {%>
                       <% product.tags.forEach(function(tag){ %>
                         <li>
@@ -116,6 +118,8 @@
                           </div>
                         </li>
                       <% }); %>
+                    <% }%>
+                    <% }%>
                     <% }%>
                     </ul>
                     <!-- end recent activity -->
