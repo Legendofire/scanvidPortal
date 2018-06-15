@@ -1,0 +1,237 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2><%= currentKey._id %> Usage Report </h2>
+            <div class="nav navbar-right panel_toolbox">
+              From:<input type="date" id="filterFrom" value="">
+              To:<input type="date" id="filterTo" value="">
+              <button type="button" class="btn btn-sm btn-primary" id="filterButton">Filter</button>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              </br>
+              <div class="row">
+                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+                    <div class="count"><%= currentKey.log ? currentKey.log.length : 0 %></div>
+                    <h3> API Calls</h3>
+                    <p>API Key Calls</p>
+                  </div>
+                </div>
+                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-comments-o"></i>
+                    </div>
+                    <div class="count"><%= currentKey.limit %></div>
+
+                    <h3> API Calls</h3>
+                    <p>API Key Limit</p>
+                  </div>
+                </div>
+                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-sort-amount-desc"></i>
+                    </div>
+                    <div class="count"> <%=  currentKey.log ? currentKey.limit < currentKey.log.length ? currentKey.log.length - currentKey.limit : 0 : 0 %> </div>
+
+                    <h3> API Calls</h3>
+                    <p>API Key Overage</p>
+                  </div>
+                </div>
+                <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-caret-square-o-right"></i>
+                    </div>
+                    <div class="count"> <%= new Date(currentKey.expiry).toDateString() %> </div>
+
+                    <h3> Expiry</h3>
+                    <p>Expiry Date for the API Key</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>Key Usage Against Key Limit</h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <canvas id="keyUsage"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>Scan Text Usage</h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <canvas id="scanTextUsage"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>Scan Barcode Usage</h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <canvas id="scanBarcodeUsage"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>Scan Video Usage</h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <canvas id="scanVideoUsage"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var usageChartConfig = {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        label: "Usage",
+        backgroundColor: "rgba(38, 185, 154, 0.31)",
+        borderColor: "rgba(38, 185, 154, 0.7)",
+        pointBorderColor: "rgba(38, 185, 154, 0.7)",
+        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointBorderWidth: 1,
+        data: [],
+        fill: false,
+      }, {
+        label: "Call Limit",
+        backgroundColor: "rgba(3, 88, 106, 0.3)",
+        borderColor: "rgba(3, 88, 106, 0.70)",
+        pointBorderColor: "rgba(3, 88, 106, 0.70)",
+        pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(151,187,205,1)",
+        pointBorderWidth: 1,
+        data: []
+      }]
+    },
+    options: {
+    }
+  }
+
+  function functionConfig(functionName){
+    return {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: functionName,
+          backgroundColor: "rgba(38, 185, 154, 0.31)",
+          borderColor: "rgba(38, 185, 154, 0.7)",
+          pointBorderColor: "rgba(38, 185, 154, 0.7)",
+          pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointBorderWidth: 1,
+          data: [],
+          fill: false,
+        }]
+      },
+      options: {
+
+      }
+    }
+  }
+
+  var usageChart;
+  var scanTextChart;
+  var scanBarcodeChart;
+  var scanVideoChart;
+
+  window.onload = function(){
+    var ctx = document.getElementById("keyUsage");
+    usageChart = new Chart(ctx, usageChartConfig);
+
+    var ctx = document.getElementById("scanTextUsage");
+    scanTextChart = new Chart(ctx, functionConfig('Scan Text'));
+
+    var ctx = document.getElementById("scanBarcodeUsage");
+    scanBarcodeChart = new Chart(ctx, functionConfig('Scan Barcode'));
+
+    var ctx = document.getElementById("scanVideoUsage");
+    scanVideoChart = new Chart(ctx, functionConfig('Scan Video'));
+  }
+  $("#filterButton").click(function(){updateCharts($('#filterFrom').val(),$('#filterTo').val())});
+
+  function updateCharts(startDate, endDate) {
+    $.ajax({
+      method: "POST",
+      url: "/apiKeys/chartData",
+      data: {
+        fromDate: startDate,
+        toDate: endDate,
+        apiKey: '<%= currentKey._id %>'
+      },
+      success: function(data){
+        var usageChartlabels = data.keyUsage.map(function(item){
+          return item.date;
+        });
+        var usageChartvalues = data.keyUsage.map(function(item){
+          return item.value;
+        });
+
+        usageChart.data.labels = usageChartlabels;
+        usageChart.data.datasets[0].data = usageChartvalues;
+        usageChart.data.datasets[1].data = Array(usageChartlabels.length).fill(<%= currentKey.limit %>);
+        usageChart.update();
+
+        var scanTextChartlabels = data.scantext.map(function(item){
+          return item.date;
+        });
+        var scanTextChartvalues = data.scantext.map(function(item){
+          return item.value;
+        });
+
+        scanTextChart.data.labels = scanTextChartlabels;
+        scanTextChart.data.datasets[0].data = scanTextChartvalues;
+        scanTextChart.update();
+
+        var scanBarcodeChartlabels = data.scanbarcode.map(function(item){
+          return item.date;
+        });
+        var scanBarcodeChartvalues = data.scanbarcode.map(function(item){
+          return item.value;
+        });
+
+        scanBarcodeChart.data.labels = scanBarcodeChartlabels;
+        scanBarcodeChart.data.datasets[0].data = scanBarcodeChartvalues;
+        scanBarcodeChart.update();
+      }
+    });
+  }
+</script>

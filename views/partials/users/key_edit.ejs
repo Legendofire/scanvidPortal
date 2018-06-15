@@ -1,0 +1,92 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>API <small>Edit</small></h3>
+      </div>
+      <div class="title_right">
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_content">
+          <form class="form-horizontal form-label-left " method="post" action="/apiKeys/edit/<%=key._id%>">
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Key <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" class="form-control col-md-7 col-xs-12" value="<%=key._id%>" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Limit
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="number" name="limit" value="<%= key.limit %>" class="form-control col-md-7 col-xs-12">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Expiry <span class="required">*</span></label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="form-control col-md-7 col-xs-12" type="text" name="expiry" value="<%= new Date(key.expiry).toDateString()%>" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Revoked <span class="required">*</span></label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="btn-group" data-toggle="buttons">
+                    <% if(key.revoked){ %>
+                      <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                        <input type="radio" name="revoked" value="false"> &nbsp; No &nbsp;
+                      </label>
+                      <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                        <input type="radio" name="revoked" value="true" checked="checked"> &nbsp; Yes &nbsp;
+                      </label>
+                    <% } else {%>
+                      <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                        <input type="radio" name="revoked" value="false" checked="checked"> &nbsp; No &nbsp;
+                      </label>
+                      <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                        <input type="radio" name="revoked" value="true"> &nbsp; Yes &nbsp;
+                      </label>
+                    <% } %>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Allow Overage <span class="required">*</span></label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="btn-group" data-toggle="buttons">
+                  <% if(key.allowOverage){%>
+                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                      <input type="radio" name="allowOverage" value="false"> &nbsp; No &nbsp;
+                    </label>
+                    <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                      <input type="radio" name="allowOverage" value="true" checked="checked"> &nbsp; Yes &nbsp;
+                    </label>
+                  <% } else {%>
+                    <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                      <input type="radio" name="allowOverage" value="false" checked="checked"> &nbsp; No &nbsp;
+                    </label>
+                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                      <input type="radio" name="allowOverage" value="true"> &nbsp; Yes &nbsp;
+                    </label>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+            <div class="ln_solid"></div>
+            <div class="form-group">
+              <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                <button class="btn btn-primary" onclick="window.history.back();" type="button">Cancel</button>
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
