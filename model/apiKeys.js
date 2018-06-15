@@ -6,7 +6,7 @@ let apiKeySchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   limit: Number,
   created: { type: Date, default: Date.now },
-  expiry: Number,
+  expiry: Date,
   revoked: Boolean,
   allowOverage: Boolean,
   log: [{

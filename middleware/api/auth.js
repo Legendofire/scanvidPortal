@@ -9,7 +9,8 @@ exports.shallPass = function(req, res, next) {
       .then(key => {
         if (key.length > 0) {
           let currentTimeStamp = new Date().getTime();
-          let timeStampDifference = key[0].expiry - currentTimeStamp;
+          let expiryTimeStamp = new Date(key[0].expiry).getTime();
+          let timeStampDifference = expiryTimeStamp - currentTimeStamp;
           if (key[0].revoked) {
             res.json({
               code: 400,

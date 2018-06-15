@@ -63,7 +63,7 @@
 
               <div class="profile_title">
                 <div class="col-md-6">
-                  <h2>User Activity Report</h2>
+                  <h2>Current API Usage</h2>
                 </div>
 
               </div></br>
@@ -72,7 +72,7 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-caret-square-o-right"></i>
                     </div>
-                    <div class="count"><%= currentKey.log ? currentKey.log.length : 0 %></div>
+                    <div class="count"><%= currentKey && currentKey.log ? currentKey.log.length : 'N/A' %></div>
 
                     <h3> API Calls</h3>
                     <p>Current API Key Calls</p>
@@ -82,7 +82,7 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-comments-o"></i>
                     </div>
-                    <div class="count"><%= currentKey.limit %></div>
+                    <div class="count"><%= currentKey ? currentKey.limit : 'N/A' %></div>
 
                     <h3> API Calls</h3>
                     <p>Current API Key Limit</p>
@@ -92,7 +92,7 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-sort-amount-desc"></i>
                     </div>
-                    <div class="count"> <%=  currentKey.log ? currentKey.limit < currentKey.log.length ? currentKey.log.length - currentKey.limit : 0 : 0 %> </div>
+                    <div class="count"> <%=  currentKey && currentKey.log ? currentKey.limit < currentKey.log.length ? currentKey.log.length - currentKey.limit : 0 : 'N/A' %> </div>
 
                     <h3> API Calls</h3>
                     <p>Current API Key Overage</p>
@@ -102,24 +102,14 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-caret-square-o-right"></i>
                     </div>
-                    <div class="count"> <%= new Date(currentKey.expiry).toDateString() %> </div>
+                    <div class="count"> <%= currentKey ? new Date(currentKey.expiry).toDateString() : 'N/A' %> </div>
 
                     <h3> Expiry</h3>
                     <p>Expiry Date for the current Key</p>
                   </div>
                 </div>
               </div>
-              <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                  <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">All Keys</a>
-                  </li>
-                  <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Key Report</a>
-                  </li>
-                  <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Per Function Report</a>
-                  </li>
-                </ul>
-                <div id="myTabContent" class="tab-content">
-                  <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
                     <table class="table table-hover">
                       <thead>
                         <tr>
@@ -164,57 +154,7 @@
                           <% }) %>
                       </tbody>
                     </table>
-                  </div>
-                  <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                    <div class="row">
-                      <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                          <div class="x_title">
-                            <h2><%=currentKey._id%> <small>Usage Report</small></h2>
-                            <div class="title_right">
-                              <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
-                                <div class="input-group">
-                                  <input type="date" id='usage_report-start_date' class="form-control">
-                                  <input type="date" id='usage_report-end_date' class="form-control">
-                                  <button class="btn btn-default pull-right" id='usage_report-search' type="button">Go!</button>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="clearfix"></div>
-                          </div>
-                          <div class="x_content">
-                            <canvas id="keyUsage"></canvas>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                    <div class="row">
-                      <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                          <div class="x_title">
-                            <h2><%=currentKey._id%> <small>Usage Report</small></h2>
-                            <div class="title_right">
-                              <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
-                                <div class="input-group">
-                                  <input type="date" id='usage_report-start_date' class="form-control">
-                                  <input type="date" id='usage_report-end_date' class="form-control">
-                                  <button class="btn btn-default pull-right" id='usage_report-search' type="button">Go!</button>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="clearfix"></div>
-                          </div>
-                          <div class="x_content">
-                            <canvas id="keyFunctionUsage"></canvas>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                </div>
+
               </div>
             </div>
           </div>
@@ -277,91 +217,3 @@
   </div>
 </div>
 <!-- End Add API Key Modal-->
-
-<script>
-  window.onload = function(){
-    function showLineChart(){
-      var ctx = document.getElementById("keyUsage");
-      var lineChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ["Sunday", "Monday", "Tuesday", "April", "May", "June", "July"],
-          datasets: [{
-            label: "Usage",
-            backgroundColor: "rgba(38, 185, 154, 0.31)",
-            borderColor: "rgba(38, 185, 154, 0.7)",
-            pointBorderColor: "rgba(38, 185, 154, 0.7)",
-            pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointBorderWidth: 1,
-            data: [4, 20, 50, 87, 120, 200, 230],
-            fill: false,
-          }, {
-            label: "Call Limit",
-            backgroundColor: "rgba(3, 88, 106, 0.3)",
-            borderColor: "rgba(3, 88, 106, 0.70)",
-            pointBorderColor: "rgba(3, 88, 106, 0.70)",
-            pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(151,187,205,1)",
-            pointBorderWidth: 1,
-            data: Array(7).fill(100)
-          }]
-        },
-        options: {
-
-        }
-      });
-  	}
-
-    function showPieGraph(){
-        var ctx = document.getElementById("keyFunctionUsage");
-        var lineChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: ["Sunday", "Monday", "Tuesday", "April", "May", "June", "July"],
-            datasets: [{
-              label: "Scan Text",
-              backgroundColor: "rgba(38, 185, 154, 0.31)",
-              borderColor: "rgba(38, 185, 154, 0.7)",
-              pointBorderColor: "rgba(38, 185, 154, 0.7)",
-              pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-              pointHoverBackgroundColor: "#fff",
-              pointHoverBorderColor: "rgba(220,220,220,1)",
-              pointBorderWidth: 1,
-              data: [4, 20, 50, 87, 120, 200, 230],
-              fill: false,
-            }, {
-              label: "Scan Barcode",
-              backgroundColor: "rgba(179, 112, 207, 0.3)",
-              borderColor: "rgba(179, 112, 207, 0.3)",
-              pointBorderColor: "rgba(179, 112, 207, 0.3)",
-              pointBackgroundColor: "rgba(179, 112, 207, 0.3)",
-              pointHoverBackgroundColor: "#fff",
-              pointHoverBorderColor: "rgba(151,187,205,1)",
-              pointBorderWidth: 1,
-              data: [4, 15, 29, 87, 140, 178, 210],
-              fill: false
-            }, {
-              label: "Analyze Video",
-              backgroundColor: "rgba(3, 88, 106, 0.3)",
-              borderColor: "rgba(3, 88, 106, 0.70)",
-              pointBorderColor: "rgba(3, 88, 106, 0.70)",
-              pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-              pointHoverBackgroundColor: "#fff",
-              pointHoverBorderColor: "rgba(151,187,205,1)",
-              pointBorderWidth: 1,
-              data: [8, 10, 30, 57, 100, 137, 230],
-              fill: false
-            }]
-          },
-          options: {
-
-          }
-      });
-    }
-    showLineChart();
-    showPieGraph();
-};
-</script>
