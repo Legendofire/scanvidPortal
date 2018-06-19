@@ -63,7 +63,7 @@
           </form>
           <script type="text/javascript">
             //form tags state
-            <% if (tags) {%>
+            <% if (tags && tags.length > 0) {%>
             var state = [
               <% tags.forEach(function(tag, index){%>
                 {name:"<%= tag.name %>",value:"<%= tag.value %>"}<%= index==tags.length?'':',' %>
