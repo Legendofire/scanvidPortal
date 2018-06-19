@@ -128,7 +128,12 @@ exports.analyzeVideo = function(req, res, next) {
   var imgArr = [];
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
-  console.log(req);
+
+  form.on("fileBegin", function(name, file) {
+    file.path = form.uploadDir + "/" + file.name;
+    console.log(name, file);
+  });
+
   form.parse(req, function(err, fields, files) {
     if (req.api) {
       console.log("////////////req.body////////");
@@ -337,10 +342,119 @@ exports.analyzeVideo = function(req, res, next) {
   });
 };
 
-// if(req.user.isBrand){
-//   var where = {
-//     brandName = req.user.brand;
-//   }
-// }else{
-//
-// }
+exports.analyzeVideo2 = function(req, res ,next){
+  var picsFolder = "./public/tempFolder/";
+  var form = new formidable.IncomingForm();
+  form.maxFileSize = 200 * 1024 * 1024;
+
+  let productBarCode = '';
+
+  form.on("file", function(name, file) {
+    file.path = form.uploadDir + "/" + file.name;
+    //console.log(name, file);
+    doesBucketExsistFor(value)
+      .then(doesExsist => {
+        console.log("analyzeVideo2 doesExsist:");
+        console.log(doesExsist);
+        if(doesExsist){
+            storeItemInBucket(file ,'videos',productBarCode)
+              .then(() => {
+
+              })
+              .catch(() => {
+
+              });
+        }else{
+          createBucketFor(value)
+            .then((created) => {
+              console.log("status:");
+              console.log(created);
+            })
+            .catch((err) => {
+              console.log("error:");
+              console.log(err);
+            });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+
+  form.on("field", function(name, value){
+      if(name === "product"){
+        productBarCode = value;
+      }
+  })
+
+  form.parse(req);
+}
+
+/* Returning a Promise with whether the Bucket exsists or not*/
+function doesBucketExsistFor(productBarCode) {
+  return new Promise((resolve, reject) => {
+    storage
+      .getBuckets()
+      .then(buckets => {
+        //Search in the buckets for this product's bucket
+        buckets[0].forEach(bucket => {
+          //console.log("doesBucketExsistFor bucket name:");
+          //console.log(bucket.name);
+          if (bucket.name == `scanvid--videos--${productBarCode}` || bucket.name == `scanvid--images--${productBarCode}`) {
+            //if bucket found resolve with true
+            resolve(true);
+          }
+        });
+        //if no bucket is found resolve with false
+        resolve(false);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+/* Create Video and Image Bucket */
+function createBucketFor(productBarCode){
+  return new Promise((resolve, reject) => {
+    const imageBucketPromise = storage.createBucket(`scanvid--images--${productBarCode}`);
+    const videoBucketPromise = storage.createBucket(`scanvid--videos--${productBarCode}`);
+    //console.log("createBucketFor bucketname:");
+    //console.log(`scanvid--videos--${productBarCode}`);
+    Promise
+      .all([imageBucketPromise,videoBucketPromise])
+      .then((response) => {
+        //console.log("createBucketFor Response:");
+        //console.log(response);
+        const makeImageBucketPublicPromise = storage
+          .bucket(`scanvid--images--${productBarCode}`)
+          .makePublic({ includeFiles: true });
+        const makeVideosBucketPublicPromise = storage
+          .bucket(`scanvid--videos--${productBarCode}`)
+          .makePublic({ includeFiles: true });
+        Promise
+          .all([makeImageBucketPublicPromise, makeVideosBucketPublicPromise])
+          .then(()=>{
+            resolve(true);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+function storeItemInBucket(file, fileType, productBarCode) {
+  const uploadOptions = {
+    metadata: {
+      contentType: files.video.type
+    }
+  };
+  let bucketName = `scanvid--${fileType}--${productBarCode}`;
+  return storage
+    .bucket(bucketName)
+    .upload(file.path, uploadOptions);
+}
