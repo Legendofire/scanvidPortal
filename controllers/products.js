@@ -140,10 +140,13 @@ exports.analyzeVideo = function(req, res, next) {
         if (doesExsist) {
             processVideo(file, productBarCode)
               .then(() => {
-                res.json({status:200, message:'Video Uploaded'})
+                if (req.api) {
+                  res.json({status:200, message:'Video Uploaded'})
+                } else {
+                  res.redirect("products/view/" + fields.product);
+                }
               })
               .catch((err) => {
-                console.log(1);
                 res.json({status:500, error:err})
               });
         } else {
@@ -152,10 +155,13 @@ exports.analyzeVideo = function(req, res, next) {
               if(created){
                 processVideo(file, productBarCode)
                   .then(() => {
-                    res.json({status:200, message:'Video Uploaded'})
+                    if (req.api) {
+                      res.json({status:200, message:'Video Uploaded'})
+                    } else {
+                      res.redirect("products/view/" + fields.product);
+                    }
                   })
                   .catch((err) => {
-                    console.log(2);
                     res.json({status:500, error:err})
                   });
               }else{
@@ -163,13 +169,11 @@ exports.analyzeVideo = function(req, res, next) {
               }
             })
             .catch(err => {
-              console.log(3);
               res.json({status:500,error:err});
             });
         }
       })
       .catch(err => {
-        console.log(4, err);
         res.json({status:500,error:err});
       });
   });
