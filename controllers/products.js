@@ -1,27 +1,30 @@
 let express = require("express");
 let mongoose = require("mongoose");
+let mime = require('mime');
 
 let Product = require("./../model/products");
 
 const Storage = require("@google-cloud/storage");
 // Your Google Cloud Platform project ID
+
+const ffmpeg = require("easy-ffmpeg");
+var formidable = require("formidable");
+const Multer = require("multer");
+var fs = require("fs");
+
 const projectId = "API Project";
 
 // Creates a client
 const storage = new Storage({
   keyFilename: "scanvid.json"
 });
-
-const ffmpeg = require("easy-ffmpeg");
-var formidable = require("formidable");
-const Multer = require("multer");
+const outputFolder = "./public/tempFolder/";
 const multer = Multer({
   storage: Multer.MemoryStorage,
   limits: {
     fileSize: 300 * 1024 * 1024 // no larger than 300mb
   }
 });
-var fs = require("fs");
 
 exports.getAllProducts = function(req, res, next) {
   if (req.session.user) {
@@ -114,6 +117,7 @@ exports.searchDb = function(req, res, next) {
     }
   }
 };
+
 exports.dbSearchBarcode = function(req, res, next) {
   if (req.session.user) {
     Product.findOne({ barcode: req.query.q }).exec(function(err, results) {
@@ -342,52 +346,90 @@ exports.analyzeVideo = function(req, res, next) {
   });
 };
 
-exports.analyzeVideo2 = function(req, res ,next){
+
+exports.analyzeVideo2 = function(req, res, next) {
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
   form.maxFileSize = 200 * 1024 * 1024;
 
-  let productBarCode = '';
+  let productBarCode = "";
 
   form.on("file", function(name, file) {
-    file.path = form.uploadDir + "/" + file.name;
-    //console.log(name, file);
-    doesBucketExsistFor(value)
+    doesBucketExsistFor(productBarCode)
       .then(doesExsist => {
-        console.log("analyzeVideo2 doesExsist:");
-        console.log(doesExsist);
-        if(doesExsist){
-            storeItemInBucket(file ,'videos',productBarCode)
+        if (doesExsist) {
+            processVideo(file, productBarCode)
               .then(() => {
-
+                res.json({status:200, message:'Video Uploaded'})
               })
-              .catch(() => {
-
+              .catch((err) => {
+                console.log(1);
+                res.json({status:500, error:err})
               });
-        }else{
-          createBucketFor(value)
-            .then((created) => {
-              console.log("status:");
-              console.log(created);
+        } else {
+          createBucketFor(productBarCode)
+            .then(created => {
+              if(created){
+                processVideo(file, productBarCode)
+                  .then(() => {
+                    res.json({status:200, message:'Video Uploaded'})
+                  })
+                  .catch((err) => {
+                    console.log(2);
+                    res.json({status:500, error:err})
+                  });
+              }else{
+                res.json({status:500,error:"Internal Error"});
+              }
             })
-            .catch((err) => {
-              console.log("error:");
-              console.log(err);
+            .catch(err => {
+              console.log(3);
+              res.json({status:500,error:err});
             });
         }
       })
       .catch(err => {
-        console.log(err);
+        console.log(4);
+        res.json({status:500,error:err});
       });
   });
 
-  form.on("field", function(name, value){
-      if(name === "product"){
-        productBarCode = value;
-      }
-  })
+  form.on("field", function(name, value) {
+    if (name === "product") {
+      productBarCode = value;
+    }
+  });
 
   form.parse(req);
+};
+
+function processVideo(file, productBarCode){
+  return Promise((resolve, reject)=>{
+    let videoStoragePromise = storeItemInBucket(file, "videos", productBarCode);
+    let screenShotsPromises = [];
+    getScreenShotsFromVideo(file)
+      .then(fileNames => {
+        fileNames.forEach((fileName) => {
+          let file = {
+            path: outputFolder+fileName,
+            type: mime.lookup(outputFolder+fileName)
+          }
+          screenShotsPromises.push(storeItemInBucket(file, "images", productBarCode));
+        });
+      })
+      .catch(err => {
+        reject(err);
+      });
+
+      Promise
+      .all([videoStoragePromise].concat(screenShotsPromises))
+      .then(response => {
+        resolve(response);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
 }
 
 /* Returning a Promise with whether the Bucket exsists or not*/
@@ -396,36 +438,39 @@ function doesBucketExsistFor(productBarCode) {
     storage
       .getBuckets()
       .then(buckets => {
-        //Search in the buckets for this product's bucket
+        console.log("Got buckets");
         buckets[0].forEach(bucket => {
-          //console.log("doesBucketExsistFor bucket name:");
-          //console.log(bucket.name);
-          if (bucket.name == `scanvid--videos--${productBarCode}` || bucket.name == `scanvid--images--${productBarCode}`) {
-            //if bucket found resolve with true
+          console.log("name:",bucket.name);
+          if (
+            bucket.name == `scanvid--videos--${productBarCode}` ||
+            bucket.name == `scanvid--images--${productBarCode}`
+          ) {
+            console.log("Found the Bucket");
             resolve(true);
           }
         });
-        //if no bucket is found resolve with false
+        console.log("Didn't find the Bucket");
         resolve(false);
       })
       .catch(err => {
+        console.log("Ops");
+        console.log(err);
         reject(err);
       });
   });
 }
 
 /* Create Video and Image Bucket */
-function createBucketFor(productBarCode){
+function createBucketFor(productBarCode) {
   return new Promise((resolve, reject) => {
-    const imageBucketPromise = storage.createBucket(`scanvid--images--${productBarCode}`);
-    const videoBucketPromise = storage.createBucket(`scanvid--videos--${productBarCode}`);
-    //console.log("createBucketFor bucketname:");
-    //console.log(`scanvid--videos--${productBarCode}`);
-    Promise
-      .all([imageBucketPromise,videoBucketPromise])
-      .then((response) => {
-        //console.log("createBucketFor Response:");
-        //console.log(response);
+    const imageBucketPromise = storage.createBucket(
+      `scanvid--images--${productBarCode}`
+    );
+    const videoBucketPromise = storage.createBucket(
+      `scanvid--videos--${productBarCode}`
+    );
+    Promise.all([imageBucketPromise, videoBucketPromise])
+      .then(response => {
         const makeImageBucketPublicPromise = storage
           .bucket(`scanvid--images--${productBarCode}`)
           .makePublic({ includeFiles: true });
@@ -433,13 +478,17 @@ function createBucketFor(productBarCode){
           .bucket(`scanvid--videos--${productBarCode}`)
           .makePublic({ includeFiles: true });
         Promise
-          .all([makeImageBucketPublicPromise, makeVideosBucketPublicPromise])
-          .then(()=>{
+          .all([
+            makeImageBucketPublicPromise,
+            makeVideosBucketPublicPromise
+          ])
+          .then((response) => {
+            console.log(response);
             resolve(true);
           })
-          .catch((err)=>{
+          .catch(err => {
             reject(err);
-          })
+          });
       })
       .catch(err => {
         reject(err);
@@ -447,14 +496,34 @@ function createBucketFor(productBarCode){
   });
 }
 
+/* Store file in Bucket*/
 function storeItemInBucket(file, fileType, productBarCode) {
   const uploadOptions = {
     metadata: {
-      contentType: files.video.type
+      contentType: file.type
     }
   };
   let bucketName = `scanvid--${fileType}--${productBarCode}`;
-  return storage
-    .bucket(bucketName)
-    .upload(file.path, uploadOptions);
+  return storage.bucket(bucketName).upload(file.path, uploadOptions);
+}
+
+/* get Screenshots from video*/
+function getScreenShotsFromVideo(file, productBarCode) {
+  let fileNames = [];
+  return new Promise((resolve, reject) => {
+    ffmpeg(file.path)
+      .on("filenames", function(filenames) {
+        fileNames = filenames;
+      })
+      .on("end", function() {
+        resolve(fileNames);
+      })
+      .screenshots({
+        count: 10,
+        folder: outputFolder
+      })
+      .on("error", err => {
+        reject(err);
+      });
+  });
 }
