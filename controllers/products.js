@@ -128,226 +128,6 @@ exports.dbSearchBarcode = function(req, res, next) {
 };
 
 exports.analyzeVideo = function(req, res, next) {
-  var output = {};
-  var imgArr = [];
-  var picsFolder = "./public/tempFolder/";
-  var form = new formidable.IncomingForm();
-
-  form.on("fileBegin", function(name, file) {
-    file.path = form.uploadDir + "/" + file.name;
-    console.log(name, file);
-  });
-
-  form.parse(req, function(err, fields, files) {
-    if (req.api) {
-      console.log("////////////req.body////////");
-      console.log(req.body);
-      console.log("/////////////fields/////////");
-      console.log(fields);
-      console.log("//////////////files/////////");
-      console.log(files);
-    }
-    var bool = false;
-    const options = {
-      metadata: {
-        contentType: files.video.type
-      }
-    };
-    storage.getBuckets().then(results => {
-      const buckets = results[0];
-      //console.log('Buckets:');
-      buckets.forEach(bucket => {
-        if (bucket.name == "scanvid--videos--" + fields.product) {
-          console.log("exisits");
-          bool = true;
-          console.log("trying to upload video");
-          storage
-            .bucket("scanvid--videos--" + fields.product)
-            .upload(files.video.path, options)
-            .then(() => {
-              console.log(`uploaded.`);
-              ffmpeg(files.video.path)
-                .frames(1000)
-                .on("filenames", function(filenames) {
-                  for (var i = 0; i < filenames.length; i++) {
-                    filenames[i] =
-                      fields.product +
-                      Math.random() * Math.floor(6192847129841) +
-                      ".png";
-                  }
-                  imgArr = filenames;
-                  console.log("Will generate " + filenames.join(", "));
-                })
-                .on("data", function(data) {
-                  console.log(data);
-                })
-                .on("end", function() {
-                  console.log("screenshots taken");
-                  var prom = [];
-
-                  for (var i = 0; i < imgArr.length; i++) {
-                    var imgPath = picsFolder + imgArr[i];
-                    prom.push(
-                      storage
-                        .bucket("scanvid--images--" + fields.product)
-                        .upload(imgPath)
-                    );
-                  }
-                  prom.push(
-                    storage
-                      .bucket("scanvid--images--" + fields.product)
-                      .makePublic({ includeFiles: true })
-                  );
-                  prom.push(
-                    storage
-                      .bucket("scanvid--videos--" + fields.product)
-                      .makePublic({ includeFiles: true })
-                  );
-                  Promise.all(prom)
-                    .then(function(data) {
-                      console.log(data);
-                      if (req.api) {
-                        res.send({
-                          status: "200",
-                          comment: "Uploaded successfully"
-                        });
-                      } else {
-                        res.redirect("products/view/" + fields.product);
-                      }
-                    })
-                    .catch(function(err) {
-                      console.log(err);
-                      if (req.api) {
-                        res.send({ status: "403", comment: err });
-                      } else {
-                        res.redirect("products/view/" + fields.product);
-                      }
-                    });
-                })
-                .screenshots({
-                  // Will take screens at 20%, 40%, 60% and 80% of the video
-                  count: 10,
-                  folder: picsFolder
-                });
-            })
-            .catch(err => {
-              console.error("ERROR:", err);
-              if (req.api) {
-                res.send({ status: "403", comment: err });
-              } else {
-                res.redirect("products/view/" + fields.product);
-              }
-            });
-        }
-      });
-      if (!bool) {
-        storage
-          .createBucket("scanvid--videos--" + fields.product)
-          .then(() => {
-            console.log("created new bucket");
-            bool = true;
-            console.log(`Bucket ${fields.product} created.`);
-            console.log("trying to upload video");
-            storage
-              .bucket("scanvid--videos--" + fields.product)
-              .upload(files.video.path, options)
-              .then(() => {
-                console.log(`uploaded.`);
-
-                ffmpeg(files.video.path)
-                  .frames(1000)
-                  .on("filenames", function(filenames) {
-                    for (var i = 0; i < filenames.length; i++) {
-                      filenames[i] =
-                        fields.product +
-                        Math.random() * Math.floor(6192847129841) +
-                        ".png";
-                    }
-                    imgArr = filenames;
-                    console.log("Will generate " + filenames.join(", "));
-                  })
-                  .on("data", function(data) {
-                    console.log(data);
-                  })
-                  .on("end", function() {
-                    console.log("screenshots taken");
-                    var prom = [];
-                    storage
-                      .createBucket("scanvid--images--" + fields.product)
-                      .then(() => {
-                        for (var i = 0; i < imgArr.length; i++) {
-                          var imgPath = picsFolder + imgArr[i];
-                          prom.push(
-                            storage
-                              .bucket("scanvid--images--" + fields.product)
-                              .upload(imgPath)
-                          );
-                        }
-                        prom.push(
-                          storage
-                            .bucket("scanvid--images--" + fields.product)
-                            .makePublic({ includeFiles: true })
-                        );
-                        prom.push(
-                          storage
-                            .bucket("scanvid--videos--" + fields.product)
-                            .makePublic({ includeFiles: true })
-                        );
-                        Promise.all(prom)
-                          .then(function(data) {
-                            console.log(data);
-                            if (req.api) {
-                              res.send({
-                                status: "200",
-                                comment: "Uploaded successfully"
-                              });
-                            } else {
-                              res.redirect("products/view/" + fields.product);
-                            }
-                          })
-                          .catch(function(err) {
-                            console.log(err);
-                            if (req.api) {
-                              res.send({
-                                status: "200",
-                                comment: "Uploaded successfully"
-                              });
-                            } else {
-                              res.redirect("products/view/" + fields.product);
-                            }
-                          });
-                      });
-                  })
-                  .screenshots({
-                    // Will take screens at 20%, 40%, 60% and 80% of the video
-                    count: 10,
-                    folder: picsFolder
-                  });
-              })
-              .catch(err => {
-                console.error("ERROR:", err);
-                if (req.api) {
-                  res.send({ status: "403", comment: err });
-                } else {
-                  res.redirect("products/view/" + fields.product);
-                }
-              });
-          })
-          .catch(err => {
-            console.error("ERROR:", err);
-            if (req.api) {
-              res.send({ status: "403", comment: err });
-            } else {
-              res.redirect("products/view/" + fields.product);
-            }
-          });
-      }
-    });
-  });
-};
-
-
-exports.analyzeVideo2 = function(req, res, next) {
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
   form.maxFileSize = 200 * 1024 * 1024;
@@ -389,7 +169,7 @@ exports.analyzeVideo2 = function(req, res, next) {
         }
       })
       .catch(err => {
-        console.log(4);
+        console.log(4, err);
         res.json({status:500,error:err});
       });
   });
@@ -404,7 +184,7 @@ exports.analyzeVideo2 = function(req, res, next) {
 };
 
 function processVideo(file, productBarCode){
-  return Promise((resolve, reject)=>{
+  return new Promise((resolve, reject)=>{
     let videoStoragePromise = storeItemInBucket(file, "videos", productBarCode);
     let screenShotsPromises = [];
     getScreenShotsFromVideo(file)
@@ -438,23 +218,18 @@ function doesBucketExsistFor(productBarCode) {
     storage
       .getBuckets()
       .then(buckets => {
-        console.log("Got buckets");
+        let foundBucket = false;
         buckets[0].forEach(bucket => {
-          console.log("name:",bucket.name);
           if (
             bucket.name == `scanvid--videos--${productBarCode}` ||
             bucket.name == `scanvid--images--${productBarCode}`
           ) {
-            console.log("Found the Bucket");
-            resolve(true);
+            foundBucket = true;
           }
         });
-        console.log("Didn't find the Bucket");
-        resolve(false);
+        foundBucket ? resolve(true) : resolve(false);
       })
       .catch(err => {
-        console.log("Ops");
-        console.log(err);
         reject(err);
       });
   });
@@ -472,11 +247,9 @@ function createBucketFor(productBarCode) {
     Promise.all([imageBucketPromise, videoBucketPromise])
       .then(response => {
         const makeImageBucketPublicPromise = storage
-          .bucket(`scanvid--images--${productBarCode}`)
-          .makePublic({ includeFiles: true });
+          .bucket(`scanvid--images--${productBarCode}`);
         const makeVideosBucketPublicPromise = storage
-          .bucket(`scanvid--videos--${productBarCode}`)
-          .makePublic({ includeFiles: true });
+          .bucket(`scanvid--videos--${productBarCode}`);
         Promise
           .all([
             makeImageBucketPublicPromise,
@@ -498,13 +271,33 @@ function createBucketFor(productBarCode) {
 
 /* Store file in Bucket*/
 function storeItemInBucket(file, fileType, productBarCode) {
-  const uploadOptions = {
-    metadata: {
-      contentType: file.type
-    }
-  };
-  let bucketName = `scanvid--${fileType}--${productBarCode}`;
-  return storage.bucket(bucketName).upload(file.path, uploadOptions);
+  return new Promise((resolve, reject) => {
+    const uploadOptions = {
+      metadata: {
+        contentType: file.type
+      }
+    };
+    let bucketName = `scanvid--${fileType}--${productBarCode}`;
+    storage
+      .bucket(bucketName)
+      .upload(file.path, uploadOptions)
+      .then((response)=>{
+        storage
+          .bucket(bucketName)
+          .file(response[0].metadata.name)
+          .makePublic()
+          .then(()=>{
+            resolve(true);
+          })
+          .catch((err)=>{
+            reject(err);
+          });
+      })
+      .catch((err)=>{
+        reject(err);
+      });
+  })
+
 }
 
 /* get Screenshots from video*/
