@@ -178,7 +178,7 @@ exports.analyzeVideo = function(req, res, next) {
 
   form.on("error", function(err){
     if (req.api) {
-      res.json({status:200, message:'Video Uploaded'})
+      res.json({status:500, error:err})
     } else {
       console.log(error);
       res.redirect("products/view/" + fields.product);
