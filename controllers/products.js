@@ -130,8 +130,6 @@ exports.dbSearchBarcode = function(req, res, next) {
 exports.analyzeVideo = function(req, res, next) {
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
-  form.maxFileSize = 200 * 1024 * 1024 * 1024;
-
   let productBarCode = "";
 
   form.on("file", function(name, file) {
@@ -177,6 +175,15 @@ exports.analyzeVideo = function(req, res, next) {
         res.json({status:500,error:err});
       });
   });
+
+  form.on("error", function(err){
+    if (req.api) {
+      res.json({status:200, message:'Video Uploaded'})
+    } else {
+      console.log(error);
+      res.redirect("products/view/" + fields.product);
+    }
+  })
 
   form.on("field", function(name, value) {
     if (name === "product") {
