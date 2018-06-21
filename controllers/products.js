@@ -130,68 +130,80 @@ exports.dbSearchBarcode = function(req, res, next) {
 exports.analyzeVideo = function(req, res, next) {
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
+  form.maxFileSize = 200000000;
   let productBarCode = "";
-
-  form.on("file", function(name, file) {
-    doesBucketExsistFor(productBarCode)
-      .then(doesExsist => {
-        if (doesExsist) {
-            processVideo(file, productBarCode)
-              .then(() => {
-                if (req.api) {
-                  res.json({status:200, message:'Video Uploaded'})
-                } else {
-                  res.redirect("products/view/" + fields.product);
+  let videProcessingPromise = new Promise((resolve, reject) => {
+    form.on("file", function(name, file) {
+      doesBucketExsistFor(productBarCode)
+        .then(doesExsist => {
+          if (doesExsist) {
+              processVideo(file, productBarCode)
+                .then(() => {
+                  if (req.api) {
+                    res.json({status:200, message:'Video Uploaded'})
+                  } else {
+                    res.redirect("products/view/" + fields.product);
+                  }
+                })
+                .catch((err) => {
+                  console.log(1);
+                  res.json({status:500, error:err})
+                });
+          } else {
+            createBucketFor(productBarCode)
+              .then(created => {
+                if(created){
+                  processVideo(file, productBarCode)
+                    .then(() => {
+                      if (req.api) {
+                        res.json({status:200, message:'Video Uploaded'})
+                      } else {
+                        res.redirect("products/view/" + fields.product);
+                      }
+                    })
+                    .catch((err) => {
+                      console.log(2);
+                      res.json({status:500, error:err})
+                    });
+                }else{
+                  res.json({status:500,error:"Internal Error"});
                 }
               })
-              .catch((err) => {
-                res.json({status:500, error:err})
+              .catch(err => {
+                console.log(3);
+                res.json({status:500,error:err});
               });
-        } else {
-          createBucketFor(productBarCode)
-            .then(created => {
-              if(created){
-                processVideo(file, productBarCode)
-                  .then(() => {
-                    if (req.api) {
-                      res.json({status:200, message:'Video Uploaded'})
-                    } else {
-                      res.redirect("products/view/" + fields.product);
-                    }
-                  })
-                  .catch((err) => {
-                    res.json({status:500, error:err})
-                  });
-              }else{
-                res.json({status:500,error:"Internal Error"});
-              }
-            })
-            .catch(err => {
-              res.json({status:500,error:err});
-            });
-        }
-      })
-      .catch(err => {
-        res.json({status:500,error:err});
-      });
-  });
+          }
+        })
+        .catch(err => {
+          console.log(4);
+          res.json({status:500,error:err});
+        });
+    });
 
-  form.on("error", function(err){
-    if (req.api) {
-      res.json({status:500, error:err})
-    } else {
-      console.log(error);
-      res.redirect("products/view/" + fields.product);
-    }
+    form.on("error", function(err){
+      if (req.api) {
+        console.log(5);
+        console.log(err);
+        res.json({status:500, error:err})
+      } else {
+        console.log(err);
+        res.redirect("products/view/" + fields.product);
+      }
+    })
+
+    form.on("field", function(name, value) {
+      if (name === "product") {
+        productBarCode = value;
+      }
+    });
+
+    form.parse(req);
+  }).then(()=>{
+    console.log("Done");
+  }).catch((err)=>{
+    console.log("Err",err);
   })
-
-  form.on("field", function(name, value) {
-    if (name === "product") {
-      productBarCode = value;
-    }
-  });
-
-  form.parse(req);
 };
 
 function processVideo(file, productBarCode){
