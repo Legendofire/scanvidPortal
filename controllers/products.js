@@ -130,7 +130,6 @@ exports.dbSearchBarcode = function(req, res, next) {
 exports.analyzeVideo = function(req, res, next) {
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
-  form.maxFileSize = 200 * 1024 * 1024;
 
   let productBarCode = "";
 
