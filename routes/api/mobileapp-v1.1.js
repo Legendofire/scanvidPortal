@@ -114,89 +114,9 @@ router.post("/analyzeVideo", authentication.shallPass, function(
   next
 ) {
   req.api = true;
+  logAction(req.key, "scantext", req.body.product);
   ProductController.analyzeVideo(req, res, next);
 }); /// product: barcode + video:video as form data
-
-router.post("/analyzeVideoTest", function(req, res, next) {
-  req.api = true;
-  var output = {};
-  var imgArr = [];
-  var picsFolder = "./public/tempFolder/";
-  var bool = false;
-
-  storage.getBuckets().then(results => {
-    const buckets = results[0];
-    buckets.forEach(bucket => {
-      if (bucket.name == "scanvid--videos--" + req.body.product) {
-        console.log("exisits");
-        bool = true;
-        // console.log('trying to upload video');
-
-        console.log(`trying to get images.`);
-        ffmpeg(req.body.video)
-          .frames(1000)
-          .on("filenames", function(filenames) {
-            for (var i = 0; i < filenames.length; i++) {
-              filenames[i] =
-                req.body.product +
-                Math.random() * Math.floor(6192847129841) +
-                ".png";
-            }
-            imgArr = filenames;
-            console.log("Will generate " + filenames.join(", "));
-          })
-          .on("data", function(data) {
-            console.log(data);
-          })
-          .on("end", function() {
-            console.log("screenshots taken");
-            var prom = [];
-
-            for (var i = 0; i < imgArr.length; i++) {
-              var imgPath = picsFolder + imgArr[i];
-              prom.push(
-                storage
-                  .bucket("scanvid--images--" + req.body.product)
-                  .upload(imgPath)
-              );
-            }
-            prom.push(
-              storage
-                .bucket("scanvid--images--" + req.body.product)
-                .makePublic({ includeFiles: true })
-            );
-            prom.push(
-              storage
-                .bucket("scanvid--videos--" + req.body.product)
-                .makePublic({ includeFiles: true })
-            );
-            Promise.all(prom)
-              .then(function(data) {
-                console.log(data);
-                if (req.api) {
-                  res.send({ status: "200", comment: "Uploaded successfully" });
-                } else {
-                  res.redirect("products/view/" + req.body.product);
-                }
-              })
-              .catch(function(err) {
-                console.log(err);
-                if (req.api) {
-                  res.send({ status: "403", comment: err });
-                } else {
-                  res.redirect("products/view/" + req.body.product);
-                }
-              });
-          })
-          .screenshots({
-            // Will take screens at 20%, 40%, 60% and 80% of the video
-            count: 10,
-            folder: picsFolder
-          });
-      }
-    });
-  });
-});
 
 function logAction(key, functionName, productID) {
   console.log(key);
