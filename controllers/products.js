@@ -22,7 +22,7 @@ const outputFolder = "./public/tempFolder/";
 const multer = Multer({
   storage: Multer.MemoryStorage,
   limits: {
-    fileSize: 300 * 1024 * 1024 // no larger than 300mb
+    fileSize: 200000000 // no larger than 300mb
   }
 });
 
