@@ -210,15 +210,16 @@ exports.analyzeVideo = function(req, res, next) {
 }
 
 function processVideo(file, productBarCode){
-  console.log("Started Video Processing");
+  console.log(`Started Processing ${file.name}`);
   return new Promise((resolve, reject)=>{
     let videoStoragePromise = storeItemInBucket(file, "videos", productBarCode);
     let screenShotsPromises = [];
     getScreenShotsFromVideo(file)
       .then(fileNames => {
-        console.log("Finished Generating Screenshots from Video");
+        console.log(`Finished Generating Screenshots from ${file.name}`);
         fileNames.forEach((fileName) => {
           let file = {
+            name: fileName,
             path: outputFolder+fileName,
             type: mime.lookup(outputFolder+fileName)
           }
@@ -243,7 +244,7 @@ function processVideo(file, productBarCode){
 
 /* Returning a Promise with whether the Bucket exsists or not*/
 function doesBucketExsistFor(productBarCode) {
-  console.log("Started Checking if Bucket Exsist");
+  console.log(`Started Checking if the Bucket for ${productBarCode} Exsist`);
   return new Promise((resolve, reject) => {
     storage
       .getBuckets()
@@ -288,7 +289,7 @@ function createBucketFor(productBarCode) {
 
 /* Store file in Bucket*/
 function storeItemInBucket(file, fileType, productBarCode) {
-  console.log("Storing file in Bucket");
+  console.log(`Storing ${file.name} in Bucket`);
   return new Promise((resolve, reject) => {
     const uploadOptions = {
       metadata: {
@@ -300,13 +301,13 @@ function storeItemInBucket(file, fileType, productBarCode) {
       .bucket(bucketName)
       .upload(file.path, uploadOptions)
       .then((response)=>{
-        console.log("Finished Storing Item in Bucket");
+        console.log(`Finished storing ${file.name} in Bucket`);
         storage
           .bucket(bucketName)
           .file(response[0].metadata.name)
           .makePublic()
           .then(()=>{
-            console.log("Finished making File public");
+            console.log(`Finished making ${file.name} public`);
             resolve(true);
           })
           .catch((err)=>{
