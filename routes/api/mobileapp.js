@@ -144,6 +144,11 @@ router.post("/analyzeVideo", function(req, res, next) {
   ProductController.analyzeVideo(req, res, next);
 }); /// product: barcode + video:video as form data
 
+router.post("/uploadImage", function(req, res, next){
+  req.api = true;
+  ProductController.uploadImage(req, res, next);
+})
+
 router.post("/analyzeVideoTest", function(req, res, next) {
   req.api = true;
   var output = {};

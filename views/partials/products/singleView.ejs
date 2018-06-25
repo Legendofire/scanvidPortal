@@ -129,7 +129,7 @@
 
                     <!-- start user projects -->
                     <div class="row">
-
+                      <p>Product Images</p><button data-toggle="modal" data-target="#AddImage" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button>
                       <!-- <p>Product Images</p><button data-toggle="modal" data-target="#AddImage" type="button" class="btn btn-round btn-success pull-right"><i class="fa fa-plus"></i></button> -->
                       <% if(!current_user.isBrand){%>
                       <% if(typeof imageFiles!= 'undefined'){%>
@@ -198,12 +198,25 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
+        <h4 class="modal-title">Image Uploader Tool</h4>
       </div>
       <div class="modal-body">
-        <p>Some text in the modal.</p>
+        <form style="margin-left:5%;" name="imageForm" action="/products/image" method="post" enctype="multipart/form-data">
+            <!-- <form style="margin-left:5%;" name="videoForm" action="http://localhost:3000/api/analyzeVideoTest" method="post" > -->
+        <!-- <form style="margin-left:5%;" name="videoForm" action="http://localhost:3000/api/analyzeVideo" method="post" enctype="multipart/form-data"> -->
+
+
+        <div class="input_fields_wrap">
+          <label>Upload Image</label><!-- Input filed so you can add the image url -->
+        </br><input type="text" name="product" placeholder="Product name" value="<%= product.barcode %>"style="display:none;" >
+      </br></br><input type="file" name="image" >
+        <!-- </br></br><input type="text" name="video" > -->
+        </div>
+
+      </form>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-default submitImage">Upload Image</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -269,5 +282,10 @@ $(".analyzeVideo").on("click",function(){
    $('.modal-header h3').html('Processing...')
   document.videoForm.submit();
 
+})
+$(".submitImage").on("click",function(){
+  $('#myModal').modal("show");
+   $('.modal-header h3').html('Processing...')
+  document.imageForm.submit();
 })
 </script>

@@ -127,6 +127,110 @@ exports.dbSearchBarcode = function(req, res, next) {
   }
 };
 
+exports.uploadImage = function(req, res, next){
+  var picsFolder = "./public/tempFolder/";
+  var form = new formidable.IncomingForm();
+  form.maxFileSize = 200 * 1024 * 1024;
+  let productBarCode = "";
+  form.on("file", function(name, file) {
+    console.log("Finished Uploading The File");
+    doesBucketExsistFor(productBarCode)
+      .then(doesExsist => {
+        console.log("Finished Checking if Bucket Exsists");
+        if (doesExsist) {
+            console.log("Bucket Exsists");
+            storeItemInBucket(file , 'images', productBarCode)
+            .then(()=>{
+              if (req.api) {
+                res.json({status:200, message:"Successfully uploaded Image"})
+              } else {
+                res.redirect("/products/view/" + productBarCode);
+              }
+            })
+            .catch((err)=>{
+              if (req.api) {
+                console.log(err);
+                res.json({status:500, message:"Error while uploading Image"})
+              } else {
+                console.log(err);
+                res.redirect("/products/view/" + productBarCode);
+              }
+            });
+        } else {
+          console.log("Bucket Doesn't Exsists");
+          createBucketFor(productBarCode)
+            .then(created => {
+              if(created){
+                console.log("Created Bucket");
+                storeItemInBucket(file , 'images', productBarCode)
+                .then(()=>{
+                  if (req.api) {
+                    res.json({status:200, message:"Successfully uploaded Image"})
+                  } else {
+                    res.redirect("/products/view/" + productBarCode);
+                  }
+                })
+                .catch((err)=>{
+                  if (req.api) {
+                    console.log(err);
+                    res.json({status:500, message:"Error while uploading Image"})
+                  } else {
+                    console.log(err);
+                    res.redirect("/products/view/" + productBarCode);
+                  }
+                });
+              }else{
+                console.log("Failed to Create the Bucket");
+                if (req.api) {
+                  res.json({status:500, error:"Failed to Create Bucket"})
+                } else {
+                  res.redirect("/products/view/" + productBarCode);
+                }
+              }
+            })
+            .catch(err => {
+              console.log("Failed to Create the Bucket");
+              if (req.api) {
+                console.log(err);
+                res.json({status:500, error:err})
+              } else {
+                console.log(err);
+                res.redirect("/products/view/" + productBarCode);
+              }
+            });
+        }
+      })
+      .catch(err => {
+        console.log("Failed while Checking if Bucket exsists");
+        if (req.api) {
+          console.log(err);
+          res.json({status:500, error:err})
+        } else {
+          console.log(err);
+          res.redirect("/products/view/" + productBarCode);
+        }
+      });
+  });
+
+  form.on("error", function(err){
+    if (req.api) {
+      console.log(err);
+      res.json({status:500, error:err})
+    } else {
+      console.log(err);
+      res.redirect("/products/view/" + productBarCode);
+    }
+  })
+
+  form.on("field", function(name, value) {
+    if (name === "product") {
+      productBarCode = value;
+    }
+  });
+
+  form.parse(req);
+}
+
 exports.analyzeVideo = function(req, res, next) {
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
@@ -147,7 +251,7 @@ exports.analyzeVideo = function(req, res, next) {
                   res.json({status:200, message:'Video Uploaded'})
                 } else {
                   console.log("Responding from CMS");
-                  res.redirect("products/view/" + fields.product);
+                  res.redirect("products/view/" + productBarCode);
                 }
               })
               .catch((err) => {
@@ -166,12 +270,18 @@ exports.analyzeVideo = function(req, res, next) {
                       res.json({status:200, message:'Video Uploaded'})
                     } else {
                       console.log("Responding from CMS");
-                      res.redirect("products/view/" + fields.product);
+                      res.redirect("products/view/" + productBarCode);
                     }
                   })
                   .catch((err) => {
                     console.log("Error while Processing Video");
-                    res.json({status:500, error:err})
+                    if (req.api) {
+                      console.log("Responding from API");
+                      res.json({status:500, error:'Error while processing Video'});
+                    } else {
+                      console.log("Responding from CMS");
+                      res.redirect("products/view/" + productBarCode);
+                    }
                   });
               }else{
                 console.log("Failed to Create the Bucket");
@@ -196,7 +306,7 @@ exports.analyzeVideo = function(req, res, next) {
       res.json({status:500, error:err})
     } else {
       console.log(err);
-      res.redirect("products/view/" + fields.product);
+      res.redirect("products/view/" + productBarCode);
     }
   })
 
