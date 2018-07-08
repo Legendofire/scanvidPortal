@@ -34,17 +34,30 @@ router.post("/scanbarcode", authentication.shallPass, function(req, res, next) {
     .exec(function(err, docs) {
       if (err) console.log(err);
       var obj = {};
-      var tags = [];
       obj.title = docs.title;
       obj.barcode = docs.barcode;
       obj.brand = docs.brand;
-      var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
-      for (var i = 0; i < docs.tags.length; i++) {
-        if (patt.test(docs.tags[i].value)) {
-          tags.push(docs.tags[i]);
+      // var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
+      // for (var i = 0; i < docs.tags.length; i++) {
+      //   //if (patt.test(docs.tags[i].value)) {
+      //     tags.push(docs.tags[i]);
+      //   //}
+      // }
+      obj.tags = docs.tags.filter(tag=>{
+        if(req.body.lang){
+          if(!tag.lang || tag.lang === " "){
+            return true;
+          } else {
+            if(tag.lang === req.body.lang){
+              return true
+            }else{
+              return false;
+            }
+          }
+        }else{
+          return true;
         }
-      }
-      obj.tags = tags;
+      });
       logAction(req.key, "scanbarcode", req.body.q);
       res.send(obj);
     });
@@ -88,13 +101,28 @@ router.post("/scantext", authentication.shallPass, function(req, res, next) {
           obj.title = docs[0].title;
           obj.barcode = docs[0].barcode;
           obj.brand = docs[0].brand;
-          var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
-          for (var i = 0; i < docs[0].tags.length; i++) {
-            if (patt.test(docs[0].tags[i].value)) {
-              tags.push(docs[0].tags[i]);
+          // var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
+          // for (var i = 0; i < docs[0].tags.length; i++) {
+          //   if (patt.test(docs[0].tags[i].value)) {
+          //     tags.push(docs[0].tags[i]);
+          //   }
+          // }
+          // obj.tags = tags;
+          obj.tags = docs[0].tags.filter(tag=>{
+            if(req.body.lang){
+              if(!tag.lang || tag.lang === " "){
+                return true;
+              } else {
+                if(tag.lang === req.body.lang){
+                  return true
+                }else{
+                  return false;
+                }
+              }
+            }else{
+              return true;
             }
-          }
-          obj.tags = tags;
+          });
           logAction(req.key, "scantext", req.body.q);
           res.send(obj);
         })

@@ -110,9 +110,9 @@
                             <blockquote class="message">
                               <%var patt = new RegExp("^(?:http(s)?:\/\/)?[\w.-]+");%>
                               <% if (patt.test(tag.value)) { %>
-                                <a href="<%=tag.value%>" >Click Here</a>
+                                <a href="<%=tag.value%>" >Click Here</a> - <%= tag.lang || "N/A" %>
                               <% } else { %>
-                                <%= tag.value %>
+                                <%= tag.value %>  - <%= tag.lang || "N/A" %>
                               <% } %>
                             </blockquote>
                           </div>

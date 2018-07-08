@@ -48,7 +48,7 @@
               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tabs</label>
             </div>
 
-            <div style="overflow-y:auto; height:300px" id="item-container">
+            <div style="overflow-y:auto; height:400px" id="item-container">
             </div>
 
             <input type="text" id="tags" name="tags" style="display:none">
@@ -66,41 +66,56 @@
             <% if (tags && tags.length > 0) {%>
             var state = [
               <% tags.forEach(function(tag, index){%>
-                {name:"<%= tag.name %>",value:"<%= tag.value %>"}<%= index==tags.length?'':',' %>
+                {name:"<%= tag.name %>",value:"<%= tag.value %>",lang:"<%= tag.lang %>"}<%= index==tags.length?'':',' %>
               <% }); %>
             ];
             <% } else { %>
             var state = []
             <% } %>
+            var currentOrder = [];
+            $( "#item-container" ).sortable({
+              placeholder: "ui-state-highlight",
+              helper:'clone',
+              update: function( event, ui ) {
+                console.log(ui);
+                console.log(event);
+                var newOrder = [];
+                $("#item-container > div").each(function(item, value){
+                  newOrder.push(value.id.split('-')[1]);
+                });
+
+                var newState = [];
+                newOrder.forEach(function(val){
+                  newState.push(state[val]);
+                });
+                state = newState;
+              }
+            });
+            $( "#item-container" ).disableSelection();
             update();
             //add new tag item
-            $("#item-container").on('blur','input.tag-value',function(){
+            $("#item-container").on('blur','input',function(){
               var tagNum = $(".tag-item").length;
               var id = this.id;
               var name = $("#"+id+".tag-name").val();
-              var value = $(this).val();
-
-              if(tagNum == id){
-                if(name != "" && value != ""){
-                  state.push({name:name,value:value});
-                  update();
+              var value = $("#"+id+".tag-value").val();
+              var lang = $("#"+id+".tag-lang").val();
+              if(name != "" && value != ""){
+                if(tagNum == id){
+                  state.push({name:name,value:value,lang:lang});
+                }else{
+                  state[id] = {name:name,value:value,lang:lang};
                 }
-              }else{
-                if(name != "" && value != ""){
-                  state[id] = {name:name,value:value};
-                  update();
-                }
+                update();
               }
-
             });
             //update tag item
             function update(){
-              var tagNum = $(".tag-item").length;
               $("#item-container").html("");
               state.forEach(function(item, index){
-                $("#item-container").append(tagItem(index,item.name,item.value));
+                $("#item-container").append(tagItem(index, item.name, item.value, item.lang));
               });
-              $("#item-container").append(tagItem(tagNum,'',''));
+              $("#item-container").append(tagItem($(".tag-item").length, '', '', ''));
             }
             //delete tag item
             $("#item-container").on('click','button.deleteTag',function(){
@@ -118,13 +133,14 @@
               return true;
             });
             //template
-            function tagItem(tagNum,tagName,tagValue){
+            function tagItem(tagNum,tagName,tagValue,tagLang){
               var html = [
                 '<div class="form-group tag-item" id="item-'+tagNum+'">',
                   '<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tag:</label>',
                   '<div class="col-md-9 col-sm-6 col-xs-12">',
                       '<input type="text" id="'+tagNum+'" class="col-md-3 col-xs-12 tag-name" value="'+tagName+'">',
-                      '<input type="text" id="'+tagNum+'" class="col-md-5 col-xs-12 tag-value" value="'+tagValue+'">',
+                      '<input type="text" id="'+tagNum+'" class="col-md-3 col-xs-12 tag-value" value="'+tagValue+'">',
+                      '<input type="text" id="'+tagNum+'" class="col-md-3 col-xs-12 tag-lang" value="'+tagLang+'">',
                       '<button type="button" class="deleteTag" data-number="'+tagNum+'"><i class="fa fa-times"></i></button>',
                   '</div>',
                 '</div>'
