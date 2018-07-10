@@ -103,7 +103,9 @@
                       <% if(product) {%>
                         <% if(product.tags) {%>
                       <% if(product.tags[0]) {%>
-                      <% product.tags.forEach(function(tag){ %>
+                      <% product.tags.forEach(function(tag){
+                          if(tag){
+                        %>
                         <li>
                           <div class="message_wrapper">
                             <h4 class="heading"><%= tag.name %></h4>
@@ -117,7 +119,7 @@
                             </blockquote>
                           </div>
                         </li>
-                      <% }); %>
+                      <% }}); %>
                     <% }%>
                     <% }%>
                     <% }%>
