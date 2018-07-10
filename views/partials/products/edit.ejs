@@ -65,9 +65,10 @@
             //form tags state
             <% if (tags && tags.length > 0) {%>
             var state = [
-              <% tags.forEach(function(tag, index){%>
+              <% tags.forEach(function(tag, index){
+                if(tag){%>
                 {name:"<%= tag.name %>",value:"<%= tag.value %>",lang:"<%= tag.lang %>"}<%= index==tags.length?'':',' %>
-              <% }); %>
+              <% }}); %>
             ];
             <% } else { %>
             var state = []
