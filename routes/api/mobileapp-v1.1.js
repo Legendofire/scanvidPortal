@@ -166,6 +166,12 @@ router.post("/analyzeVideo", authentication.shallPass, function(
   ProductController.analyzeVideo(req, res, next);
 }); /// product: barcode + video:video as form data
 
+router.post("/uploadImage", authentication.shallPass, function(req, res, next){
+  req.api = true;
+  logAction(req.key, "scantext", req.body.product);
+  ProductController.uploadImage(req, res, next);
+})
+
 function logAction(key, functionName, productID) {
   console.log(key);
   apiKey.update(
