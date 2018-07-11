@@ -29,41 +29,52 @@ const multer = Multer({
 
 router.post("/scanbarcode", authentication.shallPass, function(req, res, next) {
   ////Barcode Search
-  Product.findOne({ barcode: req.body.q })
-    .limit(10)
-    .exec(function(err, docs) {
-      if (err) console.log(err);
-      var obj = {};
-      obj.title = docs.title;
-      obj.barcode = docs.barcode;
-      obj.brand = docs.brand;
-      // var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
-      // for (var i = 0; i < docs.tags.length; i++) {
-      //   //if (patt.test(docs.tags[i].value)) {
-      //     tags.push(docs.tags[i]);
-      //   //}
-      // }
-      obj.tags = docs.tags.filter(tag=>{
-        if(req.body.lang){
-          if(!tag.lang || tag.lang === " "){
-            return true;
-          } else {
-            if(tag.lang === req.body.lang){
-              return true
+  if(req.body.q){
+    Product.findOne({ barcode: req.body.q })
+      .limit(10)
+      .exec(function(err, docs) {
+        if (err) console.log(err);
+        if(docs && docs.length > 0){
+          var obj = {};
+          obj.title = docs.title;
+          obj.barcode = docs.barcode;
+          obj.brand = docs.brand;
+          // var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
+          // for (var i = 0; i < docs.tags.length; i++) {
+          //   //if (patt.test(docs.tags[i].value)) {
+          //     tags.push(docs.tags[i]);
+          //   //}
+          // }
+          obj.tags = docs.tags.filter(tag=>{
+            if(req.body.lang){
+              if(!tag.lang || tag.lang === " "){
+                return true;
+              } else {
+                if(tag.lang === req.body.lang){
+                  return true
+                }else{
+                  return false;
+                }
+              }
             }else{
-              return false;
+              return true;
             }
-          }
-        }else{
-          return true;
+          });
+          logAction(req.key, "scanbarcode", req.body.q);
+          res.send(obj);
+        } else {
+          res.json({"Message":"Couldn't find the barcode you are looking for"});
         }
       });
-      logAction(req.key, "scanbarcode", req.body.q);
-      res.send(obj);
-    });
+  } else {
+    res.status(500);
+    res.json({"message":"Did you use Get instead of Post?. Also make sure you supply the proper parameters"})
+  }
+
 });
 
 router.post("/scantext", authentication.shallPass, function(req, res, next) {
+  if(req.body.q){
   Brand.find({})
     .exec()
     .then(function(brands) {
@@ -95,36 +106,41 @@ router.post("/scantext", authentication.shallPass, function(req, res, next) {
 
       Promise.all(prom)
         .then(function(docs) {
-          var obj = {};
-          var tags = [];
-          console.log(docs);
-          obj.title = docs[0].title;
-          obj.barcode = docs[0].barcode;
-          obj.brand = docs[0].brand;
-          // var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
-          // for (var i = 0; i < docs[0].tags.length; i++) {
-          //   if (patt.test(docs[0].tags[i].value)) {
-          //     tags.push(docs[0].tags[i]);
-          //   }
-          // }
-          // obj.tags = tags;
-          obj.tags = docs[0].tags.filter(tag=>{
-            if(req.body.lang){
-              if(!tag.lang || tag.lang === " "){
-                return true;
-              } else {
-                if(tag.lang === req.body.lang){
-                  return true
-                }else{
-                  return false;
+          if(docs && docs.length > 0){
+            var obj = {};
+            var tags = [];
+            console.log(docs);
+            obj.title = docs[0].title;
+            obj.barcode = docs[0].barcode;
+            obj.brand = docs[0].brand;
+            // var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
+            // for (var i = 0; i < docs[0].tags.length; i++) {
+            //   if (patt.test(docs[0].tags[i].value)) {
+            //     tags.push(docs[0].tags[i]);
+            //   }
+            // }
+            // obj.tags = tags;
+            obj.tags = docs[0].tags.filter(tag=>{
+              if(req.body.lang){
+                if(!tag.lang || tag.lang === " "){
+                  return true;
+                } else {
+                  if(tag.lang === req.body.lang){
+                    return true
+                  }else{
+                    return false;
+                  }
                 }
+              }else{
+                return true;
               }
-            }else{
-              return true;
-            }
-          });
-          logAction(req.key, "scantext", req.body.q);
-          res.send(obj);
+            });
+            logAction(req.key, "scantext", req.body.q);
+            res.send(obj);
+          } else {
+            res.json({"Message":"Couldn't find the text you are looking for"});
+          }
+
         })
         .catch(error => {
           console.log(error);
@@ -134,6 +150,10 @@ router.post("/scantext", authentication.shallPass, function(req, res, next) {
       next(err);
       console.error(err);
     });
+  } else {
+    res.status(500);
+    res.json({"message":"Did you use Get instead of Post?. Also make sure you supply the proper parameters"})
+  }
 });
 
 router.post("/analyzeVideo", authentication.shallPass, function(
