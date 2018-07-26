@@ -171,18 +171,17 @@ exports.uploadImage = function(req, res, next){
                   }
                 })
                 .catch((err)=>{
+                  console.log(err);
                   if (req.api) {
-                    console.log(err);
-                    res.json({status:500, message:"Error while uploading Image"})
+                    res.json({status:500,message:"Internal Error"});
                   } else {
-                    console.log(err);
                     res.redirect("/products/view/" + productBarCode);
                   }
                 });
               }else{
                 console.log("Failed to Create the Bucket");
                 if (req.api) {
-                  res.json({status:500, error:"Failed to Create Bucket"})
+                  res.json({status:500, message:"Failed to Create Bucket"})
                 } else {
                   res.redirect("/products/view/" + productBarCode);
                 }
@@ -190,11 +189,10 @@ exports.uploadImage = function(req, res, next){
             })
             .catch(err => {
               console.log("Failed to Create the Bucket");
+              console.log(err);
               if (req.api) {
-                console.log(err);
-                res.json({status:500, error:err})
+                res.json({status:500,message:"Internal Error"});
               } else {
-                console.log(err);
                 res.redirect("/products/view/" + productBarCode);
               }
             });
@@ -204,7 +202,7 @@ exports.uploadImage = function(req, res, next){
         console.log("Failed while Checking if Bucket exsists");
         if (req.api) {
           console.log(err);
-          res.json({status:500, error:err})
+          res.json({status:500,message:"Internal Error"});
         } else {
           console.log(err);
           res.redirect("/products/view/" + productBarCode);
@@ -255,7 +253,8 @@ exports.analyzeVideo = function(req, res, next) {
                 }
               })
               .catch((err) => {
-                res.json({status:500, error:err})
+                console.log(err);
+                res.json({status:500,message:"Internal Error"});
               });
         } else {
           console.log("Bucket Doesn't Exsists");
@@ -277,7 +276,7 @@ exports.analyzeVideo = function(req, res, next) {
                     console.log("Error while Processing Video");
                     if (req.api) {
                       console.log("Responding from API");
-                      res.json({status:500, error:'Error while processing Video'});
+                      res.json({status:500, message:'Error while processing Video'});
                     } else {
                       console.log("Responding from CMS");
                       res.redirect("products/view/" + productBarCode);
@@ -285,25 +284,27 @@ exports.analyzeVideo = function(req, res, next) {
                   });
               }else{
                 console.log("Failed to Create the Bucket");
-                res.json({status:500,error:"Internal Error"});
+                res.json({status:500,message:"Internal Error"});
               }
             })
             .catch(err => {
               console.log("Failed to Create the Bucket");
-              res.json({status:500,error:err});
+              console.log(err);
+              res.json({status:500,message:"Internal Error"});
             });
         }
       })
       .catch(err => {
         console.log("Failed while Checking if Bucket exsists");
-        res.json({status:500,error:err});
+        console.log(err);
+        res.json({status:500,message:"Internal Error"});
       });
   });
 
   form.on("error", function(err){
     if (req.api) {
       console.log(err);
-      res.json({status:500, error:err})
+      res.json({status:500,message:"Internal Error"});
     } else {
       console.log(err);
       res.redirect("products/view/" + productBarCode);

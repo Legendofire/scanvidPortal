@@ -29,12 +29,13 @@ const multer = Multer({
 
 router.post("/scanbarcode", authentication.shallPass, function(req, res, next) {
   ////Barcode Search
+  console.log(req.body.q);
   if(req.body.q){
     Product.findOne({ barcode: req.body.q })
       .limit(10)
       .exec(function(err, docs) {
         if (err) console.log(err);
-        if(docs && docs.length > 0){
+        if(docs){
           var obj = {};
           obj.title = docs.title;
           obj.barcode = docs.barcode;
@@ -106,20 +107,15 @@ router.post("/scantext", authentication.shallPass, function(req, res, next) {
 
       Promise.all(prom)
         .then(function(docs) {
-          if(docs && docs.length > 0){
+          let response = [];
+          docs = docs.filter(doc=>doc); //filter the nulls out
+          if(docs){
             var obj = {};
             var tags = [];
-            console.log(docs);
+
             obj.title = docs[0].title;
             obj.barcode = docs[0].barcode;
             obj.brand = docs[0].brand;
-            // var patt = new RegExp("^(?:http(s)?://)?[w.-]+");
-            // for (var i = 0; i < docs[0].tags.length; i++) {
-            //   if (patt.test(docs[0].tags[i].value)) {
-            //     tags.push(docs[0].tags[i]);
-            //   }
-            // }
-            // obj.tags = tags;
             obj.tags = docs[0].tags.filter(tag=>{
               if(req.body.lang){
                 if(!tag.lang || tag.lang === " "){
