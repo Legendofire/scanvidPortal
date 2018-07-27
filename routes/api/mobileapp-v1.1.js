@@ -49,13 +49,15 @@ router.post("/scanbarcode", authentication.shallPass, function(req, res, next) {
           if(docs.tags){
             obj.tags = docs.tags.filter(tag=>{
               if(req.body.lang){
-                if(!tag.lang || tag.lang === " "){
-                  return true;
-                } else {
-                  if(tag.lang === req.body.lang){
-                    return true
-                  }else{
-                    return false;
+                if(tag){
+                  if(!tag.lang || tag.lang === " "){
+                    return true;
+                  } else {
+                    if(tag.lang === req.body.lang){
+                      return true
+                    }else{
+                      return false;
+                    }
                   }
                 }
               }else{
