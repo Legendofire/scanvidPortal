@@ -20,7 +20,13 @@ const storage = new Storage({
   keyFilename: 'scanvid.json'
 });
 
+var Firestore = require('@google-cloud/firestore');
+const firestore = new Firestore({
+  projectId: "multicam-fe34a",
+  keyFilename: "./config/multicam-fe34a.json"
+})
 
+const document = firestore.doc('ids/sWvWzogwzSjChGJQlOCq');
 
 
 router.get('/', auth.adminLoggedIn, function(req, res, next) {
@@ -164,6 +170,21 @@ router.post('/edit/:pid', auth.userLoggedIn, function(req, res, next) {
       res.redirect('/brands/view/' + req.session.user.brandName);
     }
   });
+});
+
+router.get('/pushToFirebase/:pid', auth.userLoggedIn, function(req, res, next) {
+  document.get().then(doc=>{
+    let idArray = doc.get("id");
+    idArray.push(req.params.pid);
+    document.update(
+      { id:idArray},
+      { merge: true}
+    ).then(doc=>{
+      res.redirect('/products/view/' + req.params.pid);
+    }).catch((err)=>{
+      console.log(err);
+    })
+  })
 });
 
 module.exports = router;
