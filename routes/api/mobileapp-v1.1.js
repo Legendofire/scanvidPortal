@@ -46,21 +46,23 @@ router.post("/scanbarcode", authentication.shallPass, function(req, res, next) {
           //     tags.push(docs.tags[i]);
           //   //}
           // }
-          obj.tags = docs.tags.filter(tag=>{
-            if(req.body.lang){
-              if(!tag.lang || tag.lang === " "){
-                return true;
-              } else {
-                if(tag.lang === req.body.lang){
-                  return true
-                }else{
-                  return false;
+          if(docs.tags){
+            obj.tags = docs.tags.filter(tag=>{
+              if(req.body.lang){
+                if(!tag.lang || tag.lang === " "){
+                  return true;
+                } else {
+                  if(tag.lang === req.body.lang){
+                    return true
+                  }else{
+                    return false;
+                  }
                 }
+              }else{
+                return true;
               }
-            }else{
-              return true;
-            }
-          });
+            });
+          }
           logAction(req.key, "scanbarcode", req.body.q);
           res.send(obj);
         } else {
