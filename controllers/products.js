@@ -128,11 +128,13 @@ exports.dbSearchBarcode = function(req, res, next) {
 };
 
 exports.uploadImage = function(req, res, next){
-  console.log("hi");
+  console.count("upload Image");
+  console.log(req.body);
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
   form.maxFileSize = 200 * 1024 * 1024;
   let productBarCode = "";
+  console.count("upload Image");
   form.on("file", function(name, file) {
     console.log("Finished Uploading The File");
     doesBucketExsistFor(productBarCode)

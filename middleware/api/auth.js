@@ -1,7 +1,6 @@
 let apiKeys = require("../../model/apiKeys");
 
 exports.shallPass = function(req, res, next) {
-  console.log(req.body);
   if (req.body.apiKey) {
     apiKeys
       .find({ _id: req.body.apiKey })
