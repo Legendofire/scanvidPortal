@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "multicam-fe34a",
+  "private_key_id": "ebae09dfaa82d6eca86b3dc9aede533bd2f73359",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDbQB9jMHPcJ7Aa\njA+QxxGZzDNkd0zz0Oby5dBjLRR2cxDtbbf5aIz+dNxf+bQhjzur60eZ+sPGEgb/\ndSZQFwvYil4Rk6ZvAxncpC5kdU5vGMhVpT2xFaJ8RfMVxkqUdILF0nVz/jaxi9iz\nB7qKuhKBF3WqJftYa9+DlBPOj7CkIBiGcFFdMr9wRdALbBo4jss5ZDxpUFnCf/lo\n8GZ+kwhhsRaZ3m0apGkugrOxXg7fYEQOmZVbENiBGZJUOKOri/I7eAmCAL/iW+di\n1Dlsk5Ha5Wukr9ZZ+KWkALpal5k2vUqpwduylGlyhT7QuR0oJkhhnSUqFGiNHbLK\nhYf7q0s1AgMBAAECggEACtOiiScgHYe/MDxo210dLyNQiV5DyElxUh7LmM4l08iQ\nVi0kF9aUGc+i/0FJJhwY1f8/EKk7qCkFO/Gow+0zakzA4uzP2+0DBqx71v2c8yr9\n347Smk9HcAwTOijJz4VmXMbtAl6UDFXrzEFuMoIIPmQubQnFnOLszWZPSRS65AvT\nQHtLTIB2qrqDxMzwEuWq+Pk8qgrFpagcHGSDR/+8zrWbBUpsIHFwGnjvmYNkabh+\nM2GeMZ5UpCmgrbvb3twucrWUkJv4OC+50pRGDZKkD6DJwdjg/yPpsaXK25bVhmAx\na/lkW+JZ+NnMwByHUYjB20zAwr91FOQtMABtTZHMqQKBgQD8QNW2CtCw69OmSg9I\nUAoDBYNgal6eaAvwzC5L9prxuKEdWmIxbl+18JlS276HIr9HKUEiSJqIxViwSnji\nyrjJgUT6QJ8KK5CLTfO1vv50zVuTToCGIKgqjUD+/37FhNjqioVfKj8qQlLzvqzw\nrb+bIjdKN7O1oXYj6pcU2o1VPQKBgQDegcxhZPOiU9yeDXvWr/XFwk7hybZegsGS\n59FqkEYFa4G08zGvJ83DhknhGv94JPluqECIzpbNeDeNJplmSXSV9W0etIjSCmlZ\naE3ihBjPlsGQJMYO5v6As1EBeJZqRbhUo4NCEpwYgp75V+ntY0bnx69qxwL0Wfba\ngPVJsu/dWQKBgQDKOEea6kymqEdB1bkupUuBZJgPYPZ9UrfP0D+FEirggLxYRa7W\nJb+AoWKotBSnTMm+iGn4y+9mmZ4hpXIHjbBZidH8NHXKt2Xm5xTqrDRc+ovhKVuL\nKv7lLdvfEH9WZMtoKqgExF9ix0ysrj0BrKgf+2wLiV/9yXRmEpgPVa1bmQKBgDg+\nayE7WXJw7FVvZxxPgjqo8TOVv2mId9Hgk0jyiyCXmkPZLXfvAc4oxcgHAQinn/1e\nvmFWhzwM5U3isefvLW8yiJC4ZdViGFsnSHi3l2Xx35/GC+J8dVym9xT+HFdkpEGQ\ny38KITb43aJ9nH4LGENCcI73G0IU85cr/dTRTFyRAoGBAMTKBlwrHjrhKUkwqjcm\nnSeFibYVCgYoIIKvxzLJSXOnJNsi2pu6Y73DOVTmKx7+cisyRzqauYUZvc0SUau3\nsYDGYLZuSoicma/6s6PHvpi9u32KL4B7sjSVgqX9vA9EguAfKDDigcDkSriKBNjB\n/mSg+7viuCcOYxlawiyiRLxD\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-2978i@multicam-fe34a.iam.gserviceaccount.com",
+  "client_id": "109000204189684990254",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-2978i%40multicam-fe34a.iam.gserviceaccount.com"
+}
