@@ -129,12 +129,17 @@ exports.dbSearchBarcode = function(req, res, next) {
 
 exports.uploadImage = function(req, res, next){
   console.count("upload Image");
-  console.log(req.body);
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
   form.maxFileSize = 200 * 1024 * 1024;
   let productBarCode = "";
   console.count("upload Image");
+  form.on("field", function(name, value) {
+    if (name === "product") {
+      productBarCode = value;
+    }
+  });
+
   form.on("file", function(name, file) {
     console.log("Finished Uploading The File");
     doesBucketExsistFor(productBarCode)
@@ -222,12 +227,6 @@ exports.uploadImage = function(req, res, next){
       res.redirect("/products/view/" + productBarCode);
     }
   })
-
-  form.on("field", function(name, value) {
-    if (name === "product") {
-      productBarCode = value;
-    }
-  });
 
   form.parse(req);
 }
