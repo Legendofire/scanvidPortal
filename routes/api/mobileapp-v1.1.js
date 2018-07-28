@@ -162,13 +162,14 @@ router.post("/analyzeVideo", authentication.shallPass, function(
   next
 ) {
   req.api = true;
-  logAction(req.key, "scantext", req.body.product);
+  logAction(req.key, "analyzeVideo", req.body.product);
   ProductController.analyzeVideo(req, res, next);
 }); /// product: barcode + video:video as form data
 
 router.post("/uploadImage", authentication.shallPass, function(req, res, next){
+  console.log("Hello");
   req.api = true;
-  logAction(req.key, "scantext", req.body.product);
+  logAction(req.key, "uploadImage", req.body.product);
   ProductController.uploadImage(req, res, next);
 })
 

@@ -128,6 +128,7 @@ exports.dbSearchBarcode = function(req, res, next) {
 };
 
 exports.uploadImage = function(req, res, next){
+  console.log("hi");
   var picsFolder = "./public/tempFolder/";
   var form = new formidable.IncomingForm();
   form.maxFileSize = 200 * 1024 * 1024;
